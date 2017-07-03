@@ -1,0 +1,110 @@
+@import 'colors';
+
+@mixin cardStyle($color) {
+  $targetVeryLight: map-get($colors, very-light-#{$color});
+  $targetLight:     map-get($colors, light-#{$color});
+  $targetMedium:    map-get($colors, medium-#{$color});
+  $targetDark:      map-get($colors, dark-#{$color});
+
+  .card-info,
+  .tags {
+    background-color: $targetLight;
+  }
+
+  .tag {
+    background-color: $targetMedium;
+  }
+
+  .deck {
+    background-color: $targetDark;
+    color: $targetVeryLight;
+  }
+
+  .slash {
+    border-bottom-color: $targetDark;
+  }
+}
+
+@mixin monolingual($targetLang, $targetLangName) {
+  $color: map-get($langToColor, $targetLang);
+
+  .#{$targetLangName},
+  .#{$targetLang},
+  .#{$targetLang}-only {
+    @include cardStyle($color);
+  }
+}
+
+@mixin bilingual($sourceLang, $targetLang) {
+  $sourceColor: map-get($langToColor, $sourceLang);
+  @if $sourceLang == en {
+    $sourceColor: map-get($langToColor, $targetLang);
+  }
+  $sourceColor: gray  !default;
+
+  $sourceVeryLight: map-get($colors, very-light-#{$sourceColor});
+  $sourceLight:     map-get($colors, light-#{$sourceColor});
+  $sourceMedium:    map-get($colors, medium-#{$sourceColor});
+  $sourceDark:      map-get($colors, dark-#{$sourceColor});
+
+  $targetColor:     map-get($langToColor, $targetLang);
+  @if $targetLang == en {
+    $targetColor:     map-get($langToColor, $sourceLang);
+  }
+  $targetColor:     gray  !default;
+
+  $targetVeryLight: map-get($colors, very-light-#{$targetColor});
+  $targetLight:     map-get($colors, light-#{$targetColor});
+  $targetMedium:    map-get($colors, medium-#{$targetColor});
+  $targetDark:      map-get($colors, dark-#{$targetColor});
+  
+  .#{$sourceLang}-#{$targetLang} {
+    .tags {
+      background-color: transparent;
+    }
+
+    .tag {
+      background-color: $targetMedium;
+    }
+
+    .deck {
+      background-color: $targetDark;
+      color: $targetVeryLight;
+    }
+
+    .slash {
+      border-bottom-color: $targetDark;
+    }
+
+    .card-info {
+      background: -moz-linear-gradient(   left, $sourceLight 0%, $targetMedium 100%);
+      background: -webkit-linear-gradient(left, $sourceLight 0%, $targetMedium 100%);
+      background: linear-gradient(    to right, $sourceLight 0%, $targetMedium 100%);
+    }
+  }
+
+  .#{$targetLang}-#{$sourceLang} {
+    .tags {
+      background-color: transparent;
+    }
+
+    .tag {
+      background-color: $sourceMedium;
+    }
+
+    .deck {
+      background-color: $sourceDark;
+      color: $sourceVeryLight;
+    }
+
+    .slash {
+      border-bottom-color: $sourceDark;
+    }
+
+    .card-info {
+      background: -moz-linear-gradient(   left, $targetLight 0%, $sourceMedium 100%);
+      background: -webkit-linear-gradient(left, $targetLight 0%, $sourceMedium 100%);
+      background: linear-gradient(    to right, $targetLight 0%, $sourceMedium 100%);
+    }
+  }
+}

@@ -1,0 +1,72 @@
+$langToColor: (
+  gregg: yellow,
+  consonants: yellow,
+  de: red,
+  es: green,
+  fi: aqua,
+  fr: blue,
+  hu: darkgreen,
+  ja: red,
+  zh: yellow,
+);
+
+$langColorToBaseColor: (
+  aqua:       #85d6d2,
+  blue:       #85bdd6,
+  gray:       #adadad,
+  green:      #86d685,
+  darkgreen:  #297d27,
+  red:        #d68585,
+  yellow:     #ffde00,
+);
+
+$base-aqua:       #85d6d2;
+$base-blue:       #85bdd6;
+$base-gray:       #adadad;
+$base-green:      #86d685;
+$base-darkgreen:  #297d27;
+$base-red:        #d68585;
+$base-yellow:     #ffde00;
+
+$lighten-very: 24%;
+$lighten:      17%;
+$darken:       21%;
+
+$colors: (
+
+  very-light-aqua:   lighten($base-aqua, $lighten-very),
+  light-aqua:        lighten($base-aqua, $lighten),
+  medium-aqua:       $base-aqua,
+  dark-aqua:         darken($base-aqua, $darken),
+
+  very-light-blue:   lighten($base-blue, $lighten-very),
+  light-blue:        lighten($base-blue, $lighten),
+  medium-blue:       $base-blue,
+  dark-blue:         darken($base-blue, $darken),
+
+  very-light-green:  lighten($base-green, $lighten-very),
+  light-green:       lighten($base-green, $lighten),
+  medium-green:      $base-green,
+  dark-green:        darken($base-green, $darken),
+
+  very-light-darkgreen:  lighten($base-darkgreen, $lighten-very),
+  light-darkgreen:       lighten($base-darkgreen, $lighten),
+  medium-darkgreen:      $base-darkgreen,
+  dark-darkgreen:        darken($base-darkgreen, $darken),
+
+  very-light-gray:   lighten($base-gray, $lighten-very),
+  light-gray:        lighten($base-gray, $lighten),
+  medium-gray:       $base-gray,
+  dark-gray:         darken($base-gray, $darken),
+
+  very-light-red:    lighten($base-red, $lighten-very),
+  light-red:         lighten($base-red, $lighten),
+  medium-red:        $base-red,
+  dark-red:          darken($base-red, $darken),
+
+  very-light-yellow: lighten($base-yellow, $lighten-very),
+  light-yellow:      lighten($base-yellow, $lighten),
+  medium-yellow:     $base-yellow,
+  dark-yellow:       darken($base-yellow, $darken),
+
+);

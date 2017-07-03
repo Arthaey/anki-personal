@@ -1,0 +1,344 @@
+/** `sass --style=expanded --no-cache _global.scss _global.css` ***************/
+
+@import 'colors';
+@import 'language';
+
+$font-size: 48px;
+
+/** TYPOGRAPHY ****************************************************************/
+
+body {
+  font-family: arial;
+  font-size: $font-size;
+}
+
+.card-info {
+  font-size: small;
+}
+
+.deck {
+  font-weight: bold;
+  font-variant: small-caps;
+}
+
+.card.back {
+  font-weight: bold;
+}
+
+.cloze,
+.memory-jog,
+.memory-jog-with-details {
+  .card {
+    font-size: $font-size / 2;
+  }
+
+  .card.back {
+    font-weight: normal;
+  }
+}
+
+.extra {
+  font-size: small;
+}
+
+th {
+  border-bottom: 1px solid;
+  font-weight: normal;
+}
+
+input {
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}
+
+#tts {
+  background-image: url("_speaker-32x32.png") !important;
+  background-position: right top;
+  background-repeat: no-repeat;
+}
+
+span#tts {
+  display: block;
+}
+
+/** STRUCTURE *****************************************************************/
+
+$line-height: 2em;
+$radius: $line-height / 4;
+
+body {
+  margin: 0;
+  padding: 16px;
+}
+
+.card-info {
+  border-radius: $radius $radius 0 0;
+  height: $line-height;;
+}
+
+.tags,
+.deck {
+  display: inline-block;
+  line-height: $line-height;;
+  padding: 0 $line-height/2 0 $line-height/4;
+}
+
+.tags {
+  border-top-left-radius: $radius;
+  padding-left: $line-height/2;
+}
+
+.tag {
+  border-radius: $radius/2;
+  padding: 0.1em 0.4em;
+}
+
+.tag + .tag {
+  margin-left: 0.3em;
+}
+
+.deck {
+  border-top-right-radius: $radius;
+}
+
+.slash {
+  border-style: solid;
+  border-width: 0 0 $line-height $line-height;
+  display: inline-block;
+  height: 0;
+  width: 0;
+}
+
+.deck,
+.slash {
+  float: right;
+}
+
+.card-info + .card.front {
+  border-radius: 0 0 $radius $radius;
+}
+
+.card.front ~ .card.back {
+  border-radius: $radius;
+  margin-top: $line-height/2;
+}
+
+.card.front,
+.card.back {
+  padding: 16px;
+  text-align: center;
+}
+
+.extra {
+  margin-top: $line-height/2;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table + table {
+  margin-top: $line-height;
+}
+
+th, td {
+  padding: 0.1em;
+}
+
+hr#answer {
+  display: none;
+}
+
+.iphone {
+  body {
+    padding: 0;
+  }
+
+  .deck {
+    line-height: 2.6em;
+  }
+
+  .card.front,
+  .card.back {
+    margin: 0;
+  }
+}
+
+/** COLORS & IMAGES - GENERAL *************************************************/
+
+/*
+   Mac app:    webkit safari mac js 
+   Mac Chrome: webkit chrome mac js
+   iOS app:    webkit safari mobile iphone js
+*/
+
+.default-colors {
+  background-color: white;
+  color: black;
+}
+
+body {
+  @extend .default-colors;
+  background-image: url("_wood.jpg");
+  background-repeat: repeat;
+}
+
+.card {
+  @extend .default-colors;
+}
+
+.tag {
+  opacity: 0.7;
+}
+
+.slash {
+  border-color: transparent;
+}
+
+.extra {
+  color: #888888;
+}
+
+/** COLORS & IMAGES - LANGUAGES ***********************************************/
+
+@include cardStyle("gray");
+
+@include monolingual("gregg", "consonants");
+
+@include monolingual("de", "deutsch");
+@include monolingual("es", "español");
+//@include monolingual("fi", "suomi");
+@include monolingual("fr", "français");
+@include monolingual("hu", "magyar");
+@include monolingual("ja", "japanese");
+
+@include bilingual("en", "de");
+@include bilingual("en", "es");
+@include bilingual("en", "fr");
+@include bilingual("en", "hu");
+@include bilingual("en", "ja");
+
+@include bilingual("es", "fr");
+//@include bilingual("fi", "hu");
+//@include bilingual("fr", "fi");
+
+///* Mandarin */
+//
+//@include monolingual("zh", "mandarin");
+//@include bilingual("en", "zh");
+//
+//.zh-trad,
+//.zh-simp {
+//  font-family: SimSun;
+//}
+//
+//.zh-simp {
+//  color: #666;
+//}
+
+/* ASLwrite */
+
+@font-face {
+ font-family: "ASLwrite";
+ src: url(_aslwrite.ttf) format("truetype");
+}
+
+.asl {
+	.gloss {
+		font-family: "ASLwrite";
+		font-size: 36px;
+    text-transform: lowercase; // right-handed
+	}
+
+  &.mac .gloss {
+    font-family: "Si5sEnergy";
+  } 
+
+  // Vertically center multiple images.
+  .card:before {
+    content: ' ';
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+  }
+  .card img {
+    vertical-align: middle;
+    display: inline-block;
+  }
+}
+
+/* Lhenazi */
+
+@font-face {
+ font-family: "Lhenazi";
+ src: url(_lhenazi.ttf) format("truetype");
+}
+
+.lhenazi {
+  font-family: "Lhenazi";
+  font-size: 72px;
+}
+
+.ipa + .person,
+.conjugation-example td + .person {
+  padding-left: 2em;
+}
+
+.person {
+  text-align: right;
+}
+
+.conjugation,
+.verb {
+  font-weight: bold;
+}
+
+.ipa {
+  color: #ccc;
+}
+
+.ipa:before, .ipa:after {
+  content: "/";
+}
+
+/* NON-LANGUAGE STYLES ********************************************************/
+
+.card .cloze {
+  font-weight: bold;
+  color: red;
+}
+
+.correct {
+  color: darkgreen;
+}
+
+.email {
+  font-family: monospace;
+}
+
+.hidden {
+  color: transparent;
+}
+hr.hidden {
+ display: none;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.no-photo-name {
+  font-size: 100%;
+}
+
+.outlined {
+  border: 1px dashed gray;
+}
+
+.prompt {
+  margin-bottom: 1em;
+}
