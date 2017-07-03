@@ -1,4 +1,4 @@
-var DEBUG = true;
+var DEBUG = false;
 
 var TTS_REGEX = /tts/i;
 var ASL_REGEX = /asl/i;
@@ -94,7 +94,6 @@ function setupTTS() {
   // If we're on the question-side of a TTS card, auto-play the word.
   // If we're on the answer-side of a TTS card, un-hide the answer.
   if (TTS_REGEX.test(CARD)) {
-    appendDebug(document.getElementById("answer")); // DELETE ME
     if (document.getElementById("answer") == null) {
       window.setTimeout(speak, 500); 
     } else {
@@ -133,7 +132,6 @@ function speak(e) {
 }
 
 function doSpeak(text) { 
-  appendDebug("doSpeak"); // DELETE ME
   var speech = new SpeechSynthesisUtterance(); 
   speech.text = text; 
   speech.volume = 0.5; // 0 to 1 
