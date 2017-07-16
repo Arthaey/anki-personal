@@ -24,11 +24,13 @@ var SPECIAL_CASE_COUNTRY_CODES = {
 };
 
 function setup() {
+  appendDebug("Deck: " + DECK);
+  appendDebug("Card: " + CARD);
+  appendDebug("Lang: " + getLangCodeForTTS());
+
   setupDeckName();
   setupClasses();
   setupTTS();
-  appendDebug("Deck: " + DECK);
-  appendDebug("Card: " + CARD);
 }
 
 function setupDeckName() {
@@ -143,9 +145,9 @@ function doSpeak(text) {
 }
 
 function getLangCodeForTTS() {
-  var deckLangNameMatch = DECK.match(/Language::(\w+)/);
-  var ttsLangCodeMatch = CARD.match(/(\w+) TTS/);
-  var transLangCodeMatch = CARD.match(/(\w+) → (\w+)/);
+  var deckLangNameMatch = DECK.match(/Language::(\S+)/);
+  var ttsLangCodeMatch = CARD.match(/(\S+) TTS/);
+  var transLangCodeMatch = CARD.match(/(\S+) → (\S+)/);
   var langCode = "EN";
 
   if (deckLangNameMatch) {
