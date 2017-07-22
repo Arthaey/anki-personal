@@ -1,9 +1,12 @@
 /** `sass --style=expanded --no-cache _global.scss _global.css` ***************/
 
+@import 'text-stroke';
 @import 'colors';
 @import 'language';
 
 $font-size: 48px;
+
+$answer-buttons-iphone-height: 200px;
 
 /** TYPOGRAPHY ****************************************************************/
 
@@ -62,6 +65,14 @@ input {
 
 span#tts {
   display: block;
+}
+
+.code, #debug {
+  background-color: #eee;
+  color: black;
+  font-family: monospace;
+  font-size: 12px;
+  text-align: left;
 }
 
 /** STRUCTURE *****************************************************************/
@@ -126,10 +137,9 @@ body {
   margin-top: $line-height/2;
 }
 
-.card.front,
-.card.back {
-  padding: 16px;
+.card.front, .card.back {
   text-align: center;
+  padding: 16px;
 }
 
 .extra {
@@ -166,6 +176,11 @@ hr#answer {
   .card.back {
     margin: 0;
   }
+
+  .soundLink img {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 /** COLORS & IMAGES - GENERAL *************************************************/
@@ -201,6 +216,85 @@ body {
 
 .extra {
   color: #888888;
+}
+
+.substudy {
+  background-color: black;
+
+  .card-info {
+    display: none;
+  }
+
+  .card {
+    background: none;
+    padding: 0 !important;
+  }
+
+  .card.front {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  img {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  #audio-control {
+    position: absolute;
+    top: 37%;
+    left: 45%;
+  }
+
+  .subtitles {
+    display: block;
+    padding: $font-size / 4;
+    position: absolute;
+    width: 100%;
+
+    &:not(.translation) {
+      @include text-stroke(2, navy);
+      bottom: 0;
+      color: white;
+
+      .context {
+        color: gray;
+        font-size: $font-size / 3;
+      }
+    }
+
+    &.translation {
+      @include text-stroke(1, navy);
+      color: gray;
+      font-size: $font-size / 3;
+      font-weight: bold;
+      top: 0;
+
+      .context {
+        font-weight: normal;
+        font-size: $font-size / 4;
+      }
+    }
+  }
+}
+
+.iphone {
+  .subtitles:not(.translation) {
+    bottom: $answer-buttons-iphone-height !important;
+  }
+
+  .replaybutton {
+    background-color: gray;
+    border-radius: 50%;
+    opacity: 0.7;
+
+    display: block;
+    position: absolute;
+    top: 35%;
+    left: 47%;
+  }
 }
 
 /** COLORS & IMAGES - LANGUAGES ***********************************************/
@@ -321,10 +415,12 @@ body {
 }
 
 .hidden {
-  color: transparent;
+  color: transparent !important;
+  display: none !important;
 }
+
 hr.hidden {
- display: none;
+ display: none !important;
 }
 
 .nickname {
