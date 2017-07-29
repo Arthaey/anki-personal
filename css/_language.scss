@@ -32,6 +32,11 @@
   .#{$targetLang},
   .#{$targetLang}-only {
     @include cardStyle($color);
+
+    .deck *:last-child:after {
+      content: url("_#{$targetLang}.png");
+      margin-left: 10px;
+    }
   }
 }
 
@@ -72,6 +77,11 @@
       color: $targetVeryLight;
     }
 
+    .deck *:last-child:after {
+      content: url("_#{$targetLang}.png");
+      margin-left: 10px;
+    }
+
     .slash {
       border-bottom-color: $targetDark;
     }
@@ -95,6 +105,11 @@
     .deck {
       background-color: $sourceDark;
       color: $sourceVeryLight;
+    }
+
+    .deck *:last-child:after {
+      content: url("_#{$targetLang}.png");
+      margin-left: 10px;
     }
 
     .slash {

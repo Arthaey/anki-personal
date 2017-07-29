@@ -6,7 +6,7 @@
 
 $font-size: 48px;
 
-$answer-buttons-iphone-height: 200px;
+$answer-buttons-iphone-height: 100px;
 
 /** TYPOGRAPHY ****************************************************************/
 
@@ -177,10 +177,6 @@ hr#answer {
     margin: 0;
   }
 
-  .soundLink img {
-    width: 32px;
-    height: 32px;
-  }
 }
 
 /** COLORS & IMAGES - GENERAL *************************************************/
@@ -242,10 +238,17 @@ body {
     max-height: 100%;
   }
 
-  #audio-control {
+  #audio-control, .soundLink {
+    background-color: gray;
+    border-radius: 50%;
+    opacity: 0.2;
+
+    cursor: pointer;
     position: absolute;
     top: 37%;
     left: 45%;
+    width: 64px;
+    height: 64px;
   }
 
   .subtitles {
@@ -276,6 +279,10 @@ body {
         font-weight: normal;
         font-size: $font-size / 4;
       }
+    }
+
+    &.hidden {
+      display: none;
     }
   }
 }
@@ -416,7 +423,6 @@ body {
 
 .hidden {
   color: transparent !important;
-  display: none !important;
 }
 
 hr.hidden {

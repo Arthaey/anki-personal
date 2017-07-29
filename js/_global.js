@@ -145,7 +145,7 @@ function setupEnglishVerb(person, tense) {
   var infinitive = document.getElementById("en-infinitive");
   if (!infinitive) return;
 
-  var verbStem = infinitive.innerText.substr(3, infinitive.innerText.length);
+  var verbStem = infinitive.innerText.replace(/^to /, "");
   var suffix = (person === "3sg") ? "s" : "";
   var conjugated = verbStem + suffix;
   infinitive.innerText = conjugated;
