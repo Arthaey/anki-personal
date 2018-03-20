@@ -1,0 +1,4 @@
+.env
+
+# Generated from Sass .scss files
+*.css
