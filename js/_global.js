@@ -46,6 +46,31 @@ var FR_CONJUGATIONS = {
   }
 };
 
+function Card(dom) {
+  this.dom = dom;
+}
+
+Card.prototype.setupDeckName = function(deckName) {
+  if (!this.hasExpectedLayout()) return;
+  var deck = this.dom.querySelector("#deck");
+  var match = deckName.match(DECK_REGEX);
+  deck.innerHTML = match[1];
+};
+
+Card.prototype.hasExpectedLayout = function() {
+  return !!(
+      this.dom &&
+      this.dom.querySelector(".card-info") &&
+      this.dom.querySelector(".tags") &&
+      this.dom.querySelector(".deck") &&
+      this.dom.querySelector("#deck") &&
+      this.dom.querySelector(".card-type") &&
+      this.dom.querySelector(".slash") &&
+      this.dom.querySelector(".card.front") &&
+      this.dom.querySelector("#debug")
+    );
+}
+
 function setup() {
   appendDebug("Deck: " + DECK);
   appendDebug("Card: " + CARD);
