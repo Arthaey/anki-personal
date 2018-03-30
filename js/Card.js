@@ -32,7 +32,12 @@ Card.prototype.setupClasses = function() {
 
   if (TTS_REGEX.test(type)) newClasses += " tts ";
   if (ASL_REGEX.test(type)) newClasses += " asl ";
-  if (this.deckName.includes("Español")) newClasses += " es-only ";
+
+  if (this.noteType === "Cloze") {
+    if (this.deckName.includes("Español"))  newClasses += " es-only ";
+    if (this.deckName.includes("Français")) newClasses += " fr-only ";
+    if (this.deckName.includes("Deutsch"))  newClasses += " de-only ";
+  }
 
   this.setClasses(newClasses);
 };

@@ -1,11 +1,10 @@
 describe("Card", function() {
   var card;
 
-  function createCard(deckName) {
-    if (!deckName) {
-      deckName = "MyDeckName";
-    }
-    return new Card(createCardFront(), deckName, "MyNoteType", "MyCardType", "MyTags");
+  function createCard(deckName, noteType) {
+    if (!deckName) deckName = "MyDeckName";
+    if (!noteType) noteType = "MyNoteType";
+    return new Card(createCardFront(), deckName, noteType, "MyCardType", "MyTags");
   }
 
   beforeEach(function() {
@@ -85,14 +84,29 @@ describe("Card", function() {
     });
 
     it("adds 'es-only' for monolingual Spanish clozes", function() {
-      card = createCard("Foo::Español::Bar");
+      card = createCard("Foo::Español::Bar", "Cloze");
       card.setupClasses();
       expect(card.getClassList()).toContain("es-only");
     });
 
-    it("adds 'fr-only' for monolingual French clozes");
-    it("adds 'de-only' for monolingual German clozes");
-    it("does NOT add '*-only' for non-clozes");
+    it("adds 'fr-only' for monolingual French clozes", function() {
+      card = createCard("Foo::Français::Bar", "Cloze");
+      card.setupClasses();
+      expect(card.getClassList()).toContain("fr-only");
+    });
+
+    it("adds 'de-only' for monolingual German clozes", function() {
+      card = createCard("Foo::Deutsch::Bar", "Cloze");
+      card.setupClasses();
+      expect(card.getClassList()).toContain("de-only");
+    });
+
+    it("does NOT add '*-only' for non-clozes", function() {
+      card = createCard("Foo::Español::Bar", "not-Cloze");
+      card.setupClasses();
+      expect(card.getClassList()).not.toContain("es-only");
+    });
+
     it("makes lowercase");
     it("replaces arrows with dashes");
     it("replaces spaces with dashes");
