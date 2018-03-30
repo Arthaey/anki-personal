@@ -107,7 +107,21 @@ describe("Card", function() {
       expect(card.getClassList()).not.toContain("es-only");
     });
 
-    it("makes lowercase");
+    it("adds each of deck/note/card/tag to classes too", function() {
+      card.setupClasses();
+      expect(card.getClassList()).toContain("mydeckname");
+      expect(card.getClassList()).toContain("mynotetype");
+      expect(card.getClassList()).toContain("mycardtype");
+      expect(card.getClassList()).toContain("mytags");
+    });
+
+    it("makes lowercase", function() {
+      card = createCard("LOWERCASE");
+      card.setupClasses();
+      expect(card.getClassList()).not.toContain("LOWERCASE");
+      expect(card.getClassList()).toContain("lowercase");
+    });
+
     it("replaces arrows with dashes");
     it("replaces spaces with dashes");
     it("replaces subdeck-separators with dashes");

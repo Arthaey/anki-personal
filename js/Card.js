@@ -28,18 +28,24 @@ Card.prototype.setupClasses = function() {
   this.removeCustomClasses();
 
   var newClasses = "";
-  var type = this.deckName;
 
-  if (TTS_REGEX.test(type)) newClasses += " tts ";
-  if (ASL_REGEX.test(type)) newClasses += " asl ";
+  var types = [this.deckName, this.noteType, this.cardType, this.tags];
+  for (var i = 0; i < types.length; i++ ) {
+    var type = types[i];
 
-  if (this.noteType === "Cloze") {
-    if (this.deckName.includes("Español"))  newClasses += " es-only ";
-    if (this.deckName.includes("Français")) newClasses += " fr-only ";
-    if (this.deckName.includes("Deutsch"))  newClasses += " de-only ";
+    if (TTS_REGEX.test(type)) newClasses += " tts ";
+    if (ASL_REGEX.test(type)) newClasses += " asl ";
+
+    if (this.noteType === "Cloze") {
+      if (this.deckName.includes("Español"))  newClasses += " es-only ";
+      if (this.deckName.includes("Français")) newClasses += " fr-only ";
+      if (this.deckName.includes("Deutsch"))  newClasses += " de-only ";
+    }
+
+    newClasses += " " + type + " ";
   }
 
-  this.setClasses(newClasses);
+  this.setClasses(newClasses.toLowerCase());
 };
 
 Card.prototype.getClassList = function() {
