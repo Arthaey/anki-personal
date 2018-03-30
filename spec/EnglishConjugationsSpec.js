@@ -1,8 +1,4 @@
 describe("English verbs", function() {
-  afterEach(function() {
-    dom.cleanup();
-  });
-
   describe("in the present tense", function() {
     var element;
 

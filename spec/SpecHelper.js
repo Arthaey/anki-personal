@@ -36,3 +36,40 @@ beforeEach(function() {
     };
   })();
 });
+
+afterEach(function() {
+  dom.cleanup();
+});
+
+function createCardFront() {
+  var element = dom.createElement("container");
+  element.innerHTML = cardFrontHTML();
+  return element;
+}
+
+function createCardFrontAndBack() {
+  var element = createCardFront();
+  element.innerHTML += cardBackHTML();
+  return element;
+}
+
+function cardFrontHTML() {
+  return `
+    <div class="card-info">
+      {{#LeafTags}}<div class="tags">{{LeafTags}}</div>{{/LeafTags}}
+      <div class="deck">
+        <span id="deck">{{Deck}}</span>: <span class="card-type">{{Card}}</span>
+      </div>
+      <div class="slash"></div>
+    </div>
+    <div class="card front">{{Front}}</div>
+    <div id="debug" class="extra"></div>
+    `;
+}
+
+function cardBackHTML() {
+  return `
+    <!-- -------------------- --> <hr id="answer"> <!-- -------------------- -->
+    <div class="card back">{{Back}}</div>
+    `;
+}

@@ -2,10 +2,6 @@ describe("French verbs", function() {
   var element;
   var tense;
 
-  afterEach(function() {
-    dom.cleanup();
-  });
-
   describe("for -er verbs", function() {
     beforeEach(function() {
       element = dom.createElement("fr-infinitive", "parler");

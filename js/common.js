@@ -46,69 +46,36 @@ var FR_CONJUGATIONS = {
   }
 };
 
-function Card(dom) {
-  this.dom = dom;
+var ANKI_CLASSES = [
+  "webkit",
+  "safari",
+  "mac",
+  "js"
+];
+
+function setup(dom, deckName, noteType, cardType, tags) {
+  var card = new Card(dom, deckName, noteType, cardType, tags);
+  card.setupDeckName();
+  card.setupClasses();
+
+  setupTTS(cardType);
+  setupVerbs(noteType, cardType);
 }
 
-Card.prototype.setupDeckName = function(deckName) {
-  if (!this.hasExpectedLayout()) return;
-  var deck = this.dom.querySelector("#deck");
-  var match = deckName.match(DECK_REGEX);
-  deck.innerHTML = match[1];
-};
-
-Card.prototype.hasExpectedLayout = function() {
-  return !!(
-      this.dom &&
-      this.dom.querySelector(".card-info") &&
-      this.dom.querySelector(".tags") &&
-      this.dom.querySelector(".deck") &&
-      this.dom.querySelector("#deck") &&
-      this.dom.querySelector(".card-type") &&
-      this.dom.querySelector(".slash") &&
-      this.dom.querySelector(".card.front") &&
-      this.dom.querySelector("#debug")
-    );
-}
-
-function setup() {
-  appendDebug("Deck: " + DECK);
-  appendDebug("Card: " + CARD);
-  appendDebug("Lang: " + getLangCodeForTTS());
-
-  setupDeckName();
-  setupClasses();
-  setupTTS();
-  setupVerbs();
-}
-
-function setupDeckName() {
-  var deck = document.getElementById("deck");
-  if (!deck) return;
-
-  var match = deck.textContent.match(DECK_REGEX);
-  if (!match) return;
-
-  deck.innerHTML = match[1];
-}
-
-function setupClasses() {
+function setupClasses(deckName, noteType, cardType, tags) {
   removeCustomClasses();
 
-  var deckElem = document.getElementById("deck");
-  var deck = (deckElem ? deckElem.textContent : DECK);
-
   var newClasses = "";
-  newClasses += transmogrify(deck);
-  newClasses += transmogrify(NOTE);
-  newClasses += transmogrify(CARD);
-  newClasses += transmogrify(TAGS);
+  newClasses += transmogrify(deckName);
+  newClasses += transmogrify(noteType);
+  newClasses += transmogrify(cardType);
+  newClasses += transmogrify(tags);
 
   // document.body.className gets overwritten by Anki Javascript that runs
   // later, so set the <html> documentElement instead.
   document.documentElement.className += " " + newClasses;
 
-  if (NOTE === "Cloze") {
+  if (noteType === "Cloze") {
     if (deck.indexOf("Español") !== -1) {
       document.body.className = document.body.className + " es-only";
     }
@@ -132,7 +99,7 @@ function transmogrify(type) {
   return newClasses;
 }
 
-function setupTTS() {
+function setupTTS(cardType) {
   var tts = document.getElementById("tts");
   if (!tts) return
   if (typeof SpeechSynthesisUtterance === "undefined") {
@@ -140,27 +107,27 @@ function setupTTS() {
     return;
   }
 
-  tts.addEventListener("click", speak, false);
+  tts.addEventListener("click", speak, false); // TODO: pass in deckName, cardType
 
   // If we're on the question-side of a TTS card, auto-play the word.
   // If we're on the answer-side of a TTS card, un-hide the answer.
-  if (TTS_REGEX.test(CARD)) {
+  if (TTS_REGEX.test(cardType)) {
     if (document.getElementById("answer") == null) {
-      window.setTimeout(speak, 500); 
+      window.setTimeout(speak, 500); // TODO: pass in deckName, cardType
     } else {
       tts.classList.remove("hidden");
     }
   }
 }
 
-function setupVerbs() {
-  var verbInfo = CARD.match(VERB_INFO_REGEX);
+function setupVerbs(noteType, cardType) {
+  var verbInfo = cardType.match(VERB_INFO_REGEX);
   if (!verbInfo) return;
 
   var person = verbInfo[1];
   var tense = verbInfo[2];
 
-  if (NOTE == FRENCH_VERB_NOTE_NAME) {
+  if (noteType == FRENCH_VERB_NOTE_NAME) {
     setupEnglishVerb(person, tense);
     setupFrenchVerb(person, tense);
   }
@@ -209,31 +176,31 @@ function removeCustomClasses() {
   }
 }
 
-function speak(e) {
+function speak(e, deckName, cardType) {
   if (e) e.preventDefault();
 
   // remove any IPA inside slashes or notes inside parentheses
   var tts = document.getElementById("tts");
   var text = tts.textContent.replace(/\/.*?\//g, '');
   text = text.replace(/\(.*?\)/g, '');
-  doSpeak(text);  
+  doSpeak(text, deckName, cardType);  
 }
 
-function doSpeak(text) { 
+function doSpeak(text, deckName, cardType) { 
   var speech = new SpeechSynthesisUtterance(); 
   speech.text = text; 
   speech.volume = 0.5; // 0 to 1 
   speech.rate = 0.9; // 0.1 to 9
   speech.pitch = 1; // 0 to 2, 1=normal 
-  speech.lang = getLangCodeForTTS();
+  speech.lang = getLangCodeForTTS(deckName, cardType);
   speechSynthesis.cancel(); 
   speechSynthesis.speak(speech); 
 }
 
-function getLangCodeForTTS() {
-  var deckLangNameMatch = DECK.match(/Language::(\S+)/);
-  var ttsLangCodeMatch = CARD.match(/(\S+) TTS/);
-  var transLangCodeMatch = CARD.match(/(\S+) → (\S+)/);
+function getLangCodeForTTS(deckName, cardType) {
+  var deckLangNameMatch = deckName.match(/Language::(\S+)/);
+  var ttsLangCodeMatch = cardType.match(/(\S+) TTS/);
+  var transLangCodeMatch = cardType.match(/(\S+) → (\S+)/);
   var langCode = "EN";
 
   if (deckLangNameMatch) {
@@ -291,4 +258,5 @@ function htmlEscape(str) {
 }
 
 //document.addEventListener('DOMContentLoaded', setup); // doesn't work on phone
-setup();
+//setup();
+

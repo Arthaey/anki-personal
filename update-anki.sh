@@ -9,7 +9,14 @@ ANKI_MEDIA_DIR="$HOME/Documents/Anki2/$ANKI_USER/collection.media"
 
 set -x
 
+# Create combined Javascript file.
+rm js/_global.js
+cat js/*.js > js/_global.js
+
+# Create combined CSS file.
 sass --style=expanded --no-cache css/_global.scss css/_global.css
+
+# Copy files over to the Anki directory.
 cp -p css/_global.css $ANKI_MEDIA_DIR/
 cp -p js/_global.js $ANKI_MEDIA_DIR/
 cp -p images/_* $ANKI_MEDIA_DIR/
