@@ -42,7 +42,9 @@ Card.prototype.setupClasses = function() {
       if (this.deckName.includes("Deutsch"))  newClasses += " de-only ";
     }
 
-    newClasses += " " + type + " ";
+    newClasses += " ";
+    newClasses += type.replace(" → ", "-").replace(" ⇔ ", "-").replace(" ", "-").replace(/::/g, "-");
+    newClasses += " ";
   }
 
   this.setClasses(newClasses.toLowerCase());

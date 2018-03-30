@@ -122,9 +122,25 @@ describe("Card", function() {
       expect(card.getClassList()).toContain("lowercase");
     });
 
-    it("replaces arrows with dashes");
-    it("replaces spaces with dashes");
-    it("replaces subdeck-separators with dashes");
+    it("replaces arrows with dashes", function() {
+      card = createCard("a → b", "c ⇔ d");
+      card.setupClasses();
+      expect(card.getClassList()).toContain("a-b");
+      expect(card.getClassList()).toContain("c-d");
+    });
+
+    it("replaces spaces with dashes", function() {
+      card = createCard("a b");
+      card.setupClasses();
+      expect(card.getClassList()).toContain("a-b");
+    });
+
+    it("replaces subdeck-separators with dashes", function() {
+      card = createCard("a::b");
+      card.setupClasses();
+      expect(card.getClassList()).toContain("a-b");
+    });
+
     it("replaces '-tts' with '-only'");
     it("based on deck name");
     it("based on note type");
