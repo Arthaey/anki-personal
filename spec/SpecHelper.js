@@ -28,10 +28,10 @@ beforeEach(function() {
       },
 
       cleanup: function() {
-        for (var i in elements) {
+        for (var i = 0; i < elements.length; i++) {
           document.body.removeChild(elements[i]);
-          elements.pop(elements[i]);
         }
+        elements = [];
       }
     };
   })();
