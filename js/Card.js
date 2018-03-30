@@ -32,6 +32,7 @@ Card.prototype.setupClasses = function() {
   var types = [this.deckName, this.noteType, this.cardType, this.tags];
   for (var i = 0; i < types.length; i++ ) {
     var type = types[i];
+    if (!type) continue;
 
     if (TTS_REGEX.test(type)) newClasses += " tts ";
     if (ASL_REGEX.test(type)) newClasses += " asl ";
@@ -46,6 +47,8 @@ Card.prototype.setupClasses = function() {
     newClasses += type.replace(" → ", "-").replace(" ⇔ ", "-").replace(" ", "-").replace(/::/g, "-");
     newClasses += " ";
   }
+
+  newClasses = newClasses.replace("-tts", "-only");
 
   this.setClasses(newClasses.toLowerCase());
 };

@@ -141,13 +141,19 @@ describe("Card", function() {
       expect(card.getClassList()).toContain("a-b");
     });
 
-    it("replaces '-tts' with '-only'");
-    it("based on deck name");
-    it("based on note type");
-    it("based on card type");
-    it("based on tags");
-    it("for multiple cases at the same time");
-    it("ignores missing element");
+    it("replaces '-tts' with '-only'", function() {
+      card = createCard("es-tts");
+      card.setupClasses();
+      expect(card.getClassList()).toContain("es-only");
+    });
+
+    it("ignores missing tags", function() {
+      card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType");
+      expect(function() {
+        card.setupClasses()
+      }).not.toThrow();
+    });
+
   });
 
   describe("root element", function() {
