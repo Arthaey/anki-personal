@@ -1,4 +1,9 @@
 .env
 
-# Generated from Sass .scss files
-*.css
+# Generated files
+css/*.css
+js/_global.js
+
+# Hard links for testing CSS locally
+css/*.jpg
+css/*.png

@@ -16,6 +16,10 @@ cat js/*.js > js/_global.js
 # Create combined CSS file.
 sass --style=expanded --no-cache css/_global.scss css/_global.css
 
+# Make image symlinks, so local testing of CSS will find them.
+rm -f css/*.png css/*.jpg
+ln images/* css/
+
 # Copy files over to the Anki directory.
 if [[ ! "$GENERATE_ONLY" ]]; then
   cp -p css/_global.css $ANKI_MEDIA_DIR/
