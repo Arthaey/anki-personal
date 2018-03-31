@@ -62,43 +62,6 @@ function setup(dom, deckName, noteType, cardType, tags) {
   setupVerbs(noteType, cardType);
 }
 
-function setupClasses(deckName, noteType, cardType, tags) {
-  removeCustomClasses();
-
-  var newClasses = "";
-  newClasses += transmogrify(deckName);
-  newClasses += transmogrify(noteType);
-  newClasses += transmogrify(cardType);
-  newClasses += transmogrify(tags);
-
-  // document.body.className gets overwritten by Anki Javascript that runs
-  // later, so set the <html> documentElement instead.
-  document.documentElement.className += " " + newClasses;
-
-  if (noteType === "Cloze") {
-    if (deck.indexOf("Español") !== -1) {
-      document.body.className = document.body.className + " es-only";
-    }
-    if (deck.indexOf("Français") !== -1) {
-      document.body.className = document.body.className + " fr-only";
-    }
-    if (deck.indexOf("Deutsch") !== -1) {
-      document.body.className = document.body.className + " de-only";
-    }
-  }
-}
-
-function transmogrify(type) {
-  var newClasses = "";
-
-  if (TTS_REGEX.test(type)) newClasses += "tts ";
-  if (ASL_REGEX.test(type)) newClasses += "asl ";
-
-  newClasses += type.replace(" → ", "-").replace(" ⇔ ", "-").replace(" ", "-").replace(/::/g, "-").toLowerCase() + " ";
-  newClasses = newClasses.replace("-tts", "-only");
-  return newClasses;
-}
-
 function setupTTS(cardType) {
   var tts = document.getElementById("tts");
   if (!tts) return
