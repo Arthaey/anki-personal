@@ -1,5 +1,4 @@
 beforeEach(function() {
-
   jasmine.addMatchers({
 
     toHaveText: function() {
@@ -19,11 +18,15 @@ beforeEach(function() {
 
     return {
       createElement: function(id, text) {
-        var element = document.createElement("div");
+        var element = document.getElementById(id);
+        if (!element) {
+          element = document.createElement("div");
+          elements.push(element);
+        }
+
         element.id = id;
         element.innerText = text;
         document.body.insertBefore(element, null);
-        elements.push(element);
         return element;
       },
 
@@ -38,7 +41,10 @@ beforeEach(function() {
 });
 
 afterEach(function() {
-  dom.cleanup();
+  var skipCleanup = getQueryParam("skipCleanup");
+  if (!skipCleanup) {
+    dom.cleanup();
+  }
 });
 
 function createCardFront() {
@@ -72,4 +78,19 @@ function cardBackHTML() {
     <!-- -------------------- --> <hr id="answer"> <!-- -------------------- -->
     <div class="card back">{{Back}}</div>
     `;
+}
+
+function getQueryParam(key) {
+   var query = window.location.search.substring(1);
+   var vars = query.split("&");
+
+   for (var i = 0; i < vars.length; i++) {
+     var pair = vars[i].split("=");
+     if (pair[0] === key) {
+       if (pair.length === 1) pair.push(true);
+       return pair[1];
+     }
+   }
+
+   return null;
 }
