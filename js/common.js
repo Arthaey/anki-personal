@@ -57,30 +57,9 @@ function setup(dom, deckName, noteType, cardType, tags) {
   var card = new Card(dom, deckName, noteType, cardType, tags);
   card.setupDeckName();
   card.setupClasses();
+  card.setupTTS();
 
-  setupTTS(cardType);
   setupVerbs(noteType, cardType);
-}
-
-function setupTTS(cardType) {
-  var tts = document.getElementById("tts");
-  if (!tts) return
-  if (typeof SpeechSynthesisUtterance === "undefined") {
-    tts.style.backgroundImage = "none";
-    return;
-  }
-
-  tts.addEventListener("click", speak, false); // TODO: pass in deckName, cardType
-
-  // If we're on the question-side of a TTS card, auto-play the word.
-  // If we're on the answer-side of a TTS card, un-hide the answer.
-  if (TTS_REGEX.test(cardType)) {
-    if (document.getElementById("answer") == null) {
-      window.setTimeout(speak, 500); // TODO: pass in deckName, cardType
-    } else {
-      tts.classList.remove("hidden");
-    }
-  }
 }
 
 function setupVerbs(noteType, cardType) {
@@ -137,27 +116,6 @@ function removeCustomClasses() {
 
     document.documentElement.className = existingClasses;
   }
-}
-
-function speak(e, deckName, cardType) {
-  if (e) e.preventDefault();
-
-  // remove any IPA inside slashes or notes inside parentheses
-  var tts = document.getElementById("tts");
-  var text = tts.textContent.replace(/\/.*?\//g, '');
-  text = text.replace(/\(.*?\)/g, '');
-  doSpeak(text, deckName, cardType);  
-}
-
-function doSpeak(text, deckName, cardType) { 
-  var speech = new SpeechSynthesisUtterance(); 
-  speech.text = text; 
-  speech.volume = 0.5; // 0 to 1 
-  speech.rate = 0.9; // 0.1 to 9
-  speech.pitch = 1; // 0 to 2, 1=normal 
-  speech.lang = getLangCodeForTTS(deckName, cardType);
-  speechSynthesis.cancel(); 
-  speechSynthesis.speak(speech); 
 }
 
 function getLangCodeForTTS(deckName, cardType) {

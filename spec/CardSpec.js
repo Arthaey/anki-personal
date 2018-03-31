@@ -4,7 +4,7 @@ describe("Card", function() {
   function createCard(deckName, noteType) {
     if (!deckName) deckName = "MyDeckName";
     if (!noteType) noteType = "MyNoteType";
-    return new Card(createCardFront(), deckName, noteType, "MyCardType", "MyTags");
+    return new Card(createCardFront(), deckName, noteType, "MyCardType");
   }
 
   beforeEach(function() {
@@ -16,11 +16,22 @@ describe("Card", function() {
   });
 
   it("constructor", function() {
+    card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
     expect(card.dom.innerHTML).toBe(cardFrontHTML());
     expect(card.deckName).toBe("MyDeckName");
     expect(card.noteType).toBe("MyNoteType");
     expect(card.cardType).toBe("MyCardType");
     expect(card.tags).toBe("MyTags");
+  });
+
+  it("knows when it's on the question side", function() {
+    card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType");
+    expect(card.isQuestionSide()).toBe(true);
+  });
+
+  it("knows when it's on the answer side", function() {
+    card = new Card(createCardFrontAndBack(), "MyDeckName", "MyNoteType", "MyCardType");
+    expect(card.isQuestionSide()).toBe(false);
   });
 
   describe("check for expected HTML", function() {
@@ -30,7 +41,7 @@ describe("Card", function() {
 
     it("missing layout", function() {
       var element = dom.createElement("container");
-      var missingCard = new Card(element, "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
+      var missingCard = new Card(element, "MyDeckName", "MyNoteType", "MyCardType");
       expect(missingCard.hasExpectedLayout()).toBe(false);
     });
   });
@@ -108,6 +119,7 @@ describe("Card", function() {
     });
 
     it("adds each of deck/note/card/tag to classes too", function() {
+      card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
       card.setupClasses();
       expect(card.getClassList()).toContain("mydeckname");
       expect(card.getClassList()).toContain("mynotetype");
@@ -154,6 +166,89 @@ describe("Card", function() {
       }).not.toThrow();
     });
 
+  });
+
+  describe("TTS", function() {
+    // <div id="tts" class="card front hidden outlined">{{Français}}</div>
+
+    beforeEach(function() {
+      jasmine.clock().install();
+
+      var dom = createCardFront();
+      var cardFront = dom.querySelector(".card.front");
+      cardFront.id = "tts";
+      cardFront.innerText = "front text";
+      card = new Card(dom, "MyDeckName", "MyNoteType", "MyCardType");
+
+      spyOn(card.speaker, "speak");
+      card.speaker.speak.calls.reset();
+    });
+
+    afterEach(function() {
+      jasmine.clock().uninstall();
+    });
+
+    it("plays when clicked", function() {
+      card.setupTTS();
+      card.dom.querySelector("#tts").click();
+      expect(card.speaker.speak).toHaveBeenCalledWith("front text")
+    });
+
+    it("hides word & auto-plays on the question side", function() {
+      card.setupTTS();
+      jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
+      expect(card.speaker.speak).toHaveBeenCalledWith("front text")
+      expect(card.dom.querySelector("#tts")).toBeHidden();
+    });
+
+    it("shows word & does NOT auto-play on the answer side", function() {
+      var dom = createCardFrontAndBack();
+      dom.querySelector(".card.front").id = "tts";
+      card = new Card(dom, "MyDeckName", "MyNoteType", "MyCardType");
+      spyOn(card.speaker, "speak");
+
+      card.setupTTS();
+
+      jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
+      expect(card.speaker.speak).not.toHaveBeenCalled();
+      expect(card.dom.querySelector("#tts")).not.toBeHidden();
+    });
+
+    it("does nothing if there is no TTS element", function() {
+      card.dom.querySelector("#tts").id = null;
+      card.setupTTS();
+      jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
+      expect(card.speaker.speak).not.toHaveBeenCalled();
+    });
+
+    it("has a Speaker", function() {
+      expect(card.speaker).not.toBeNull();
+    });
+
+    describe("when the Speech API is unavailable", function() {
+      var originalSpeechSynthesisUtterance;
+
+      beforeEach(function() {
+        originalSpeechSynthesisUtterance = SpeechSynthesisUtterance;
+        SpeechSynthesisUtterance = null;
+      });
+
+      afterEach(function() {
+        SpeechSynthesisUtterance = originalSpeechSynthesisUtterance;
+      });
+
+      it("removes the TTS id", function() {
+        card.setupTTS();
+        expect(card.dom.querySelector("#tts")).toBeNull();
+        expect(card.speaker.speak).not.toHaveBeenCalled();
+      });
+
+      it("does NOT autoplay", function() {
+        card.setupTTS();
+        jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
+        expect(card.speaker.speak).not.toHaveBeenCalled();
+      });
+    });
   });
 
   describe("root element", function() {

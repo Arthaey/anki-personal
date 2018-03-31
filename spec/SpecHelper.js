@@ -9,7 +9,19 @@ beforeEach(function() {
           };
         }
       };
+    },
+
+    toBeHidden: function() {
+      return {
+        compare: function(actualElement) {
+          var style = window.getComputedStyle(actualElement);
+          return {
+            pass: style.display === "none" || actualElement.classList.contains("hidden")
+          };
+        }
+      };
     }
+
 
   });
 

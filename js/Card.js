@@ -8,6 +8,8 @@ function Card(dom, deckName, noteType, cardType, tags) {
   // document.body.className gets overwritten by Anki Javascript that runs
   // later, so set the <html> documentElement instead.
   this.root = document && document.documentElement ? document.documentElement : dom;
+
+  this.speaker = new Speaker();
 }
 
 Card.prototype.requiredParam = function(value, name) {
@@ -53,17 +55,45 @@ Card.prototype.setupClasses = function() {
   this.setClasses(newClasses.toLowerCase());
 };
 
+Card.prototype.setupTTS = function() {
+  var tts = this.dom.querySelector("#tts");
+
+  if (!tts) return;
+  if (!this.speaker.canSpeak()) {
+    tts.id = null;
+    return;
+  }
+
+  var speakFn = this.speakFn(tts.textContent).bind(this);
+  tts.addEventListener("click", speakFn, false);
+
+  if (this.isQuestionSide()) {
+    tts.classList.add("hidden");
+    setTimeout(speakFn, Card.ttsAutoPlayDelay);
+  } else {
+    tts.classList.remove("hidden");
+  }
+};
+
+Card.prototype.speakFn = function(text) {
+  return function() { this.speaker.speak(text) };
+};
+
+Card.prototype.isQuestionSide = function() {
+  return !this.dom.querySelector("#answer");
+};
+
 Card.prototype.getClassList = function() {
   return this.root.classList;
-}
+};
 
 Card.prototype.hasClasses = function() {
   return this.getClassList().length != 0;
-}
+};
 
 Card.prototype.setClasses = function(newClasses) {
   this.root.className = ANKI_CLASSES + " " + newClasses;
-}
+};
 
 Card.prototype.removeCustomClasses = function() {
   var classNames = this.root.className.split(/\s+/);
@@ -72,7 +102,7 @@ Card.prototype.removeCustomClasses = function() {
       this.root.classList.remove(className);
     }
   };
-}
+};
 
 Card.prototype.hasExpectedLayout = function() {
   return !!(
@@ -86,4 +116,6 @@ Card.prototype.hasExpectedLayout = function() {
       this.dom.querySelector(".card.front") &&
       this.dom.querySelector("#debug")
     );
-}
+};
+
+Card.ttsAutoPlayDelay = 500; // milliseconds
