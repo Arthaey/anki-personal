@@ -18,14 +18,6 @@ var LANG_NAMES_TO_CODES = {
   "Русский":  "RU",
 };
 
-var SPECIAL_CASE_COUNTRY_CODES = {
-  "EN": "US",
-  "ES": "MX",
-  "JA": "JP",
-  "KO": "KR",
-  "ZH": "CN",
-};
-
 var FR_CONJUGATIONS = {
   "Pres": {
     "er": {
@@ -96,26 +88,6 @@ function setupFrenchVerb(person, tense) {
   var conjugated = verbStem + suffix;
   infinitive.innerText = conjugated;
   // TODO: "je" => "j'"
-
-}
-
-function removeCustomClasses() {
-  var existingClasses = document.documentElement.className;
-
-  // Delete any previous classes; stock Anki doesn't use any with "-", so its
-  // presence means we were the ones who modified it.
-  var hyphenIndex = existingClasses.indexOf("-");
-
-  if (hyphenIndex > -1) {
-    // Eg: "chrome mac js vocab-words-adverbs" => "chrome mac js vocab"
-    existingClasses = existingClasses.substring(0, hyphenIndex);
-
-    // Eg: "chrome mac js vocab" => "chrome mac js"
-    var spaceIndex = existingClasses.lastIndexOf(" ");
-    existingClasses = existingClasses.substring(0, spaceIndex);
-
-    document.documentElement.className = existingClasses;
-  }
 }
 
 function getLangCodeForTTS(deckName, cardType) {

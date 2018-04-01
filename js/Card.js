@@ -45,9 +45,12 @@ Card.prototype.setupClasses = function() {
       if (this.deckName.includes("Deutsch"))  newClasses += " de-only ";
     }
 
-    newClasses += " ";
-    newClasses += type.replace(" → ", "-").replace(" ⇔ ", "-").replace(" ", "-").replace(/::/g, "-");
-    newClasses += " ";
+    var typeClass = type;
+    typeClass = typeClass.replace(" → ", "-");
+    typeClass = typeClass.replace(" ⇔ ", "-");
+    typeClass = typeClass.replace(" ", "-");
+    typeClass = typeClass.replace(/::/g, "-");
+    newClasses += " " + typeClass + " ";
   }
 
   newClasses = newClasses.replace("-tts", "-only");
