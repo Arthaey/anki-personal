@@ -79,6 +79,23 @@ Card.prototype.setupTTS = function() {
   }
 };
 
+Card.prototype.setupVerbs = function() {
+  if (this.noteType === "Verbs: French") {
+    var verbInfoRegex = /(\d[a-z]+)([A-Z]\S*)/;
+    var verbInfo = this.cardType.match(verbInfoRegex);
+    if (!verbInfo) return;
+
+    var person = verbInfo[1];
+    var tense = verbInfo[2];
+
+    var enVerb = this.dom.querySelector("#en-infinitive");
+    enVerb.innerText = EnglishLanguage.conjugate(enVerb.textContent, person, tense);
+
+    var frVerb = this.dom.querySelector("#fr-infinitive");
+    frVerb.innerText = FrenchLanguage.conjugate(frVerb.textContent, person, tense);
+  }
+};
+
 Card.prototype.speakFn = function(text) {
   return function() {
     this.speaker.speak(text, this.getLanguageCode());

@@ -1,10 +1,10 @@
-describe("French verbs", function() {
-  var element;
+describe("FrenchLanguage", function() {
+  var infinitive;
   var tense;
 
   describe("for -er verbs", function() {
     beforeEach(function() {
-      element = dom.createElement("fr-infinitive", "parler");
+      infinitive = "parler";
     });
 
     describe("in the present tense", function() {
@@ -13,40 +13,34 @@ describe("French verbs", function() {
       });
 
       it("should conjugate first-person singular ('je')", function() {
-        setupFrenchVerb("1sg", tense);
-        expect(element).toHaveText("parle");
+        expect(FrenchLanguage.conjugate(infinitive, "1sg", tense)).toBe("parle");
       });
 
       it("should conjugate second-person singular ('tu')", function() {
-        setupFrenchVerb("2sg", tense);
-        expect(element).toHaveText("parles");
+        expect(FrenchLanguage.conjugate(infinitive, "2sg", tense)).toBe("parles");
       });
 
       it("should conjugate third-person singular ('elle')", function() {
-        setupFrenchVerb("3sg", tense);
-        expect(element).toHaveText("parle");
+        expect(FrenchLanguage.conjugate(infinitive, "3sg", tense)).toBe("parle");
       });
 
       it("should conjugate first-person plural ('nous')", function() {
-        setupFrenchVerb("1pl", tense);
-        expect(element).toHaveText("parlons");
+        expect(FrenchLanguage.conjugate(infinitive, "1pl", tense)).toBe("parlons");
       });
 
       it("should conjugate second-person plural ('vous')", function() {
-        setupFrenchVerb("2pl", tense);
-        expect(element).toHaveText("parlez");
+        expect(FrenchLanguage.conjugate(infinitive, "2pl", tense)).toBe("parlez");
       });
 
       it("should conjugate third-person plural ('elles')", function() {
-        setupFrenchVerb("3pl", tense);
-        expect(element).toHaveText("parlent");
+        expect(FrenchLanguage.conjugate(infinitive, "3pl", tense)).toBe("parlent");
       });
     });
   });
 
   describe("for -ir verbs", function() {
     beforeEach(function() {
-      element = dom.createElement("fr-infinitive", "choisir");
+      infinitive = "choisir";
     });
 
     describe("in the present tense", function() {
@@ -55,40 +49,34 @@ describe("French verbs", function() {
       });
 
       it("should conjugate first-person singular ('je')", function() {
-        setupFrenchVerb("1sg", tense);
-        expect(element).toHaveText("choisis");
+        expect(FrenchLanguage.conjugate(infinitive, "1sg", tense)).toBe("choisis");
       });
 
       it("should conjugate second-person singular ('tu')", function() {
-        setupFrenchVerb("2sg", tense);
-        expect(element).toHaveText("choisis");
+        expect(FrenchLanguage.conjugate(infinitive, "2sg", tense)).toBe("choisis");
       });
 
       it("should conjugate third-person singular ('elle')", function() {
-        setupFrenchVerb("3sg", tense);
-        expect(element).toHaveText("choisit");
+        expect(FrenchLanguage.conjugate(infinitive, "3sg", tense)).toBe("choisit");
       });
 
       it("should conjugate first-person plural ('nous')", function() {
-        setupFrenchVerb("1pl", tense);
-        expect(element).toHaveText("choisissons");
+        expect(FrenchLanguage.conjugate(infinitive, "1pl", tense)).toBe("choisissons");
       });
 
       it("should conjugate second-person plural ('vous')", function() {
-        setupFrenchVerb("2pl", tense);
-        expect(element).toHaveText("choisissez");
+        expect(FrenchLanguage.conjugate(infinitive, "2pl", tense)).toBe("choisissez");
       });
 
       it("should conjugate third-person plural ('elles')", function() {
-        setupFrenchVerb("3pl", tense);
-        expect(element).toHaveText("choisissent");
+        expect(FrenchLanguage.conjugate(infinitive, "3pl", tense)).toBe("choisissent");
       });
     });
   });
 
   describe("for -re verbs", function() {
     beforeEach(function() {
-      element = dom.createElement("fr-infinitive", "vendre");
+      infinitive = "vendre";
     });
 
     describe("in the present tense", function() {
@@ -97,33 +85,27 @@ describe("French verbs", function() {
       });
 
       it("should conjugate first-person singular ('je')", function() {
-        setupFrenchVerb("1sg", tense);
-        expect(element).toHaveText("vends");
+        expect(FrenchLanguage.conjugate(infinitive, "1sg", tense)).toBe("vends");
       });
 
       it("should conjugate second-person singular ('tu')", function() {
-        setupFrenchVerb("2sg", tense);
-        expect(element).toHaveText("vends");
+        expect(FrenchLanguage.conjugate(infinitive, "2sg", tense)).toBe("vends");
       });
 
       it("should conjugate third-person singular ('elle')", function() {
-        setupFrenchVerb("3sg", tense);
-        expect(element).toHaveText("vend");
+        expect(FrenchLanguage.conjugate(infinitive, "3sg", tense)).toBe("vend");
       });
 
       it("should conjugate first-person plural ('nous')", function() {
-        setupFrenchVerb("1pl", tense);
-        expect(element).toHaveText("vendons");
+        expect(FrenchLanguage.conjugate(infinitive, "1pl", tense)).toBe("vendons");
       });
 
       it("should conjugate second-person plural ('vous')", function() {
-        setupFrenchVerb("2pl", tense);
-        expect(element).toHaveText("vendez");
+        expect(FrenchLanguage.conjugate(infinitive, "2pl", tense)).toBe("vendez");
       });
 
       it("should conjugate third-person plural ('elles')", function() {
-        setupFrenchVerb("3pl", tense);
-        expect(element).toHaveText("vendent");
+        expect(FrenchLanguage.conjugate(infinitive, "3pl", tense)).toBe("vendent");
       });
     });
   });

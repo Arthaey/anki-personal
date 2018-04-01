@@ -277,6 +277,49 @@ describe("Card", function() {
     });
   });
 
+  describe("sets up verb conjugations", function() {
+    beforeEach(function() {
+      spyOn(EnglishLanguage, "conjugate").and.callThrough();
+      spyOn(FrenchLanguage, "conjugate").and.callThrough();
+      EnglishLanguage.conjugate.calls.reset();
+      FrenchLanguage.conjugate.calls.reset();
+    });
+
+    it("for French verb cards", function() {
+      var dom = createCardFrontAndBack();
+      var frVerb = dom.querySelector(".card.front");
+      var enVerb = dom.querySelector(".card.back");
+      frVerb.id = "fr-infinitive";
+      enVerb.id = "en-infinitive";
+      frVerb.innerText = "parler";
+      enVerb.innerText = "to speak";
+
+      card = new Card(dom, "MyDeckName", "Verbs: French", "1sgPres");
+      card.setupVerbs();
+
+      expect(FrenchLanguage.conjugate).toHaveBeenCalledWith("parler", "1sg", "Pres");
+      expect(EnglishLanguage.conjugate).toHaveBeenCalledWith("to speak", "1sg", "Pres");
+      expect(frVerb.innerText).toBe("parle");
+      expect(enVerb.innerText).toBe("speak");
+    });
+
+    it("ignores French NON-verb cards", function() {
+      card = createCard("MyDeckName", "Verbs: French", "not a verb card actually");
+      card.setupVerbs();
+
+      expect(FrenchLanguage.conjugate).not.toHaveBeenCalled();
+      expect(EnglishLanguage.conjugate).not.toHaveBeenCalled();
+    });
+
+    it("ignores non-French", function() {
+      card = createCard("Verbs: Not-French", "1sgPres");
+      card.setupVerbs();
+
+      expect(FrenchLanguage.conjugate).not.toHaveBeenCalled();
+      expect(EnglishLanguage.conjugate).not.toHaveBeenCalled();
+    });
+  });
+
   describe("root element", function() {
     describe("when it has classes", function() {
       beforeEach(function() {
