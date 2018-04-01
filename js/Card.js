@@ -22,7 +22,8 @@ Card.prototype.requiredParam = function(value, name) {
 Card.prototype.setupDeckName = function() {
   if (!this.hasExpectedLayout()) return;
   var deck = this.dom.querySelector("#deck");
-  var match = this.deckName.match(DECK_REGEX);
+  var deckRegex = /(?:[^:]+::)*([^:]+)/;
+  var match = this.deckName.match(deckRegex);
   deck.innerHTML = match[1];
 };
 
@@ -36,8 +37,8 @@ Card.prototype.setupClasses = function() {
     var type = types[i];
     if (!type) continue;
 
-    if (TTS_REGEX.test(type)) newClasses += " tts ";
-    if (ASL_REGEX.test(type)) newClasses += " asl ";
+    if (/tts/i.test(type)) newClasses += " tts ";
+    if (/asl/i.test(type)) newClasses += " asl ";
 
     if (this.noteType === "Cloze") {
       if (this.deckName.includes("Español"))  newClasses += " es-only ";
@@ -79,7 +80,9 @@ Card.prototype.setupTTS = function() {
 };
 
 Card.prototype.speakFn = function(text) {
-  return function() { this.speaker.speak(text) };
+  return function() {
+    this.speaker.speak(text, this.getLanguageCode());
+  };
 };
 
 Card.prototype.isQuestionSide = function() {
@@ -94,17 +97,56 @@ Card.prototype.hasClasses = function() {
   return this.getClassList().length != 0;
 };
 
+Card.ankiClasses = [
+  "webkit",
+  "safari",
+  "mac",
+  "js"
+];
+
 Card.prototype.setClasses = function(newClasses) {
-  this.root.className = ANKI_CLASSES + " " + newClasses;
+  this.root.className = Card.ankiClasses + " " + newClasses;
 };
 
 Card.prototype.removeCustomClasses = function() {
   var classNames = this.root.className.split(/\s+/);
   for (var className of classNames) {
-    if (this.hasClasses() && !ANKI_CLASSES.includes(className)) {
+    if (this.hasClasses() && !Card.ankiClasses.includes(className)) {
       this.root.classList.remove(className);
     }
   };
+};
+
+Card.prototype.getLanguageCode = function() {
+  var langNamesToCodes = {
+    "Arabic":   "AR",
+    "English":  "EN",
+    "Español":  "ES",
+    "Français": "FR",
+    "Japanese": "JA",
+    "Korean":   "KO",
+    "Magyar":   "HU",
+    "Русский":  "RU",
+  };
+
+  var langCode = "EN";
+
+  var deckLangNameMatch = this.deckName.match(/Language::([^\s:]+)/);
+  var ttsLangCodeMatch = this.cardType.match(/(\S+) TTS/);
+  var transLangCodeMatch = this.cardType.match(/(\S+) → (\S+)/);
+
+  if (deckLangNameMatch) {
+    langCode = langNamesToCodes[deckLangNameMatch[1]];
+  } else if (ttsLangCodeMatch) {
+    langCode = ttsLangCodeMatch[1];
+  } else if (transLangCodeMatch) {
+    langCode = transLangCodeMatch[2];
+    if (langCode == "EN") {
+     langCode = transLangCodeMatch[1];
+    }
+  }
+
+  return langCode;
 };
 
 Card.prototype.hasExpectedLayout = function() {

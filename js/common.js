@@ -2,21 +2,7 @@ var DEBUG = (typeof DEBUG === 'undefined') ? false : DEBUG;
 
 var FRENCH_VERB_NOTE_NAME = "Verbs: French";
 
-var TTS_REGEX = /tts/i;
-var ASL_REGEX = /asl/i;
-var DECK_REGEX = /(?:[^:]+::)*([^:]+)/;
 var VERB_INFO_REGEX = /(\d[a-z]+)([A-Z]\S*)/;
-
-var LANG_NAMES_TO_CODES = {
-  "Arabic":   "AR",
-  "English":  "EN",
-  "Español":  "ES",
-  "Français": "FR",
-  "Japanese": "JA",
-  "Korean":   "KO",
-  "Magyar":   "HU",
-  "Русский":  "RU",
-};
 
 var FR_CONJUGATIONS = {
   "Pres": {
@@ -38,12 +24,6 @@ var FR_CONJUGATIONS = {
   }
 };
 
-var ANKI_CLASSES = [
-  "webkit",
-  "safari",
-  "mac",
-  "js"
-];
 
 function setup(dom, deckName, noteType, cardType, tags) {
   var card = new Card(dom, deckName, noteType, cardType, tags);
@@ -88,29 +68,6 @@ function setupFrenchVerb(person, tense) {
   var conjugated = verbStem + suffix;
   infinitive.innerText = conjugated;
   // TODO: "je" => "j'"
-}
-
-function getLangCodeForTTS(deckName, cardType) {
-  var deckLangNameMatch = deckName.match(/Language::(\S+)/);
-  var ttsLangCodeMatch = cardType.match(/(\S+) TTS/);
-  var transLangCodeMatch = cardType.match(/(\S+) → (\S+)/);
-  var langCode = "EN";
-
-  if (deckLangNameMatch) {
-    langCode = LANG_NAMES_TO_CODES[deckLangNameMatch[1]];
-  } else if (ttsLangCodeMatch) {
-    langCode = ttsLangCodeMatch[1];
-  } else if (transLangCodeMatch) {
-    langCode = transLangCodeMatch[2];
-    if (langCode == "EN") {
-     langCode = transLangCodeMatch[1];
-    }
-  }
-
-  var countryCode = SPECIAL_CASE_COUNTRY_CODES[langCode];
-  if (!countryCode) countryCode = langCode;
-
-  return langCode.toLowerCase() + '-' + countryCode;
 }
 
 function appendDebug(msg) {

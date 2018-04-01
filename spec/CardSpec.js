@@ -1,10 +1,11 @@
 describe("Card", function() {
   var card;
 
-  function createCard(deckName, noteType) {
+  function createCard(deckName, noteType, cardType) {
     if (!deckName) deckName = "MyDeckName";
     if (!noteType) noteType = "MyNoteType";
-    return new Card(createCardFront(), deckName, noteType, "MyCardType");
+    if (!cardType) cardType = "MyCardType";
+    return new Card(createCardFront(), deckName, noteType, cardType);
   }
 
   beforeEach(function() {
@@ -191,13 +192,13 @@ describe("Card", function() {
     it("plays when clicked", function() {
       card.setupTTS();
       card.dom.querySelector("#tts").click();
-      expect(card.speaker.speak).toHaveBeenCalledWith("front text")
+      expect(card.speaker.speak).toHaveBeenCalledWith("front text", "EN")
     });
 
     it("hides word & auto-plays on the question side", function() {
       card.setupTTS();
       jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
-      expect(card.speaker.speak).toHaveBeenCalledWith("front text")
+      expect(card.speaker.speak).toHaveBeenCalledWith("front text", "EN")
       expect(card.dom.querySelector("#tts")).toBeHidden();
     });
 
@@ -223,6 +224,31 @@ describe("Card", function() {
 
     it("has a Speaker", function() {
       expect(card.speaker).not.toBeNull();
+    });
+
+    it("identifies languages from deck name", function() {
+      expect(createCard("Language::Arabic").getLanguageCode()).toBe("AR");
+      expect(createCard("Language::English").getLanguageCode()).toBe("EN");
+      expect(createCard("Language::Español").getLanguageCode()).toBe("ES");
+      expect(createCard("Language::Français").getLanguageCode()).toBe("FR");
+      expect(createCard("Language::Japanese").getLanguageCode()).toBe("JA");
+      expect(createCard("Language::Korean").getLanguageCode()).toBe("KO");
+      expect(createCard("Language::Magyar").getLanguageCode()).toBe("HU");
+      expect(createCard("Language::Русский").getLanguageCode()).toBe("RU");
+    });
+
+    it("identifies languages from deck name, ignoring extra subdecks", function() {
+      expect(createCard("Language::Español::XYZ").getLanguageCode()).toBe("ES");
+    });
+
+    it("identifies language from TTS card type", function() {
+      expect(createCard("deck", "note", "XX TTS").getLanguageCode()).toBe("XX");
+    });
+
+    it("identifies language from translation card type", function() {
+      expect(createCard("deck", "note", "XX → YY").getLanguageCode()).toBe("YY");
+      expect(createCard("deck", "note", "EN → YY").getLanguageCode()).toBe("YY");
+      expect(createCard("deck", "note", "XX → EN").getLanguageCode()).toBe("XX");
     });
 
     describe("when the Speech API is unavailable", function() {
