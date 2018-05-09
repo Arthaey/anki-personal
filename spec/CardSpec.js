@@ -18,7 +18,8 @@ describe("Card", function() {
 
   it("constructor", function() {
     card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
-    expect(card.dom.innerHTML).toBe(cardFrontHTML());
+    var expectedHTML = card.dom.innerHTML.replace(/{{DECK}}/, "MyDeckName");
+    expect(card.dom.innerHTML).toBe(expectedHTML);
     expect(card.deckName).toBe("MyDeckName");
     expect(card.noteType).toBe("MyNoteType");
     expect(card.cardType).toBe("MyCardType");
@@ -50,14 +51,11 @@ describe("Card", function() {
   describe("sets deck name", function() {
     it("to given name", function() {
       var htmlBefore = card.dom.outerHTML;
-      card.setupDeckName("MyDeckName");
       expect(card.dom.querySelector("#deck")).toHaveText("MyDeckName");
     });
 
     it("using only last portion of nested deck name", function() {
-      var htmlBefore = card.dom.outerHTML;
-      card.setupDeckName("Foo::Bar::MyDeckName");
-
+      card = createCard("Foo::Bar::MyDeckName");
       var deck = card.dom.querySelector("#deck");
       expect(deck).toHaveText("MyDeckName");
       expect(deck).not.toHaveText("Foo");
@@ -65,10 +63,12 @@ describe("Card", function() {
     });
 
     it("ignores missing element", function() {
-      card.dom.querySelector("#deck").remove();
-      var htmlBefore = card.dom.outerHTML;
-      card.setupDeckName();
-      expect(card.dom.outerHTML).toBe(htmlBefore);
+      var missingDeck = createCardFront();
+      missingDeck.querySelector("#deck").remove();
+
+      expect(function() {
+        new Card(missingDeck, "MyDeckName", "MyNoteType", "MyCardType");
+      }).not.toThrow();
     });
   });
 
@@ -170,19 +170,17 @@ describe("Card", function() {
   });
 
   describe("TTS", function() {
-    // <div id="tts" class="card front hidden outlined">{{Français}}</div>
+    var dom;
 
     beforeEach(function() {
       jasmine.clock().install();
 
-      var dom = createCardFront();
+      dom = createCardFront();
       var cardFront = dom.querySelector(".card.front");
       cardFront.id = "tts";
       cardFront.innerText = "front text";
       card = new Card(dom, "MyDeckName", "MyNoteType", "MyCardType");
-
       spyOn(card.speaker, "speak");
-      card.speaker.speak.calls.reset();
     });
 
     afterEach(function() {
@@ -216,8 +214,12 @@ describe("Card", function() {
     });
 
     it("does nothing if there is no TTS element", function() {
+      jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
       card.dom.querySelector("#tts").id = null;
+      card.speaker.speak.calls.reset();
+
       card.setupTTS();
+
       jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
       expect(card.speaker.speak).not.toHaveBeenCalled();
     });
@@ -257,6 +259,8 @@ describe("Card", function() {
       beforeEach(function() {
         originalSpeechSynthesisUtterance = SpeechSynthesisUtterance;
         SpeechSynthesisUtterance = null;
+        card = new Card(dom, "MyDeckName", "MyNoteType", "MyCardType");
+        spyOn(card.speaker, "speak");
       });
 
       afterEach(function() {
@@ -264,13 +268,10 @@ describe("Card", function() {
       });
 
       it("removes the TTS id", function() {
-        card.setupTTS();
         expect(card.dom.querySelector("#tts")).toBeNull();
-        expect(card.speaker.speak).not.toHaveBeenCalled();
       });
 
       it("does NOT autoplay", function() {
-        card.setupTTS();
         jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
         expect(card.speaker.speak).not.toHaveBeenCalled();
       });
@@ -295,7 +296,6 @@ describe("Card", function() {
       enVerb.innerText = "to speak";
 
       card = new Card(dom, "MyDeckName", "Verbs: French", "1sgPres");
-      card.setupVerbs();
 
       expect(FrenchLanguage.conjugate).toHaveBeenCalledWith("parler", "1sg", "Pres");
       expect(EnglishLanguage.conjugate).toHaveBeenCalledWith("to speak", "1sg", "Pres");
@@ -321,47 +321,25 @@ describe("Card", function() {
   });
 
   describe("root element", function() {
-    describe("when it has classes", function() {
-      beforeEach(function() {
-        document.documentElement.className = "foo bar";
-        card = createCard();
-      });
-
-      it("#hasClasses()", function() {
-        expect(card.hasClasses()).toBe(true);
-      });
-
-      it("#getClassList()", function() {
-        expect(card.getClassList().length).toBe(2);
-        expect(card.getClassList()).toContain("foo");
-        expect(card.getClassList()).toContain("bar");
-      });
-
-      it("#removeCustomClasses()", function() {
-        expect(card.hasClasses()).toBe(true);
-        card.removeCustomClasses();
-        expect(card.hasClasses()).toBe(false);
-      });
+    beforeEach(function() {
+      document.documentElement.className = "custom classes get removed";
+      card = createCard();
     });
 
-    describe("when it does NOT have classes", function() {
-      beforeEach(function() {
-        document.documentElement.className = "";
-      });
+    it("#hasClasses()", function() {
+      expect(card.hasClasses()).toBe(true);
+    });
 
-      it("#hasClasses()", function() {
-        expect(card.hasClasses()).toBe(false);
-      });
+    it("#getClassList()", function() {
+      expect(card.getClassList()).not.toContain("custom");
+    });
 
-      it("#getClassList()", function() {
-        expect(card.getClassList().length).toBe(0);
-      });
+    it("#setClasses() and #resetClasses()", function() {
+      card.setClasses("foo");
+      expect(card.getClassList()).toContain("foo");
 
-      it("#removeCustomClasses()", function() {
-        expect(card.hasClasses()).toBe(false);
-        card.removeCustomClasses();
-        expect(card.hasClasses()).toBe(false);
-      });
+      card.resetClasses();
+      expect(card.getClassList()).not.toContain("foo");
     });
   });
 });

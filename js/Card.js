@@ -10,6 +10,11 @@ function Card(dom, deckName, noteType, cardType, tags) {
   this.root = document && document.documentElement ? document.documentElement : dom;
 
   this.speaker = new Speaker();
+
+  this.setupDeckName();
+  this.setupClasses();
+  this.setupTTS();
+  this.setupVerbs();
 }
 
 Card.prototype.requiredParam = function(value, name) {
@@ -28,7 +33,7 @@ Card.prototype.setupDeckName = function() {
 };
 
 Card.prototype.setupClasses = function() {
-  this.removeCustomClasses();
+  this.resetClasses();
 
   var newClasses = "";
 
@@ -122,16 +127,11 @@ Card.ankiClasses = [
 ];
 
 Card.prototype.setClasses = function(newClasses) {
-  this.root.className = Card.ankiClasses + " " + newClasses;
+  this.root.className = Card.ankiClasses.join(" ") + " " + newClasses;
 };
 
-Card.prototype.removeCustomClasses = function() {
-  var classNames = this.root.className.split(/\s+/);
-  for (var className of classNames) {
-    if (this.hasClasses() && !Card.ankiClasses.includes(className)) {
-      this.root.classList.remove(className);
-    }
-  };
+Card.prototype.resetClasses = function() {
+  this.setClasses("");
 };
 
 Card.prototype.getLanguageCode = function() {

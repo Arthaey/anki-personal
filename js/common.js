@@ -2,10 +2,6 @@ var DEBUG = (typeof DEBUG === 'undefined') ? false : DEBUG;
 
 function setup(dom, deckName, noteType, cardType, tags) {
   var card = new Card(dom, deckName, noteType, cardType, tags);
-  card.setupDeckName();
-  card.setupClasses();
-  card.setupTTS();
-  card.setupVerbs();
 }
 
 function appendDebug(msg) {
