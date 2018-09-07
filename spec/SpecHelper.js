@@ -1,4 +1,6 @@
 beforeEach(function() {
+  jasmine.addMatchers(DOMCustomMatchers); // jasmine-devrafalko
+
   jasmine.addMatchers({
 
     toHaveText: function() {
@@ -29,7 +31,9 @@ beforeEach(function() {
     var elements = [];
 
     return {
-      createElement: function(id, text) {
+      createElement: function(id, text, options) {
+        if (!options) options = {};
+
         var element = document.getElementById(id);
         if (!element) {
           element = document.createElement("div");
@@ -38,6 +42,11 @@ beforeEach(function() {
 
         element.id = id;
         element.innerText = text;
+
+        if (options.html) {
+          element.innerHTML = options.html;
+        }
+
         document.body.insertBefore(element, null);
         return element;
       },
@@ -74,13 +83,13 @@ function createCardFrontAndBack() {
 function cardFrontHTML() {
   return `
     <div class="card-info">
-      {{#LeafTags}}<div class="tags">{{LeafTags}}</div>{{/LeafTags}}
+     <div class="tags">{{LeafTags}}</div>
       <div class="deck">
         <span id="deck">{{Deck}}</span>: <span class="card-type">{{Card}}</span>
       </div>
       <div class="slash"></div>
     </div>
-    <div class="card front">{{Front}}</div>
+    <div class="card front" id="tts">{{Front}}</div>
     <div id="debug" class="extra"></div>
     `;
 }
@@ -90,6 +99,10 @@ function cardBackHTML() {
     <!-- -------------------- --> <hr id="answer"> <!-- -------------------- -->
     <div class="card back">{{Back}}</div>
     `;
+}
+
+function replaceAnkiVariable(template, name, value) {
+  return template.replace(new RegExp("{{" + name + "}}"), value);
 }
 
 function getQueryParam(key) {

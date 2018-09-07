@@ -11,10 +11,20 @@ function Card(dom, deckName, noteType, cardType, tags) {
 
   this.speaker = new Speaker();
 
-  this.setupDeckName();
-  this.setupClasses();
-  this.setupTTS();
-  this.setupVerbs();
+  var setupFunctions = [
+    this.setupDeckName,
+    this.setupClasses,
+    this.setupTTS,
+    this.setupVerbs
+  ];
+
+  var setupResult = "";
+  for (var i = 0; i < setupFunctions.length; i++) {
+    var result = setupFunctions[i].call(this);
+    setupResult += " " + result;
+  }
+
+  appendDebug("Card created." + setupResult);
 }
 
 Card.prototype.requiredParam = function(value, name) {
@@ -25,16 +35,18 @@ Card.prototype.requiredParam = function(value, name) {
 };
 
 Card.prototype.setupDeckName = function() {
-  if (!this.hasExpectedLayout()) return;
+  if (!this.hasExpectedLayout()) return "Card layout does not seem correct.";
+
   var deck = this.dom.querySelector("#deck");
   var deckRegex = /(?:[^:]+::)*([^:]+)/;
   var match = this.deckName.match(deckRegex);
   deck.innerHTML = match[1];
+
+  return "Deck name = '" + match[1] + "'.";
 };
 
 Card.prototype.setupClasses = function() {
   this.resetClasses();
-
   var newClasses = "";
 
   var types = [this.deckName, this.noteType, this.cardType, this.tags];
@@ -59,28 +71,37 @@ Card.prototype.setupClasses = function() {
     newClasses += " " + typeClass + " ";
   }
 
+  newClasses += " " + this.getLanguageCode() + " ";
   newClasses = newClasses.replace("-tts", "-only");
 
   this.setClasses(newClasses.toLowerCase());
+
+  return "Classes = '" + newClasses.toLowerCase() + "'.";
 };
 
 Card.prototype.setupTTS = function() {
   var tts = this.dom.querySelector("#tts");
 
-  if (!tts) return;
+  if (!tts) return "#tts element does not exist.";
   if (!this.speaker.canSpeak()) {
     tts.id = null;
-    return;
+    return "TTS is not available.";
   }
 
+  var ttsTrigger = tts.ownerDocument.createElement('a');
+  ttsTrigger.classList.add('tts-trigger');
+  tts.appendChild(ttsTrigger);
+
   var speakFn = this.speakFn(tts.textContent).bind(this);
-  tts.addEventListener("click", speakFn, false);
+  ttsTrigger.addEventListener("click", speakFn, false);
 
   if (this.isQuestionSide()) {
     tts.classList.add("hidden");
     setTimeout(speakFn, Card.ttsAutoPlayDelay);
+    return "TTS set up with autoplay.";
   } else {
     tts.classList.remove("hidden");
+    return "TTS set up without autoplay.";
   }
 };
 
@@ -88,7 +109,7 @@ Card.prototype.setupVerbs = function() {
   if (this.noteType === "Verbs: French") {
     var verbInfoRegex = /(\d[a-z]+)([A-Z]\S*)/;
     var verbInfo = this.cardType.match(verbInfoRegex);
-    if (!verbInfo) return;
+    if (!verbInfo) return "Could not parse verb info from " + this.cardType + ".";
 
     var person = verbInfo[1];
     var tense = verbInfo[2];
@@ -98,10 +119,15 @@ Card.prototype.setupVerbs = function() {
 
     var frVerb = this.dom.querySelector("#fr-infinitive");
     frVerb.innerText = FrenchLanguage.conjugate(frVerb.textContent, person, tense);
+
+    return "Verbs set up: EN '" + enVerb.innerText + "', FR '" + frVerb.innerText + "'.";
+  } else {
+    return "Not a French verb.";
   }
 };
 
 Card.prototype.speakFn = function(text) {
+  appendDebug("speakFn called.");
   return function() {
     this.speaker.speak(text, this.getLanguageCode());
   };

@@ -30,4 +30,5 @@ if [[ ! "$GENERATE_ONLY" ]]; then
   cp -p js/_global.js $ANKI_MEDIA_DIR/
   cp -p images/_* $ANKI_MEDIA_DIR/
   cp -p fonts/_* $ANKI_MEDIA_DIR/
+  chmod a+r $ANKI_MEDIA_DIR/_*
 fi

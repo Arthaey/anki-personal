@@ -34,13 +34,25 @@ function htmlEscape(str) {
   // Quick & dirty.
   // http://stackoverflow.com/questions/1219860/html-encoding-in-javascript-jquery
   return str.toString()
-      .replace(/&/g, '&amp;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
 }
 
-//document.addEventListener('DOMContentLoaded', setup); // doesn't work on phone
-//setup();
+appendDebug("DEBUGGING:");
+appendDebug("DECK: " + (typeof DECK === "undefined" ? "undefined" : DECK));
+appendDebug("NOTE: " + (typeof NOTE === "undefined" ? "undefined" : NOTE));
+appendDebug("CARD: " + (typeof CARD === "undefined" ? "undefined" : CARD));
+appendDebug("TAGS: " + (typeof TAGS === "undefined" ? "undefined" : TAGS));
 
+//document.addEventListener('DOMContentLoaded', setup); // doesn't work on phone
+if (document && document.documentElement &&
+    typeof DECK !== 'undefined' &&
+    typeof NOTE !== 'undefined' &&
+    typeof CARD !== 'undefined' &&
+    typeof TAGS !== 'undefined')
+{
+  setup(document.documentElement, DECK, NOTE, CARD, TAGS);
+}

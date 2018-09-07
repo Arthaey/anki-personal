@@ -18,8 +18,6 @@ describe("Card", function() {
 
   it("constructor", function() {
     card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
-    var expectedHTML = card.dom.innerHTML.replace(/{{DECK}}/, "MyDeckName");
-    expect(card.dom.innerHTML).toBe(expectedHTML);
     expect(card.deckName).toBe("MyDeckName");
     expect(card.noteType).toBe("MyNoteType");
     expect(card.cardType).toBe("MyCardType");
@@ -119,6 +117,18 @@ describe("Card", function() {
       expect(card.getClassList()).not.toContain("es-only");
     });
 
+    it("adds non-English language for translation pair X → EN", function() {
+      card = createCard("Foo", "not-Cloze", "ES → EN");
+      card.setupClasses();
+      expect(card.getClassList()).toContain("es");
+    });
+
+    it("adds non-English language for translation pair EN → X", function() {
+      card = createCard("Foo", "not-Cloze", "EN → ES");
+      card.setupClasses();
+      expect(card.getClassList()).toContain("es");
+    });
+
     it("adds each of deck/note/card/tag to classes too", function() {
       card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
       card.setupClasses();
@@ -188,13 +198,11 @@ describe("Card", function() {
     });
 
     it("plays when clicked", function() {
-      card.setupTTS();
-      card.dom.querySelector("#tts").click();
+      card.dom.querySelector(".tts-trigger").click();
       expect(card.speaker.speak).toHaveBeenCalledWith("front text", "EN")
     });
 
     it("hides word & auto-plays on the question side", function() {
-      card.setupTTS();
       jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
       expect(card.speaker.speak).toHaveBeenCalledWith("front text", "EN")
       expect(card.dom.querySelector("#tts")).toBeHidden();
@@ -206,8 +214,6 @@ describe("Card", function() {
       card = new Card(dom, "MyDeckName", "MyNoteType", "MyCardType");
       spyOn(card.speaker, "speak");
 
-      card.setupTTS();
-
       jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
       expect(card.speaker.speak).not.toHaveBeenCalled();
       expect(card.dom.querySelector("#tts")).not.toBeHidden();
@@ -217,8 +223,6 @@ describe("Card", function() {
       jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
       card.dom.querySelector("#tts").id = null;
       card.speaker.speak.calls.reset();
-
-      card.setupTTS();
 
       jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
       expect(card.speaker.speak).not.toHaveBeenCalled();

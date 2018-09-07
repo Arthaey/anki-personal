@@ -2,6 +2,8 @@ function Speaker() {
   this.volume = 0.5; // 0 to 1
   this.rate = 0.9; // 0.1 to 9
   this.pitch = 1; // 0 to 2, 1=normal
+
+  appendDebug("Speaker created; it can" + (this.canSpeak() ? "" : "not") + " speak.");
 };
 
 Speaker.prototype.canSpeak = function() {

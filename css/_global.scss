@@ -61,6 +61,16 @@ input {
   background-image: url("_speaker-32x32.png") !important;
   background-position: right top;
   background-repeat: no-repeat;
+  position: relative;
+}
+
+.tts-trigger {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
 }
 
 span#tts {
