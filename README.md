@@ -1,6 +1,9 @@
 # anki-personal
 Javascript &amp; CSS for my own personal Anki setup.
 
+Why so much Javascript, instead of Python add-ons? Because I want the same
+features available on desktop and iOS, but the latter doesn't support add-ons.
+
 ## Prerequisites
 
 - direnv
@@ -13,7 +16,7 @@ Tested on OS X; probably works fine on Linux too.
 1. `git clone` this project
 2. `cp .env.example .env`
 3. edit `.env` with your settings
-4. `./update-anki.sh` to generate .css files and copy them to Anki's directory
+4. `./update-anki.sh` to generate files and copy them to Anki's directory
 
 ## Tests
 
