@@ -90,7 +90,7 @@ Card.prototype.setupTTS = function() {
 
   var ttsTrigger = tts.ownerDocument.createElement('a');
   ttsTrigger.classList.add('tts-trigger');
-  tts.appendChild(ttsTrigger);
+  this.dom.appendChild(ttsTrigger);
 
   var speakFn = this.speakFn(tts.textContent).bind(this);
   ttsTrigger.addEventListener("click", speakFn, false);

@@ -54,7 +54,7 @@ describe("Style", function() {
     function showsSpeakerIcon(cardType) {
       it(`shows speaker icon (${cardType})`, function() {
         var cardEl = createCard(cardType);
-        var tts = cardEl.querySelector("#tts");
+        var tts = cardEl.querySelector(".tts-trigger");
         expect(tts).toHaveComputedStyle("background-image", /speaker-32x32.png/);
       });
     }
