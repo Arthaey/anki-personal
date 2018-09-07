@@ -81,10 +81,7 @@ function createCardFrontAndBack() {
 }
 
 function cardFrontHTML() {
-  return `
-    <div class="card front" id="tts">{{Front}}</div>
-    <div id="debug" class="extra"></div>
-    `;
+  return '<div class="card front" id="tts">{{Front}}</div>';
 }
 
 function cardBackHTML() {

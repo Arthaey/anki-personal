@@ -45,7 +45,7 @@ describe("Card", function() {
       expect(missingCard.hasExpectedLayout()).toBe(false);
     });
 
-    it("does not add multiple card-info headers", function() {
+    it("does not add multiple card-info headers or debug elements", function() {
       var fullHtml = `
         <div class="card-info">
           <div class="tags">{{LeafTags}}</div>
@@ -63,6 +63,7 @@ describe("Card", function() {
       card = new Card(element, "MyDeckName", "MyNoteType", "MyCardType");
 
       expect(card.dom.querySelectorAll(".card-info").length).toBe(1);
+      expect(card.dom.querySelectorAll("#debug").length).toBe(1);
     });
   });
 

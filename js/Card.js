@@ -41,22 +41,30 @@ Card.prototype.setupLayout = function() {
   if (!front) return "Card does not have a front side.";
 
   var cardInfo = this.dom.querySelector(".card-info");
-  if (cardInfo) return "Card already has info header set up.";
+  if (!cardInfo) {
+    cardInfo = front.ownerDocument.createElement("div");
+    cardInfo.className = "card-info";
+    cardInfo.innerHTML =
+        '<div class="tags">' + this.tags + '</div>' +
+        '<div class="slash"></div>' +
+        '<div class="deck">' +
+        '  <span id="deck">' + this.deckName + '</span>:' +
+        '  <span class="card-type">' + this.cardType + '</span>' +
+        '</div>'
+    ;
+    front.parentNode.insertBefore(cardInfo, front);
+  }
 
-  cardInfo = front.ownerDocument.createElement("div");
-  cardInfo.className = "card-info";
-  cardInfo.innerHTML =
-      '<div class="tags">' + this.tags + '</div>' +
-      '<div class="slash"></div>' +
-      '<div class="deck">' +
-      '  <span id="deck">' + this.deckName + '</span>:' +
-      '  <span class="card-type">' + this.cardType + '</span>' +
-      '</div>'
-  ;
-
-  front.parentNode.insertBefore(cardInfo, front);
+  var debug = this.dom.querySelector("#debug");
+  if (!debug) {
+    debug = front.ownerDocument.createElement("div");
+    debug.id = "debug";
+    debug.className = "extra";
+    front.parentNode.appendChild(debug);
+  }
 
   if (!this.hasExpectedLayout()) return "Card layout does not seem correct.";
+
   return "Added card info header to the layout.";
 };
 
