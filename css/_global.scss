@@ -120,7 +120,6 @@ body {
 .tags {
   border-top-left-radius: $radius;
   padding-left: $line-height/2;
-  width: 100%;
 }
 
 .tag {
@@ -135,6 +134,7 @@ body {
 .deck {
   border-top-right-radius: $radius;
   vertical-align: middle;
+  width: 100%;
 }
 
 .slash {
