@@ -18,6 +18,8 @@ GLOBAL_CSS_HEADER_FILE="$TEMP_DIR/_global_header.css"
 FORCE_MEDIA_SYNC_SUBSTRING="_force_sync_"
 FORCE_MEDIA_SYNC_FILE="$TEMP_DIR/${FORCE_MEDIA_SYNC_SUBSTRING}${NOW}"
 
+set +x
+
 LATEST_GIT_SHA=$(git log -1 --format="format:%h")
 
 if [[ -z "$(git status --porcelain)" ]]; then
@@ -26,16 +28,22 @@ else
   GIT_STATUS="DIRTY"
 fi
 
+function echoStatus() {
+  echo "- $*..."
+}
+
+echo
+
+################################################################################
+echoStatus "Creating JS and CSS file generation information"
 mkdir -p $TEMP_DIR
 
-# Set generated global variables.
 cat << EOF_JS > $GLOBAL_JS_FILE
 ////////////////////////////////////////////////////////////////////////////////
 var FILE_GENERATION_TIMESTAMP = '$NOW';
 var LATEST_GIT_SHA = '$LATEST_GIT_SHA';
 var GIT_STATUS = '$GIT_STATUS';
 ////////////////////////////////////////////////////////////////////////////////
-
 EOF_JS
 
 cat << EOF_CSS > $GLOBAL_CSS_HEADER_FILE
@@ -44,10 +52,11 @@ cat << EOF_CSS > $GLOBAL_CSS_HEADER_FILE
 // LATEST_GIT_SHA $LATEST_GIT_SHA
 // GIT_STATUS $GIT_STATUS
 //////////////////////////////////////////////////////////////////////////////*/
-
 EOF_CSS
 
-# Create combined Javascript file (in correct dependency order!).
+################################################################################
+echoStatus "Creating combined Javascript file (in correct dependency order!)"
+
 cat \
   js/EnglishLanguage.js \
   js/FrenchLanguage.js \
@@ -55,24 +64,26 @@ cat \
   js/Card.js \
   js/common.js >> $GLOBAL_JS_FILE
 
-# Create combined CSS file.
+################################################################################
+echoStatus "Creating combined CSS file"
 sass --style=expanded --no-cache css/_global.scss $GLOBAL_CSS_FILE
 cat $GLOBAL_CSS_HEADER_FILE $GLOBAL_CSS_FILE > $TEMP_DIR/full_global.css
 mv $TEMP_DIR/full_global.css $GLOBAL_CSS_FILE
 
-# Make image symlinks, so local testing of CSS will find them.
+################################################################################
+echoStatus "Making image symlinks, so local testing of CSS will find them"
 rm -f css/*.png css/*.jpg
-pushd css
+pushd css > /dev/null
 ln -s ../images/* ./
-popd
+popd > /dev/null
 
-# Create unique, new file to force Anki to sync media.
+################################################################################
+echoStatus "Creating unique, new file to force Anki to sync media"
+rm $ANKI_MEDIA_DIR/${FORCE_MEDIA_SYNC_SUBSTRING}*
 echo $NOW > $FORCE_MEDIA_SYNC_FILE
 
-# Delete any old force-sync files.
-rm $ANKI_MEDIA_DIR/${FORCE_MEDIA_SYNC_SUBSTRING}*
-
-# Copy files over to the Anki directory.
+################################################################################
+echoStatus "Coping files over to the Anki directory"
 if [[ ! "$GENERATE_ONLY" ]]; then
   cp -p $GLOBAL_CSS_FILE $ANKI_MEDIA_DIR/
   cp -p $GLOBAL_JS_FILE $ANKI_MEDIA_DIR/
@@ -82,4 +93,7 @@ if [[ ! "$GENERATE_ONLY" ]]; then
   chmod a+r $ANKI_MEDIA_DIR/_*
 fi
 
+################################################################################
 rm -rf $TEMP_DIR
+echo
+echo "Done."
