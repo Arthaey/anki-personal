@@ -11,9 +11,8 @@ function Card(dom, deckName, noteType, cardType, tags) {
 
   this.speaker = new Speaker();
 
-  if (!this.hasExpectedLayout()) return "Card layout does not seem correct.";
-
   var setupFunctions = [
+    this.setupLayout,
     this.setupDeckName,
     this.setupClasses,
     this.setupSlashHeight,
@@ -37,8 +36,34 @@ Card.prototype.requiredParam = function(value, name) {
   return value;
 };
 
+Card.prototype.setupLayout = function() {
+  var front = this.dom.querySelector(".card.front");
+  if (!front) return "Card does not have a front side.";
+
+  var cardInfo = this.dom.querySelector(".card-info");
+  if (cardInfo) return "Card already has info header set up.";
+
+  cardInfo = front.ownerDocument.createElement("div");
+  cardInfo.className = "card-info";
+  cardInfo.innerHTML =
+      '<div class="tags">' + this.tags + '</div>' +
+      '<div class="slash"></div>' +
+      '<div class="deck">' +
+      '  <span id="deck">' + this.deckName + '</span>:' +
+      '  <span class="card-type">' + this.cardType + '</span>' +
+      '</div>'
+  ;
+
+  front.parentNode.insertBefore(cardInfo, front);
+
+  if (!this.hasExpectedLayout()) return "Card layout does not seem correct.";
+  return "Added card info header to the layout.";
+};
+
 Card.prototype.setupDeckName = function() {
   var deck = this.dom.querySelector("#deck");
+  if (!deck) return "Card does not have a deck name.";
+
   var deckRegex = /(?:[^:]+::)*([^:]+)/;
   var match = this.deckName.match(deckRegex);
   deck.innerHTML = match[1];
@@ -81,6 +106,8 @@ Card.prototype.setupClasses = function() {
 
 Card.prototype.setupSlashHeight = function() {
   var cardInfo = this.dom.querySelector(".card-info");
+  if (!cardInfo) return;
+
   var cardInfoStyles = getComputedStyle(cardInfo);
   var slash = this.dom.querySelector(".slash");
   slash.style.borderBottomWidth = cardInfoStyles.getPropertyValue("height");

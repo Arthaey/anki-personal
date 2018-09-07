@@ -35,7 +35,7 @@ describe("Card", function() {
   });
 
   describe("check for expected HTML", function() {
-    it("finds layout", function() {
+    it("creates layout", function() {
       expect(card.hasExpectedLayout()).toBe(true);
     });
 
@@ -43,6 +43,26 @@ describe("Card", function() {
       var element = dom.createElement("container");
       var missingCard = new Card(element, "MyDeckName", "MyNoteType", "MyCardType");
       expect(missingCard.hasExpectedLayout()).toBe(false);
+    });
+
+    it("does not add multiple card-info headers", function() {
+      var fullHtml = `
+        <div class="card-info">
+          <div class="tags">{{LeafTags}}</div>
+          <div class="slash"></div>
+          <div class="deck">
+            <span id="deck">{{Deck}}</span>: <span class="card-type">{{Card}}</span>
+          </div>
+        </div>
+        <div class="card front" id="tts">{{Front}}</div>
+        <div id="debug" class="extra"></div>
+      `;
+
+      var element = dom.createElement("container");
+      element.innerHTML = fullHtml;
+      card = new Card(element, "MyDeckName", "MyNoteType", "MyCardType");
+
+      expect(card.dom.querySelectorAll(".card-info").length).toBe(1);
     });
   });
 
@@ -58,15 +78,6 @@ describe("Card", function() {
       expect(deck).toHaveText("MyDeckName");
       expect(deck).not.toHaveText("Foo");
       expect(deck).not.toHaveText("Bar");
-    });
-
-    it("ignores missing element", function() {
-      var missingDeck = createCardFront();
-      missingDeck.querySelector("#deck").remove();
-
-      expect(function() {
-        new Card(missingDeck, "MyDeckName", "MyNoteType", "MyCardType");
-      }).not.toThrow();
     });
   });
 
