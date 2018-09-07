@@ -58,14 +58,22 @@ input {
 }
 
 .tts-trigger {
+  background-color: map-get($colors, very-light-gray);
   background-image: url("_speaker-32x32.png") !important;
-  background-position: right top;
+  background-position: center;
   background-repeat: no-repeat;
+  border-radius: 5px;
+  border: 1px outset;
   display: block;
+  padding: 5px 10px;
   margin: 0.25em auto;
+  cursor: pointer;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 32px;
   height: 32px;
-  cursor: pointer;
 }
 
 span#tts {
