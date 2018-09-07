@@ -19,3 +19,7 @@ Tested on OS X; probably works fine on Linux too.
 
 There are Jasmine tests for the more complicated Javascript bits.
 Open `spec/SpecRunner.html` in a browser to run them and see their results.
+
+# Flag Images
+
+Downloaded from http://www.famfamfam.com/lab/icons/flags/
