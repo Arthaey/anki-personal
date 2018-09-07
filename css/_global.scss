@@ -10,7 +10,7 @@ $answer-buttons-iphone-height: 100px;
 
 /** TYPOGRAPHY ****************************************************************/
 
-body {
+#qa {
   font-family: arial;
   font-size: $font-size;
 }
@@ -82,7 +82,7 @@ span#tts {
 
 #file-generation-info {
   color: transparent;
-  font-size: 50%;
+  font-size: $font-size / 2;
 }
 
 /** STRUCTURE *****************************************************************/
