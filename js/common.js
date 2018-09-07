@@ -1,12 +1,30 @@
-var DEBUG = (typeof DEBUG === 'undefined') ? false : DEBUG;
+var DEBUG = (typeof DEBUG === "undefined") ? false : DEBUG;
 
 function setup(dom, deckName, noteType, cardType, tags) {
   var card = new Card(dom, deckName, noteType, cardType, tags);
+  appendTimestamp(card);
+}
+
+function appendTimestamp(card) {
+  var timestamp = "unknown";
+  if (typeof FILE_GENERATION_TIMESTAMP !== "undefined" && !!FILE_GENERATION_TIMESTAMP) {
+    timestamp = FILE_GENERATION_TIMESTAMP;
+  }
+
+  var id = "file-generation-timestamp";
+  var timestampEl = document.getElementById(id);
+  if (!timestampEl) {
+    timestampEl = document.createElement("div");
+    timestampEl.id = id;
+  }
+  timestampEl.innerHTML = "Javascript generated: " + timestamp;
+
+  card.dom.appendChild(timestampEl);
 }
 
 function appendDebug(msg) {
   if (!DEBUG) return;
-  if (!msg) msg = '<undefined>';
+  if (!msg) msg = "<no-value>";
 
   var debug = document.getElementById("debug");
   if (debug) {
@@ -15,21 +33,13 @@ function appendDebug(msg) {
 }
 
 function appendDebugSourceCode() {
-  if (!DEBUG) return;
-
   var element = document.querySelector(".card.front");
-  var code = document.createElement("div");
-  code.className = "code";
-
-  var debug = document.getElementById("debug");
-  if (debug) {
-    debug.innerHTML += new XMLSerializer().serializeToString(element);
-    debug.innerHTML += "<br/>";
-  }
+  var source = new XMLSerializer().serializeToString(element) + "<br/>";
+  appendDebug(source);
 }
 
 function htmlEscape(str) {
-  if (!str) return '<null>';
+  if (!str) return "<no-value>";
 
   // Quick & dirty.
   // http://stackoverflow.com/questions/1219860/html-encoding-in-javascript-jquery

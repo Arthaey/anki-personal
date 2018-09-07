@@ -1,4 +1,13 @@
 describe("Style", function() {
+  describe("file generation timestamp", function() {
+    it("is hidden", function() {
+      var cardEl = createCard();
+      var timestamp = cardEl.querySelector("#file-generation-timestamp");
+      expect(timestamp).toHaveComputedColor("color", "rgba(0, 0, 0, 0)");
+      expect(timestamp).toHaveComputedStyle("font-size", "24px");
+    });
+  });
+
   describe("bilingual cards", function() {
 
     var supportedLanguages = [
@@ -62,6 +71,8 @@ describe("Style", function() {
   });
 
   function createCard(cardType) {
+    if (!cardType) cardType = "MyCard";
+
     var frontHtml = cardFrontHTML();
     frontHtml = replaceAnkiVariable(frontHtml, "Front", "front question");
     frontHtml = replaceAnkiVariable(frontHtml, "Card", cardType);

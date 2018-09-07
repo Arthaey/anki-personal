@@ -10,12 +10,13 @@ ANKI_MEDIA_DIR="$HOME/Documents/Anki2/$ANKI_USER/collection.media"
 set -x
 
 # Create combined Javascript file (in correct dependency order!).
+echo "var FILE_GENERATION_TIMESTAMP = '$(date)';" > js/_global.js
 cat \
   js/EnglishLanguage.js \
   js/FrenchLanguage.js \
   js/Speaker.js \
   js/Card.js \
-  js/common.js > js/_global.js
+  js/common.js >> js/_global.js
 
 # Create combined CSS file.
 sass --style=expanded --no-cache css/_global.scss css/_global.css
