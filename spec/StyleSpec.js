@@ -1,10 +1,10 @@
 describe("Style", function() {
-  describe("file generation timestamp", function() {
+  describe("file generation information", function() {
     it("is hidden", function() {
       var cardEl = createCard();
-      var timestamp = cardEl.querySelector("#file-generation-timestamp");
-      expect(timestamp).toHaveComputedColor("color", "rgba(0, 0, 0, 0)");
-      expect(timestamp).toHaveComputedStyle("font-size", "24px");
+      var info = cardEl.querySelector("#file-generation-info");
+      expect(info).toHaveComputedColor("color", "rgba(0, 0, 0, 0)");
+      expect(info).toHaveComputedStyle("font-size", "24px");
     });
   });
 

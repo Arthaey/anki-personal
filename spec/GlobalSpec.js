@@ -16,18 +16,40 @@ describe("Global", function() {
     var dom = createCardFrontAndBack();
     setup(dom, "MyDeckName::SubDeck", "MyNoteType", "MyCardType", "MyTags");
 
-    var timestamp = dom.querySelector("#file-generation-timestamp");
-    expect(timestamp).toHaveText(`Javascript generated: ${FILE_GENERATION_TIMESTAMP}`);
+    var timestamp = dom.querySelector("#file-generation-info");
+    expect(timestamp).toContainText(`Javascript generated: ${FILE_GENERATION_TIMESTAMP}`);
   });
 
-  it("shows 'uknown' file generation timestamp", function() {
-    FILE_GENERATION_TIMESTAMP = null;
+  it("shows last git sha", function() {
+    LATEST_GIT_SHA = "abc123";
 
     var dom = createCardFrontAndBack();
     setup(dom, "MyDeckName::SubDeck", "MyNoteType", "MyCardType", "MyTags");
 
-    var timestamp = dom.querySelector("#file-generation-timestamp");
-    expect(timestamp).toHaveText("Javascript generated: unknown");
+    var timestamp = dom.querySelector("#file-generation-info");
+    expect(timestamp).toContainText(LATEST_GIT_SHA);
+  });
+
+  it("shows when git working tree is dirty", function() {
+    GIT_STATUS = "SOME STATUS";
+
+    var dom = createCardFrontAndBack();
+    setup(dom, "MyDeckName::SubDeck", "MyNoteType", "MyCardType", "MyTags");
+
+    var timestamp = dom.querySelector("#file-generation-info");
+    expect(timestamp).toContainText(GIT_STATUS);
+  });
+
+  it("shows 'unknown' file generation info", function() {
+    FILE_GENERATION_TIMESTAMP = null;
+    LATEST_GIT_SHA = null;
+    DIRTY_GIT_WORKING_TREE = null;
+
+    var dom = createCardFrontAndBack();
+    setup(dom, "MyDeckName::SubDeck", "MyNoteType", "MyCardType", "MyTags");
+
+    var timestamp = dom.querySelector("#file-generation-info");
+    expect(timestamp).toContainText("Javascript generated: unknown");
   });
 
 });

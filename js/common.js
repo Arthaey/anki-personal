@@ -2,24 +2,37 @@ var DEBUG = (typeof DEBUG === "undefined") ? false : DEBUG;
 
 function setup(dom, deckName, noteType, cardType, tags) {
   var card = new Card(dom, deckName, noteType, cardType, tags);
-  appendTimestamp(card);
+  appendFileGenerationInfo(card);
 }
 
-function appendTimestamp(card) {
+function appendFileGenerationInfo(card) {
   var timestamp = "unknown";
+  var gitSha    = "unknown";
+  var gitStatus = "status unknown";
+
   if (typeof FILE_GENERATION_TIMESTAMP !== "undefined" && !!FILE_GENERATION_TIMESTAMP) {
     timestamp = FILE_GENERATION_TIMESTAMP;
   }
-
-  var id = "file-generation-timestamp";
-  var timestampEl = document.getElementById(id);
-  if (!timestampEl) {
-    timestampEl = document.createElement("div");
-    timestampEl.id = id;
+  if (typeof LATEST_GIT_SHA !== "undefined" && !!LATEST_GIT_SHA) {
+    gitSha = LATEST_GIT_SHA;
   }
-  timestampEl.innerHTML = "Javascript generated: " + timestamp;
+  if (typeof GIT_STATUS !== "undefined" && !!GIT_STATUS) {
+    gitStatus = GIT_STATUS;
+  }
 
-  card.dom.appendChild(timestampEl);
+  var id = "file-generation-info";
+  var infoEl = document.getElementById(id);
+  if (!infoEl) {
+    infoEl = document.createElement("div");
+    infoEl.id = id;
+  }
+
+  infoEl.innerHTML = "Javascript generated: ";
+  infoEl.innerHTML += timestamp;
+  infoEl.innerHTML += " @ git sha " + gitSha;
+  infoEl.innerHTML += " (" + gitStatus + ").";
+
+  card.dom.appendChild(infoEl);
 }
 
 function appendDebug(msg) {
