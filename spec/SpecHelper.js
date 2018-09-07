@@ -1,4 +1,37 @@
-beforeEach(function() {
+window.dom = (function() {
+  var elements = [];
+
+  return {
+    createElement: function(id, text, options) {
+      if (!options) options = {};
+
+      var element = document.getElementById(id);
+      if (!element) {
+        element = document.createElement("div");
+        elements.push(element);
+      }
+
+      element.id = id;
+      element.innerText = text;
+
+      if (options.html) {
+        element.innerHTML = options.html;
+      }
+
+      document.documentElement.insertBefore(element, null);
+      return element;
+    },
+
+    cleanup: function() {
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].remove();
+      }
+      elements = [];
+    }
+  };
+})();
+
+beforeAll(function() {
   jasmine.addMatchers(DOMCustomMatchers); // jasmine-devrafalko
 
   jasmine.addMatchers({
@@ -24,41 +57,8 @@ beforeEach(function() {
       };
     }
 
-
   });
 
-  window.dom = (function() {
-    var elements = [];
-
-    return {
-      createElement: function(id, text, options) {
-        if (!options) options = {};
-
-        var element = document.getElementById(id);
-        if (!element) {
-          element = document.createElement("div");
-          elements.push(element);
-        }
-
-        element.id = id;
-        element.innerText = text;
-
-        if (options.html) {
-          element.innerHTML = options.html;
-        }
-
-        document.body.insertBefore(element, null);
-        return element;
-      },
-
-      cleanup: function() {
-        for (var i = 0; i < elements.length; i++) {
-          document.body.removeChild(elements[i]);
-        }
-        elements = [];
-      }
-    };
-  })();
 });
 
 afterEach(function() {
