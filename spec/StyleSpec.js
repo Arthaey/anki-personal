@@ -55,7 +55,7 @@ describe("Style", function() {
       it(`shows the flag (${cardType})`, function() {
         var cardEl = createCard(cardType);
         var flag = cardEl.querySelector(".card-type");
-        var flagRegex = new RegExp(`${langCode}.png`);
+        var flagRegex = new RegExp(`_flag-${langCode}.png`);
         expect(flag).toHaveComputedStyle("content", flagRegex, ":after");
       });
     }

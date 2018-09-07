@@ -34,7 +34,7 @@
     @include cardStyle($color);
 
     .deck *:last-child:after {
-      content: url("_#{$targetLang}.png");
+      content: url("_flag-#{$targetLang}.png");
       margin-left: 10px;
     }
   }
@@ -78,7 +78,7 @@
     }
 
     .deck *:last-child:after {
-      content: url("_#{$targetLang}.png");
+      content: url("_flag-#{$targetLang}.png");
       margin-left: 10px;
     }
 
@@ -108,7 +108,7 @@
     }
 
     .deck *:last-child:after {
-      content: url("_#{$targetLang}.png");
+      content: url("_flag-#{$targetLang}.png");
       margin-left: 10px;
     }
 
