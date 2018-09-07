@@ -88,8 +88,11 @@ Card.prototype.setupTTS = function() {
     return "TTS is not available.";
   }
 
-  var ttsTrigger = tts.ownerDocument.createElement('a');
-  ttsTrigger.classList.add('tts-trigger');
+  var ttsTrigger = this.dom.querySelector(".tts-trigger");
+  if (ttsTrigger) return "tts-trigger already created.";
+
+  ttsTrigger = tts.ownerDocument.createElement("a");
+  ttsTrigger.classList.add("tts-trigger");
   this.dom.appendChild(ttsTrigger);
 
   var speakFn = this.speakFn(tts.textContent).bind(this);
