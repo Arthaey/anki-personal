@@ -89,7 +89,7 @@ Card.prototype.setupTTS = function() {
   }
 
   var ttsTrigger = this.dom.querySelector(".tts-trigger");
-  if (ttsTrigger) return "tts-trigger already created.";
+  if (ttsTrigger) ttsTrigger.remove();
 
   ttsTrigger = tts.ownerDocument.createElement("a");
   ttsTrigger.classList.add("tts-trigger");
