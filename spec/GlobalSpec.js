@@ -17,7 +17,7 @@ describe("Global", function() {
     setup(dom, "MyDeckName::SubDeck", "MyNoteType", "MyCardType", "MyTags");
 
     var timestamp = dom.querySelector("#file-generation-info");
-    expect(timestamp).toContainText(`Javascript generated: ${FILE_GENERATION_TIMESTAMP}`);
+    expect(timestamp).toContainText(`Updated: ${FILE_GENERATION_TIMESTAMP}`);
   });
 
   it("shows last git sha", function() {
@@ -49,7 +49,7 @@ describe("Global", function() {
     setup(dom, "MyDeckName::SubDeck", "MyNoteType", "MyCardType", "MyTags");
 
     var timestamp = dom.querySelector("#file-generation-info");
-    expect(timestamp).toContainText("Javascript generated: unknown");
+    expect(timestamp).toContainText("Updated: unknown");
   });
 
 });

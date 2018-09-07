@@ -27,7 +27,7 @@ function appendFileGenerationInfo(card) {
     infoEl.id = id;
   }
 
-  infoEl.innerHTML = "Javascript generated: ";
+  infoEl.innerHTML = "Updated: ";
   infoEl.innerHTML += timestamp;
   infoEl.innerHTML += " @ git sha " + gitSha;
   infoEl.innerHTML += " (" + gitStatus + ").";
