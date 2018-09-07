@@ -4,25 +4,48 @@ if [[ -e .env ]]; then
   source .env
 fi
 
+set -x
+
+NOW=$(date "+%Y-%m-%d-%H%M%S")
+
 ANKI_USER="${ANKI_USER:-$USER}"
 ANKI_MEDIA_DIR="$HOME/Documents/Anki2/$ANKI_USER/collection.media"
 
-GLOBAL_JS="js/_global.js"
-GLOBAL_CSS="css/_global.css"
+TEMP_DIR="tmp"
+GLOBAL_JS_FILE="js/_global.js"
+GLOBAL_CSS_FILE="css/_global.css"
+GLOBAL_CSS_HEADER_FILE="$TEMP_DIR/_global_header.css"
+FORCE_MEDIA_SYNC_SUBSTRING="_force_sync_"
+FORCE_MEDIA_SYNC_FILE="$TEMP_DIR/${FORCE_MEDIA_SYNC_SUBSTRING}${NOW}"
 
-set -x
+LATEST_GIT_SHA=$(git log -1 --format="format:%h")
+
+if [[ -z "$(git status --porcelain)" ]]; then
+  GIT_STATUS="CLEAN"
+else
+  GIT_STATUS="DIRTY"
+fi
+
+mkdir -p $TEMP_DIR
 
 # Set generated global variables.
-echo "///////////////////////////////////////////////////////////////" > $GLOBAL_JS
-echo "var FILE_GENERATION_TIMESTAMP = '$(date)';" >> $GLOBAL_JS
-echo "var LATEST_GIT_SHA = '$(git log -1 --format="format:%h")'" >> $GLOBAL_JS
-if [[ -z "$(git status --porcelain)" ]]; then
-  echo "var GIT_STATUS = 'CLEAN';" >> $GLOBAL_JS
-else
-  echo "var GIT_STATUS = 'DIRTY';" >> $GLOBAL_JS
-fi
-echo "///////////////////////////////////////////////////////////////" >> $GLOBAL_JS
-echo >> $GLOBAL_JS
+cat << EOF_JS > $GLOBAL_JS_FILE
+////////////////////////////////////////////////////////////////////////////////
+var FILE_GENERATION_TIMESTAMP = '$NOW';
+var LATEST_GIT_SHA = '$LATEST_GIT_SHA';
+var GIT_STATUS = '$GIT_STATUS';
+////////////////////////////////////////////////////////////////////////////////
+
+EOF_JS
+
+cat << EOF_CSS > $GLOBAL_CSS_HEADER_FILE
+/*//////////////////////////////////////////////////////////////////////////////
+// FILE_GENERATION_TIMESTAMP $NOW
+// LATEST_GIT_SHA $LATEST_GIT_SHA
+// GIT_STATUS $GIT_STATUS
+//////////////////////////////////////////////////////////////////////////////*/
+
+EOF_CSS
 
 # Create combined Javascript file (in correct dependency order!).
 cat \
@@ -30,20 +53,31 @@ cat \
   js/FrenchLanguage.js \
   js/Speaker.js \
   js/Card.js \
-  js/common.js >> $GLOBAL_JS
+  js/common.js >> $GLOBAL_JS_FILE
 
 # Create combined CSS file.
-sass --style=expanded --no-cache css/_global.scss $GLOBAL_CSS
+sass --style=expanded --no-cache css/_global.scss $GLOBAL_CSS_FILE
+cat $GLOBAL_CSS_HEADER_FILE $GLOBAL_CSS_FILE > $TEMP_DIR/full_global.css
+mv $TEMP_DIR/full_global.css $GLOBAL_CSS_FILE
 
 # Make image symlinks, so local testing of CSS will find them.
 rm -f css/*.png css/*.jpg
 ln images/* css/
 
+# Create unique, new file to force Anki to sync media.
+echo $NOW > $FORCE_MEDIA_SYNC_FILE
+
+# Delete any old force-sync files.
+rm $ANKI_MEDIA_DIR/${FORCE_MEDIA_SYNC_SUBSTRING}*
+
 # Copy files over to the Anki directory.
 if [[ ! "$GENERATE_ONLY" ]]; then
-  cp -p $GLOBAL_CSS $ANKI_MEDIA_DIR/
-  cp -p $GLOBAL_JS $ANKI_MEDIA_DIR/
+  cp -p $GLOBAL_CSS_FILE $ANKI_MEDIA_DIR/
+  cp -p $GLOBAL_JS_FILE $ANKI_MEDIA_DIR/
   cp -p images/_* $ANKI_MEDIA_DIR/
   cp -p fonts/_* $ANKI_MEDIA_DIR/
+  cp -p $FORCE_MEDIA_SYNC_FILE $ANKI_MEDIA_DIR/
   chmod a+r $ANKI_MEDIA_DIR/_*
 fi
+
+rm -rf $TEMP_DIR
