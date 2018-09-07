@@ -42,10 +42,16 @@ Card.prototype.setupLayout = function() {
 
   var cardInfo = this.dom.querySelector(".card-info");
   if (!cardInfo) {
+    var tagsHtml = '';
+    var fullTags = (this.tags ? this.tags.split(/\s+/) : []);
+    for (var i = 0; i < fullTags.length; i++) {
+      tagsHtml += '<span class="tag">' + this.leafify(fullTags[i]) + '</span>';
+    };
+
     cardInfo = front.ownerDocument.createElement("div");
     cardInfo.className = "card-info";
     cardInfo.innerHTML =
-        '<div class="tags">' + this.tags + '</div>' +
+        '<div class="tags">' + tagsHtml + '</div>' +
         '<div class="slash"></div>' +
         '<div class="deck">' +
         '  <span id="deck">' + this.deckName + '</span>:' +
@@ -72,10 +78,8 @@ Card.prototype.setupDeckName = function() {
   var deck = this.dom.querySelector("#deck");
   if (!deck) return "Card does not have a deck name.";
 
-  var deckRegex = /(?:[^:]+::)*([^:]+)/;
-  var match = this.deckName.match(deckRegex);
-  deck.innerHTML = match[1];
-  return "Deck name = '" + match[1] + "'.";
+  deck.innerHTML = this.leafify(this.deckName);
+  return "Deck name = '" + deck.innerHTML + "'.";
 };
 
 Card.prototype.setupClasses = function() {
@@ -241,6 +245,12 @@ Card.prototype.getLanguageCode = function() {
   }
 
   return langCode;
+};
+
+Card.prototype.leafify = function(fullyQualifiedName) {
+  var regex = /(?:[^:]+::)*([^:]+)/;
+  var match = fullyQualifiedName.match(regex);
+  return match ? match[1] : fullyQualifiedName;
 };
 
 Card.prototype.hasExpectedLayout = function() {

@@ -82,6 +82,14 @@ describe("Card", function() {
     });
   });
 
+  it("displays only leaf tags", function() {
+      card = new Card(createCardFront(), "deck", "note", "card", "a::b c::d::e");
+      var tags = card.dom.querySelectorAll(".tag");
+      expect(tags.length).toBe(2);
+      expect(tags[0]).toHaveText("b");
+      expect(tags[1]).toHaveText("e");
+  });
+
   describe("sets CSS classes", function() {
     it("removes existing custom classes", function() {
       document.documentElement.className = "foo bar";
