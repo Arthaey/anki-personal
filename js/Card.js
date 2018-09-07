@@ -98,7 +98,7 @@ Card.prototype.setupTTS = function() {
   var speakFn = this.speakFn(tts.textContent).bind(this);
   ttsTrigger.addEventListener("click", speakFn, false);
 
-  if (this.isQuestionSide()) {
+  if (this.isQuestionSide() && this.isTTSCardType()) {
     tts.classList.add("hidden");
     setTimeout(speakFn, Card.ttsAutoPlayDelay);
     return "TTS set up with autoplay.";
@@ -138,6 +138,10 @@ Card.prototype.speakFn = function(text) {
 
 Card.prototype.isQuestionSide = function() {
   return !this.dom.querySelector("#answer");
+};
+
+Card.prototype.isTTSCardType = function() {
+  return /tts/i.test(this.cardType);
 };
 
 Card.prototype.getClassList = function() {
