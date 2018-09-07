@@ -62,7 +62,9 @@ mv $TEMP_DIR/full_global.css $GLOBAL_CSS_FILE
 
 # Make image symlinks, so local testing of CSS will find them.
 rm -f css/*.png css/*.jpg
-ln images/* css/
+pushd css
+ln -s ../images/* ./
+popd
 
 # Create unique, new file to force Anki to sync media.
 echo $NOW > $FORCE_MEDIA_SYNC_FILE
