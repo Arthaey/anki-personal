@@ -1,11 +1,21 @@
 describe("Style", function() {
-  describe("file generation information", function() {
-    it("is hidden", function() {
-      var cardEl = createCard();
-      var info = cardEl.querySelector("#file-generation-info");
-      expect(info).toHaveComputedColor("color", "rgba(0, 0, 0, 0)");
-      expect(info).toHaveComputedStyle("font-size", "24px");
-    });
+  it("file generation information is hidden", function() {
+    var cardEl = createCard();
+    var info = cardEl.querySelector("#file-generation-info");
+    expect(info).toHaveComputedColor("color", "rgba(0, 0, 0, 0)");
+    expect(info).toHaveComputedStyle("font-size", "24px");
+  });
+
+  it("handles long tags", function() {
+    var longTags = "long-tags ".repeat(40);
+    var cardEl = createCard("MyCard::MyCard::MyCard::MyCard", longTags);
+
+    var header = cardEl.querySelector(".card-info");
+    var slash = cardEl.querySelector(".slash");
+    var headerHeight = getComputedStyle(header).getPropertyValue("height");
+    var slashHeight = getComputedStyle(slash).getPropertyValue("border-bottom-width");
+
+    expect(headerHeight).toBe(slashHeight);
   });
 
   describe("bilingual cards", function() {
@@ -70,12 +80,14 @@ describe("Style", function() {
 
   });
 
-  function createCard(cardType) {
+  function createCard(cardType, tags) {
     if (!cardType) cardType = "MyCard";
+    if (!tags) tags = "MyTags";
 
     var frontHtml = cardFrontHTML();
     frontHtml = replaceAnkiVariable(frontHtml, "Front", "front question");
     frontHtml = replaceAnkiVariable(frontHtml, "Card", cardType);
+    frontHtml = replaceAnkiVariable(frontHtml, "LeafTags", tags);
 
     var backHtml = cardBackHTML();
     backHtml = replaceAnkiVariable(backHtml, "Back", "back answer");
@@ -92,7 +104,7 @@ describe("Style", function() {
     `;
 
     var cardEl = dom.createElement('testId', 'default content', { html: html });
-    setup(cardEl, "MyDeck", "MyNote", cardType, "MyTags");
+    setup(cardEl, "MyDeck", "MyNote", cardType, tags);
     return cardEl;
   }
 

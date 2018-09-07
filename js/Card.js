@@ -11,9 +11,12 @@ function Card(dom, deckName, noteType, cardType, tags) {
 
   this.speaker = new Speaker();
 
+  if (!this.hasExpectedLayout()) return "Card layout does not seem correct.";
+
   var setupFunctions = [
     this.setupDeckName,
     this.setupClasses,
+    this.setupSlashHeight,
     this.setupTTS,
     this.setupVerbs
   ];
@@ -35,13 +38,10 @@ Card.prototype.requiredParam = function(value, name) {
 };
 
 Card.prototype.setupDeckName = function() {
-  if (!this.hasExpectedLayout()) return "Card layout does not seem correct.";
-
   var deck = this.dom.querySelector("#deck");
   var deckRegex = /(?:[^:]+::)*([^:]+)/;
   var match = this.deckName.match(deckRegex);
   deck.innerHTML = match[1];
-
   return "Deck name = '" + match[1] + "'.";
 };
 
@@ -78,6 +78,15 @@ Card.prototype.setupClasses = function() {
 
   return "Classes = '" + newClasses.toLowerCase() + "'.";
 };
+
+Card.prototype.setupSlashHeight = function() {
+  var cardInfo = this.dom.querySelector(".card-info");
+  var cardInfoStyles = getComputedStyle(cardInfo);
+  var slash = this.dom.querySelector(".slash");
+  slash.style.borderBottomWidth = cardInfoStyles.getPropertyValue("height");
+  return "Set slash height.";
+};
+
 
 Card.prototype.setupTTS = function() {
   var tts = this.dom.querySelector("#tts");

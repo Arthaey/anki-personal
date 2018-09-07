@@ -105,19 +105,22 @@ body {
 
 .card-info {
   border-radius: $radius $radius 0 0;
-  height: $line-height;;
+  display: table;
+  width: 100%;
 }
 
 .tags,
-.deck {
-  display: inline-block;
-  line-height: $line-height;;
+.deck,
+.slash {
+  display: table-cell;
+  line-height: $line-height;
   padding: 0 $line-height/2 0 $line-height/4;
 }
 
 .tags {
   border-top-left-radius: $radius;
   padding-left: $line-height/2;
+  width: 100%;
 }
 
 .tag {
@@ -126,24 +129,20 @@ body {
 }
 
 .tag + .tag {
-  margin-left: 0.3em;
+  margin-left: 0.1em;
 }
 
 .deck {
   border-top-right-radius: $radius;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
 .slash {
   border-style: solid;
   border-width: 0 0 $line-height $line-height;
-  display: inline-block;
   height: 0;
   width: 0;
-}
-
-.deck,
-.slash {
-  float: right;
 }
 
 .card-info + .card.front {
@@ -152,7 +151,7 @@ body {
 
 .card.front ~ .card.back {
   border-radius: $radius;
-  margin-top: $line-height/2;
+  margin-top: $line-height/4;
 }
 
 .card.front, .card.back {

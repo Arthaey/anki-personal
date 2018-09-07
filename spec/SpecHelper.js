@@ -83,11 +83,11 @@ function createCardFrontAndBack() {
 function cardFrontHTML() {
   return `
     <div class="card-info">
-     <div class="tags">{{LeafTags}}</div>
+      <div class="tags">{{LeafTags}}</div>
+      <div class="slash"></div>
       <div class="deck">
         <span id="deck">{{Deck}}</span>: <span class="card-type">{{Card}}</span>
       </div>
-      <div class="slash"></div>
     </div>
     <div class="card front" id="tts">{{Front}}</div>
     <div id="debug" class="extra"></div>
