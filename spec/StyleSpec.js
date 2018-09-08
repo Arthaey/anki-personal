@@ -11,8 +11,9 @@ describe("Style", function() {
     var cardEl = createCard("MyCard::MyCard::MyCard::MyCard", longTags);
 
     var header = cardEl.querySelector(".card-info");
-    var slash = cardEl.querySelector(".slash");
     var headerHeight = getComputedStyle(header).getPropertyValue("height");
+
+    var slash = cardEl.querySelector(".slash");
     var slashHeight = getComputedStyle(slash).getPropertyValue("border-bottom-width");
 
     expect(headerHeight).toBe(slashHeight);

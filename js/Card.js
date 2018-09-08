@@ -15,6 +15,7 @@ function Card(dom, deckName, noteType, cardType, tags) {
     this.setupLayout,
     this.setupDeckName,
     this.setupClasses,
+    this.setupDeckNameWidth,
     this.setupSlashHeight,
     this.setupTTS,
     this.setupVerbs
@@ -118,14 +119,41 @@ Card.prototype.setupClasses = function() {
 
 Card.prototype.setupSlashHeight = function() {
   var cardInfo = this.dom.querySelector(".card-info");
-  if (!cardInfo) return;
+  var slash = this.dom.querySelector(".slash");
+  if (!cardInfo || !slash) return;
 
   var cardInfoStyles = getComputedStyle(cardInfo);
-  var slash = this.dom.querySelector(".slash");
   slash.style.borderBottomWidth = cardInfoStyles.getPropertyValue("height");
   return "Set slash height.";
 };
 
+Card.prototype.setupDeckNameWidth = function() {
+  var cardInfo = this.dom.querySelector(".card-info");
+  var deck = this.dom.querySelector(".deck");
+  var tags = this.dom.querySelector(".tags");
+  if (!cardInfo || !deck || !tags) return;
+
+  var cardStyles = getComputedStyle(cardInfo.parentNode);
+  var cardInfoStyles = getComputedStyle(cardInfo);
+  var deckStyles = getComputedStyle(deck);
+
+  var cardWidth     = Number.parseFloat(cardStyles.getPropertyValue("width"));
+  var cardInfoWidth = Number.parseFloat(cardInfoStyles.getPropertyValue("width"));
+  var deckWidth     = Number.parseFloat(deckStyles.getPropertyValue("width"));
+
+  if (cardInfoWidth > cardWidth) {
+    deck.style.whiteSpace = "normal";
+    deck.style.width = "100%";
+    tags.style.width = "unset";
+
+    cardInfoWidth = Number.parseFloat(cardInfoStyles.getPropertyValue("width"));
+    deckWidth     = Number.parseFloat(deckStyles.getPropertyValue("width"));
+  }
+
+  tags.style.width = (cardInfoWidth - deckWidth) + "px";
+
+  return "Set tags width.";
+};
 
 Card.prototype.setupTTS = function() {
   var tts = this.dom.querySelector("#tts");

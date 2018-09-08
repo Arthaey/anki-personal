@@ -35,14 +35,17 @@ function appendFileGenerationInfo(card) {
   card.dom.appendChild(infoEl);
 }
 
-function appendDebug(msg) {
-  if (!DEBUG) return;
+function appendMessage(msg) {
   if (!msg) msg = "<no-value>";
-
   var debug = document.getElementById("debug");
   if (debug) {
     debug.innerHTML += htmlEscape(msg) + "<br/>";
   }
+}
+
+function appendDebug(msg) {
+  if (!DEBUG) return;
+  appendMessage(msg);
 }
 
 function appendDebugSourceCode() {

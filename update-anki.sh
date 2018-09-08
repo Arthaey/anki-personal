@@ -4,7 +4,7 @@ if [[ -e .env ]]; then
   source .env
 fi
 
-set -x
+set -x -e
 
 NOW=$(date "+%Y-%m-%d-%H%M%S")
 
