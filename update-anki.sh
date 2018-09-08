@@ -58,6 +58,7 @@ EOF_CSS
 echoStatus "Creating combined Javascript file (in correct dependency order!)"
 
 cat \
+  js/polyfills.js \
   js/EnglishLanguage.js \
   js/FrenchLanguage.js \
   js/Speaker.js \

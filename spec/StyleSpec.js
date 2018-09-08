@@ -19,6 +19,27 @@ describe("Style", function() {
     expect(headerHeight).toBe(slashHeight);
   });
 
+  describe("'default' cards", function() {
+    it("center-aligns text", function() {
+      var cardEl = createCard("MyCard");
+      expect(cardEl.querySelector(".card")).toHaveComputedStyle("text-align", "center");
+    });
+  });
+
+  describe("cloze cards", function() {
+    it("left-aligns text", function() {
+      var cardEl = createCard("Cloze");
+      expect(cardEl.querySelector(".card")).toHaveComputedStyle("text-align", "left");
+    });
+
+    it("adds quotation marks in the background", function() {
+      var cardEl = createCard("Cloze");
+      var front = cardEl.querySelector(".card.front");
+      expect(front).toHaveComputedStyle("content", '"“"', ":before");
+      expect(front).toHaveComputedStyle("content", '"”"', ":after");
+    });
+  });
+
   describe("bilingual cards", function() {
 
     var supportedLanguages = [
