@@ -94,7 +94,7 @@ Card.prototype.setupClasses = function() {
   this.resetClasses();
   var newClasses = "";
 
-  var types = [this.deckName, this.noteType, this.cardType, this.tags];
+  var types = [ this.deckName, this.noteType, this.cardType, this.tags ];
   for (var i = 0; i < types.length; i++ ) {
     var type = types[i];
     if (!type) continue;

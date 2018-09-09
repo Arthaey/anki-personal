@@ -5,6 +5,11 @@ module.exports = {
 
 	"rules": {
 
+    "array-bracket-spacing": [ "error", "always", {
+			"singleValue": false,
+			"objectsInArrays": false,
+		}],
+
     "comma-dangle": [ "error", "never" ],
 
 		"indent":          [ "error", 2 ],
@@ -20,11 +25,14 @@ module.exports = {
       "argsIgnorePattern": "^_",
     }],
 
+		"object-curly-spacing": [ "error", "always" ],
+
 		"quotes":          [ "error", "double", {
       "avoidEscape": true,
 		}],
 
 		"semi":            [ "error", "always" ],
+
 	},
 
   "overrides": [
