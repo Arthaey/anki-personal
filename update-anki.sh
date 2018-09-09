@@ -4,7 +4,7 @@ if [[ -e .env ]]; then
   source .env
 fi
 
-set -x -e
+set -e
 
 NOW=$(date "+%Y-%m-%d-%H%M%S")
 
@@ -18,8 +18,6 @@ GLOBAL_CSS_HEADER_FILE="$TEMP_DIR/_global_header.css"
 FORCE_MEDIA_SYNC_SUBSTRING="_force_sync_"
 FORCE_MEDIA_SYNC_FILE="$TEMP_DIR/${FORCE_MEDIA_SYNC_SUBSTRING}${NOW}"
 
-set +x
-
 LATEST_GIT_SHA=$(git log -1 --format="format:%h")
 
 if [[ -z "$(git status --porcelain)" ]]; then
@@ -32,6 +30,13 @@ function echoStatus() {
   echo "- $*..."
 }
 
+################################################################################
+echo
+echo "ANKI_MEDIA_DIR: $ANKI_MEDIA_DIR";
+echo
+echo "FILE_GENERATION_TIMESTAMP: $NOW";
+echo "LATEST_GIT_SHA: $LATEST_GIT_SHA";
+echo "GIT_STATUS: $GIT_STATUS";
 echo
 
 ################################################################################
