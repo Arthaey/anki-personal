@@ -72,6 +72,10 @@ cat $GLOBAL_CSS_HEADER_FILE $GLOBAL_CSS_FILE > $TEMP_DIR/full_global.css
 mv $TEMP_DIR/full_global.css $GLOBAL_CSS_FILE
 
 ################################################################################
+echoStatus "Linting Javascript"
+eslint .
+
+################################################################################
 echoStatus "Making image symlinks, so local testing of CSS will find them"
 rm -f css/*.png css/*.jpg
 pushd css > /dev/null
