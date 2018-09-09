@@ -25,7 +25,8 @@ function Card(dom, deckName, noteType, cardType, tags) {
     this.setupDeckNameWidth,
     this.setupSlashHeight,
     this.setupTTS,
-    this.setupVerbs
+    this.setupVerbs,
+    this.setupCitations
   ];
 
   var setupResult = "";
@@ -210,6 +211,24 @@ Card.prototype.setupVerbs = function() {
   } else {
     return "Not a French verb.";
   }
+};
+
+Card.prototype.setupCitations = function() {
+  var citation = this.dom.querySelector("cite");
+  if (!citation) return "Card does not have any citations.";
+
+  var source;
+  var tags = this.tags.split(/\s+/);
+  for (var i = 0; i < tags.length; i++) {
+    if (tags[i].startsWith("source::")) {
+      source = tags[i];
+    }
+  }
+
+  if (!source) return "No source tags.";
+
+  citation.innerHTML = this.leafify(source) + ", " + citation.innerHTML;
+  return "Citation source = " + citation.innerHTML;
 };
 
 Card.prototype.speakFn = function(text) {

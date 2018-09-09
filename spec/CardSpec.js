@@ -67,6 +67,36 @@ describe("Card", function() {
       expect(card.dom.querySelectorAll(".card-info").length).toBe(1);
       expect(card.dom.querySelectorAll("#debug").length).toBe(1);
     });
+
+    it("adds citation from source", function() {
+      var cardHtml = `
+        <div class="card front">
+          <cite>p42</cite>
+        </div>
+      `;
+
+      var element = dom.createElement("container");
+      element.innerHTML = cardHtml;
+      card = new Card(element, "deck", "note", "card", "abc source::foo::bar xyz");
+
+      var citation = card.dom.querySelector("cite");
+      expect(citation).toHaveText("bar, p42");
+    });
+
+    it("does NOT add citation when there is no source", function() {
+      var cardHtml = `
+        <div class="card front">
+          <cite>p42</cite>
+        </div>
+      `;
+
+      var element = dom.createElement("container");
+      element.innerHTML = cardHtml;
+      card = new Card(element, "deck", "note", "card", "NoSourceTags");
+
+      var citation = card.dom.querySelector("cite");
+      expect(citation).toHaveText("p42");
+    });
   });
 
   describe("sets deck name", function() {
