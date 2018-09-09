@@ -233,9 +233,11 @@ Card.prototype.setupCitations = function() {
   }
 
   if (!source) return "No source tags.";
+  source = this.leafify(source);
+  source = source[0].toUpperCase() + source.substring(1);
 
-  citation.innerHTML = this.leafify(source) + ", " + citation.innerHTML;
-  return "Citation source = " + citation.innerHTML;
+  citation.innerHTML = source + ", " + citation.innerHTML;
+  return "Citation source = " + source;
 };
 
 Card.prototype.speakFn = function(text) {

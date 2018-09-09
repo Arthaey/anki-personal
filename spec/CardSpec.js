@@ -80,7 +80,7 @@ describe("Card", function() {
       card = new Card(element, "deck", "note", "card", "abc source::foo::bar xyz");
 
       var citation = card.dom.querySelector("cite");
-      expect(citation).toHaveText("bar, p42");
+      expect(citation).toHaveText("Bar, p42");
     });
 
     it("does NOT add citation when there is no source", function() {
