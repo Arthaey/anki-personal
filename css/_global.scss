@@ -52,6 +52,14 @@ cite {
   color: map-get($colors, dark-gray);
 }
 
+cite:before {
+  content: "(";
+}
+
+cite:after {
+  content: ")";
+}
+
 .cloze .card.front,
 .cloze .card.back {
   text-align: left;
