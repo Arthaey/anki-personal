@@ -3,8 +3,12 @@
 var DEBUG = (typeof DEBUG === "undefined") ? false : DEBUG;
 
 function setup(dom, deckName, noteType, cardType, tags) {
-  var card = new Card(dom, deckName, noteType, cardType, tags);
-  appendFileGenerationInfo(card);
+  try {
+    var card = new Card(dom, deckName, noteType, cardType, tags);
+    appendFileGenerationInfo(card);
+  } catch (error) {
+    alert(error); /* eslint-disable-line no-alert */
+  }
 }
 
 function appendFileGenerationInfo(card) {

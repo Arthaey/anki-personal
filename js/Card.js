@@ -30,9 +30,16 @@ function Card(dom, deckName, noteType, cardType, tags) {
   ];
 
   var setupResult = "";
+
   for (var i = 0; i < setupFunctions.length; i++) {
-    var result = setupFunctions[i].call(this);
-    setupResult += " " + result;
+    try {
+      var result = setupFunctions[i].call(this);
+      setupResult += " " + result;
+    } catch (error) {
+      throw "Failed to set up card; " +
+        "completed " + i + " out of " + setupFunctions.length + " steps.\n\n" +
+        "Partial results:\n\n" + setupResult;
+    }
   }
 
   appendDebug("Card created." + setupResult);
@@ -141,26 +148,26 @@ Card.prototype.setupDeckNameWidth = function() {
   var tags = this.dom.querySelector(".tags");
   if (!cardInfo || !deck || !tags) return;
 
-  var cardStyles = getComputedStyle(cardInfo.parentNode);
-  var cardInfoStyles = getComputedStyle(cardInfo);
-  var deckStyles = getComputedStyle(deck);
-
-  var cardWidth     = Number.parseFloat(cardStyles.getPropertyValue("width"));
-  var cardInfoWidth = Number.parseFloat(cardInfoStyles.getPropertyValue("width"));
-  var deckWidth     = Number.parseFloat(deckStyles.getPropertyValue("width"));
+  var cardWidth     = this.getWidth(cardInfo.parentNode);
+  var cardInfoWidth = this.getWidth(cardInfo);
+  var deckWidth     = this.getWidth(deck);
 
   if (cardInfoWidth > cardWidth) {
     deck.style.whiteSpace = "normal";
     deck.style.width = "100%";
     tags.style.width = "unset";
-
-    cardInfoWidth = Number.parseFloat(cardInfoStyles.getPropertyValue("width"));
-    deckWidth     = Number.parseFloat(deckStyles.getPropertyValue("width"));
+    cardInfoWidth = this.getWidth(cardInfo);
+    deckWidth     = this.getWidth(deck);
   }
 
   tags.style.width = (cardInfoWidth - deckWidth) + "px";
-
   return "Set tags width.";
+};
+
+Card.prototype.getWidth = function(element) {
+  var styles = getComputedStyle(element);
+  var width = styles.getPropertyValue("width");
+  return width.match(/^([-+]?[0-9]+(\.[0-9]+)?)/)[0];
 };
 
 Card.prototype.setupTTS = function() {
