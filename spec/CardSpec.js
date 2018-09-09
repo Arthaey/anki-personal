@@ -1,3 +1,5 @@
+/* global Card EnglishLanguage FrenchLanguage dom createCardFront createCardFrontAndBack */
+
 describe("Card", function() {
   var card;
 
@@ -13,7 +15,7 @@ describe("Card", function() {
   });
 
   afterEach(function() {
-      document.documentElement.className = "";
+    document.documentElement.className = "";
   });
 
   it("constructor", function() {
@@ -69,7 +71,6 @@ describe("Card", function() {
 
   describe("sets deck name", function() {
     it("to given name", function() {
-      var htmlBefore = card.dom.outerHTML;
       expect(card.dom.querySelector("#deck")).toHaveText("MyDeckName");
     });
 
@@ -83,11 +84,11 @@ describe("Card", function() {
   });
 
   it("displays only leaf tags", function() {
-      card = new Card(createCardFront(), "deck", "note", "card", "a::b c::d::e");
-      var tags = card.dom.querySelectorAll(".tag");
-      expect(tags.length).toBe(2);
-      expect(tags[0]).toHaveText("b");
-      expect(tags[1]).toHaveText("e");
+    card = new Card(createCardFront(), "deck", "note", "card", "a::b c::d::e");
+    var tags = card.dom.querySelectorAll(".tag");
+    expect(tags.length).toBe(2);
+    expect(tags[0]).toHaveText("b");
+    expect(tags[1]).toHaveText("e");
   });
 
   describe("sets CSS classes", function() {
@@ -193,7 +194,7 @@ describe("Card", function() {
     it("ignores missing tags", function() {
       card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType");
       expect(function() {
-        card.setupClasses()
+        card.setupClasses();
       }).not.toThrow();
     });
 
@@ -218,7 +219,7 @@ describe("Card", function() {
       it("plays when clicked", function() {
         expect(card.speaker.speak).not.toHaveBeenCalled();
         card.dom.querySelector(".tts-trigger").click();
-        expect(card.speaker.speak).toHaveBeenCalledWith("front text", "EN")
+        expect(card.speaker.speak).toHaveBeenCalledWith("front text", "EN");
       });
 
       it("does nothing if there is no TTS element", function() {
@@ -264,12 +265,14 @@ describe("Card", function() {
 
         beforeEach(function() {
           originalSpeechSynthesisUtterance = SpeechSynthesisUtterance;
+          /* eslint-disable-next-line no-global-assign */
           SpeechSynthesisUtterance = null;
           card = new Card(dom, "MyDeckName", "MyNoteType", "MyCardType");
           spyOn(card.speaker, "speak");
         });
 
         afterEach(function() {
+          /* eslint-disable-next-line no-global-assign */
           SpeechSynthesisUtterance = originalSpeechSynthesisUtterance;
         });
 
@@ -288,7 +291,7 @@ describe("Card", function() {
       it("hides word & auto-plays on the question side", function() {
         createTTSCard("MyCardTypeTTS");
         jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
-        expect(card.speaker.speak).toHaveBeenCalledWith("front text", "EN")
+        expect(card.speaker.speak).toHaveBeenCalledWith("front text", "EN");
         expect(card.dom.querySelector("#tts")).toBeHidden();
       });
 

@@ -1,3 +1,5 @@
+/* global Speaker */
+
 describe("Speaker", function() {
   var speaker;
 
@@ -56,11 +58,14 @@ describe("Speaker", function() {
     var originalSpeechSynthesisUtterance;
 
     beforeEach(function() {
+      /* eslint-disable no-global-assign */
       originalSpeechSynthesisUtterance = SpeechSynthesisUtterance;
       SpeechSynthesisUtterance = null;
+      /* eslint-enable no-global-assign */
     });
 
     afterEach(function() {
+      /* eslint-disable-next-line no-global-assign */
       SpeechSynthesisUtterance = originalSpeechSynthesisUtterance;
     });
 

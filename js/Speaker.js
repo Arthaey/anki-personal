@@ -1,10 +1,12 @@
+/* global appendDebug */
+
 function Speaker() {
   this.volume = 1; // 0 to 1
   this.rate = 0.9; // 0.1 to 9
   this.pitch = 1; // 0 to 2, 1=normal
 
   appendDebug("Speaker created; it can" + (this.canSpeak() ? "" : "not") + " speak.");
-};
+}
 
 Speaker.prototype.canSpeak = function() {
   return typeof SpeechSynthesisUtterance !== "undefined" && !!SpeechSynthesisUtterance;
@@ -34,7 +36,7 @@ Speaker.prototype.getLanguageAndCountryCode = function(languageCode) {
     "es": "MX",
     "ja": "JP",
     "ko": "KR",
-    "zh": "CN",
+    "zh": "CN"
   };
 
   languageCode = languageCode.toLowerCase();

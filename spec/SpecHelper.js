@@ -1,3 +1,5 @@
+/* global dom DOMCustomMatchers */
+
 window.dom = (function() {
   var elements = [];
 
@@ -27,7 +29,7 @@ window.dom = (function() {
         elements[i].remove();
       }
       elements = [];
-    }
+    },
   };
 })();
 
@@ -40,9 +42,9 @@ beforeAll(function() {
       return {
         compare: function(actualElement, expectedText) {
           return {
-            pass: actualElement.innerText === expectedText
+            pass: actualElement.innerText === expectedText,
           };
-        }
+        },
       };
     },
 
@@ -51,11 +53,11 @@ beforeAll(function() {
         compare: function(actualElement) {
           var style = window.getComputedStyle(actualElement);
           return {
-            pass: style.display === "none" || actualElement.classList.contains("hidden")
+            pass: style.display === "none" || actualElement.classList.contains("hidden"),
           };
-        }
+        },
       };
-    }
+    },
 
   });
 
@@ -74,6 +76,7 @@ function createCardFront() {
   return element;
 }
 
+/* eslint-disable-next-line no-unused-vars */
 function createCardFrontAndBack() {
   var element = createCardFront();
   element.innerHTML += cardBackHTML();
@@ -91,21 +94,22 @@ function cardBackHTML() {
     `;
 }
 
+/* eslint-disable-next-line no-unused-vars */
 function replaceAnkiVariable(template, name, value) {
   return template.replace(new RegExp("{{" + name + "}}"), value);
 }
 
 function getQueryParam(key) {
-   var query = window.location.search.substring(1);
-   var vars = query.split("&");
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
 
-   for (var i = 0; i < vars.length; i++) {
-     var pair = vars[i].split("=");
-     if (pair[0] === key) {
-       if (pair.length === 1) pair.push(true);
-       return pair[1];
-     }
-   }
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] === key) {
+      if (pair.length === 1) pair.push(true);
+      return pair[1];
+    }
+  }
 
-   return null;
+  return null;
 }

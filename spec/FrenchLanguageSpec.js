@@ -1,3 +1,5 @@
+/* global FrenchLanguage */
+
 describe("FrenchLanguage", function() {
   var infinitive;
   var tense;

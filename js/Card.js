@@ -1,3 +1,5 @@
+/* global Speaker EnglishLanguage FrenchLanguage appendDebug */
+
 function Card(dom, deckName, noteType, cardType, tags) {
   this.dom = this.requiredParam(dom, "dom");
   this.deckName = this.requiredParam(deckName, "deckName");
@@ -8,6 +10,11 @@ function Card(dom, deckName, noteType, cardType, tags) {
   // document.body.className gets overwritten by Anki Javascript that runs
   // later, so set the <html> documentElement instead.
   this.root = document && document.documentElement ? document.documentElement : dom;
+
+  var classes = [].slice.apply(this.getClassList());
+  this.originalAnkiClasses = classes.filter(function(className) {
+    return Card.ankiClassesWhitelist.includes(className);
+  });
 
   this.speaker = new Speaker();
 
@@ -32,7 +39,7 @@ function Card(dom, deckName, noteType, cardType, tags) {
 
 Card.prototype.requiredParam = function(value, name) {
   if (!value) {
-    console.error("Card paramater '" + name + "' is required.");
+    throw "Card parameter '" + name + "' is required.";
   }
   return value;
 };
@@ -43,21 +50,21 @@ Card.prototype.setupLayout = function() {
 
   var cardInfo = this.dom.querySelector(".card-info");
   if (!cardInfo) {
-    var tagsHtml = '';
+    var tagsHtml = "";
     var fullTags = (this.tags ? this.tags.split(/\s+/) : []);
     for (var i = 0; i < fullTags.length; i++) {
-      tagsHtml += '<span class="tag">' + this.leafify(fullTags[i]) + '</span>';
-    };
+      tagsHtml += '<span class="tag">' + this.leafify(fullTags[i]) + "</span>";
+    }
 
     cardInfo = front.ownerDocument.createElement("div");
     cardInfo.className = "card-info";
     cardInfo.innerHTML =
-        '<div class="tags">' + tagsHtml + '</div>' +
-        '<div class="slash"></div>' +
-        '<div class="deck">' +
-        '  <span id="deck">' + this.deckName + '</span>:' +
-        '  <span class="card-type">' + this.cardType + '</span>' +
-        '</div>'
+       '<div class="tags">' + tagsHtml + "</div>" +
+       '<div class="slash"></div>' +
+       '<div class="deck">' +
+       '  <span id="deck">' + this.deckName + "</span>:" +
+       '  <span class="card-type">' + this.cardType + "</span>" +
+       "</div>"
     ;
     front.parentNode.insertBefore(cardInfo, front);
   }
@@ -228,15 +235,8 @@ Card.prototype.hasClasses = function() {
   return this.getClassList().length != 0;
 };
 
-Card.ankiClasses = [
-  "webkit",
-  "safari",
-  "mac",
-  "js"
-];
-
 Card.prototype.setClasses = function(newClasses) {
-  this.root.className = Card.ankiClasses.join(" ") + " " + newClasses;
+  this.root.className = this.originalAnkiClasses.join(" ") + " " + newClasses;
 };
 
 Card.prototype.resetClasses = function() {
@@ -252,7 +252,7 @@ Card.prototype.getLanguageCode = function() {
     "Japanese": "JA",
     "Korean":   "KO",
     "Magyar":   "HU",
-    "Русский":  "RU",
+    "Русский":  "RU"
   };
 
   var langCode = "EN";
@@ -268,7 +268,7 @@ Card.prototype.getLanguageCode = function() {
   } else if (transLangCodeMatch) {
     langCode = transLangCodeMatch[2];
     if (langCode == "EN") {
-     langCode = transLangCodeMatch[1];
+      langCode = transLangCodeMatch[1];
     }
   }
 
@@ -283,7 +283,7 @@ Card.prototype.leafify = function(fullyQualifiedName) {
 
 Card.prototype.hasExpectedLayout = function() {
   return !!(
-      this.dom &&
+    this.dom &&
       this.dom.querySelector(".card-info") &&
       this.dom.querySelector(".tags") &&
       this.dom.querySelector(".deck") &&
@@ -292,7 +292,45 @@ Card.prototype.hasExpectedLayout = function() {
       this.dom.querySelector(".slash") &&
       this.dom.querySelector(".card.front") &&
       this.dom.querySelector("#debug")
-    );
+  );
 };
 
 Card.ttsAutoPlayDelay = 500; // milliseconds
+
+// https://rafael.adm.br/css_browser_selector/
+Card.ankiClassesWhitelist = [
+  "win",
+  "vista",
+  "linux",
+  "mac",
+  "freebsd",
+  "ipod",
+  "ipad",
+  "iphone",
+  "webtv",
+  "j2me",
+  "blackberry",
+  "android",
+  "mobile",
+  "ie",
+  "ie8",
+  "ie7",
+  "ie6",
+  "ie5",
+  "gecko",
+  "ff3_6",
+  "ff3_5",
+  "ff3",
+  "ff2",
+  "opera",
+  "opera10",
+  "opera9",
+  "opera8",
+  "konqueror",
+  "webkit",
+  "safari",
+  "safari3",
+  "chrome",
+  "iron",
+  "js"
+];

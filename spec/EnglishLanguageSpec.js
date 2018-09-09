@@ -1,3 +1,5 @@
+/* global EnglishLanguage */
+
 describe("EnglishLanguage", function() {
   describe("verbs in the present tense", function() {
     it("should conjugate first-person singular ('I')", function() {

@@ -40,9 +40,9 @@ mkdir -p $TEMP_DIR
 
 cat << EOF_JS > $GLOBAL_JS_FILE
 ////////////////////////////////////////////////////////////////////////////////
-var FILE_GENERATION_TIMESTAMP = '$NOW';
-var LATEST_GIT_SHA = '$LATEST_GIT_SHA';
-var GIT_STATUS = '$GIT_STATUS';
+var FILE_GENERATION_TIMESTAMP = "$NOW";
+var LATEST_GIT_SHA = "$LATEST_GIT_SHA";
+var GIT_STATUS = "$GIT_STATUS";
 ////////////////////////////////////////////////////////////////////////////////
 EOF_JS
 

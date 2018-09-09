@@ -1,3 +1,5 @@
+/* global dom setup cardFrontHTML cardBackHTML replaceAnkiVariable */
+
 describe("Style", function() {
   it("file generation information is hidden", function() {
     var cardEl = createCard();
@@ -30,13 +32,6 @@ describe("Style", function() {
     it("left-aligns text", function() {
       var cardEl = createCard("Cloze");
       expect(cardEl.querySelector(".card")).toHaveComputedStyle("text-align", "left");
-    });
-
-    it("adds quotation marks in the background", function() {
-      var cardEl = createCard("Cloze");
-      var front = cardEl.querySelector(".card.front");
-      expect(front).toHaveComputedStyle("content", '"“"', ":before");
-      expect(front).toHaveComputedStyle("content", '"”"', ":after");
     });
   });
 
@@ -125,7 +120,7 @@ describe("Style", function() {
       </html>
     `;
 
-    var cardEl = dom.createElement('testId', 'default content', { html: html });
+    var cardEl = dom.createElement("testId", "default content", { html: html });
     setup(cardEl, "MyDeck", "MyNote", cardType, tags);
     return cardEl;
   }

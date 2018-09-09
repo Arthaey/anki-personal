@@ -56,28 +56,41 @@ cite {
 .cloze .card.back {
   text-align: left;
   position: relative;
+}
 
-	&:before, &:after {
-    display: block;
-    font-size: $font-size * 2;
-    line-height: 1em;
-    color: map-get($colors, dark-gray);
+blockquote:before, blockquote:after {
+  display: block;
+  color: map-get($colors, dark-gray);
+  font-size: $font-size * 2;
+  line-height: 1em;
+
+  .iphone & {
+    margin: auto -0.25em;
+    text-indent: 2em;
   }
+}
 
-	&:before {
-    content: "\201C";
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding-left: 0.1em;
+blockquote:before {
+  content: "\201C";
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: 0.1em;
+
+  .iphone & {
+    margin-left: -0.5em;
   }
+}
 
-	&:after {
-    content: "\201D";
-    position: absolute;
-    bottom: -0.5em;
-    right: 0;
-    padding-right: 0.1em;
+blockquote:after {
+  content: "\201D";
+  position: absolute;
+  bottom: -0.5em;
+  right: 0;
+  padding-right: 0.1em;
+
+  .iphone & {
+    bottom: -0.2em;
   }
 }
 
@@ -143,6 +156,7 @@ body {
 .card-info {
   border-radius: $radius $radius 0 0;
   display: table;
+  vertical-align: middle;
   width: 100%;
 }
 
@@ -171,7 +185,6 @@ body {
 
 .deck {
   border-top-right-radius: $radius;
-  vertical-align: middle;
   text-align: right;
   white-space: nowrap;
 }
