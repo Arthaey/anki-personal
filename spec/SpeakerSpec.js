@@ -54,6 +54,8 @@ describe("Speaker", function() {
     expect(utterance.text).toMatch(/^some +stuff$/);
   });
 
+  it("says Spanish verbs that end in '(se)'");
+
   describe("when Speech API is unavailable", function() {
     var originalSpeechSynthesisUtterance;
 
