@@ -26,6 +26,10 @@ $answer-buttons-iphone-height: 100px;
 
 .card.back {
   font-weight: bold;
+
+  .repeated-info {
+    font-weight: normal;
+  }
 }
 
 .cloze,
@@ -487,6 +491,11 @@ body {
 .card .cloze {
   font-weight: bold;
   color: red;
+}
+
+.flag-country .card img,
+.map-country .card img {
+  border: 1px solid black;
 }
 
 .correct {
