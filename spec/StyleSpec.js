@@ -26,6 +26,11 @@ describe("Style", function() {
       var cardEl = createCard("MyCard");
       expect(cardEl.querySelector(".card")).toHaveComputedStyle("text-align", "center");
     });
+
+    it("makes 'small-text' smaller", function() {
+      var cardEl = createCard("MyCard", "", "<span class='small-text'>foo</span>");
+      expect(cardEl.querySelector(".small-text")).toHaveComputedStyle("font-size", "24px");
+    });
   });
 
   describe("cloze cards", function() {
@@ -97,12 +102,13 @@ describe("Style", function() {
 
   });
 
-  function createCard(cardType, tags) {
+  function createCard(cardType, tags, questionHtml) {
     if (!cardType) cardType = "MyCard";
     if (!tags) tags = "MyTags";
+    if (!questionHtml) questionHtml = "front question";
 
     var frontHtml = cardFrontHTML();
-    frontHtml = replaceAnkiVariable(frontHtml, "Front", "front question");
+    frontHtml = replaceAnkiVariable(frontHtml, "Front", questionHtml);
     frontHtml = replaceAnkiVariable(frontHtml, "Card", cardType);
     frontHtml = replaceAnkiVariable(frontHtml, "LeafTags", tags);
 
