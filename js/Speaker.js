@@ -15,7 +15,7 @@ Speaker.prototype.canSpeak = function() {
 Speaker.prototype.speak = function(text, languageCode) {
   if (!this.canSpeak()) return;
   var utterance = new SpeechSynthesisUtterance();
-  utterance.text = this.normalizeText(text);
+  utterance.text = this.normalizeText(text, languageCode);
   utterance.lang = this.getLanguageAndCountryCode(languageCode);
   utterance.volume = this.volume;
   utterance.rate = this.rate;
@@ -24,9 +24,15 @@ Speaker.prototype.speak = function(text, languageCode) {
   speechSynthesis.speak(utterance);
 };
 
-Speaker.prototype.normalizeText = function(text) {
+Speaker.prototype.normalizeText = function(text, languageCode) {
   text = text.replace(/\/.*?\//g, "");
-  text = text.replace(/\(.*?\)/g, "");
+
+  if (languageCode === "ES" && text.endsWith("(se)")) {
+    text = text.replace("(se)", "se");
+  } else {
+    text = text.replace(/\(.*?\)/g, "");
+  }
+
   return text;
 };
 

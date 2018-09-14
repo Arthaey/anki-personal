@@ -54,7 +54,23 @@ describe("Speaker", function() {
     expect(utterance.text).toMatch(/^some +stuff$/);
   });
 
-  it("says Spanish verbs that end in '(se)'");
+  it("says Spanish words that end in '(se)'", function() {
+    speaker.speak("llamar(se)", "ES");
+    var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+    expect(utterance.text).toMatch(/^llamarse$/);
+  });
+
+  it("does not says Spanish cards that contain in '(se)'", function() {
+    speaker.speak("llamar(se) así", "ES");
+    var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+    expect(utterance.text).toMatch(/^llamar +así$/);
+  });
+
+  it("does not says non-Spanish words that end in '(se)'", function() {
+    speaker.speak("llamar(se)", "EN");
+    var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+    expect(utterance.text).toMatch(/^llamar$/);
+  });
 
   describe("when Speech API is unavailable", function() {
     var originalSpeechSynthesisUtterance;
