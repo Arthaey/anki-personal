@@ -224,20 +224,34 @@ Card.prototype.setupCitations = function() {
   var citation = this.dom.querySelector("cite");
   if (!citation) return "Card does not have any citations.";
 
-  var source;
-  var tags = this.tags.split(/\s+/);
-  for (var i = 0; i < tags.length; i++) {
-    if (tags[i].startsWith("source::")) {
-      source = tags[i];
+  var urlRegex = /^https?:\/\/(([^/]+)(\/[^/#]+)+.*$)/;
+  var match = citation.innerText.match(urlRegex);
+  if (match) {
+    var LONG_URL_CUTOFF = 20;
+    var urlWithoutProtocol = match[1];
+    var truncatedUrl = match[2] + "/..." + match[3];
+    var shortUrl = (match[1].length <= LONG_URL_CUTOFF) ? urlWithoutProtocol : truncatedUrl;
+    citation.innerHTML = shortUrl;
+  }
+
+  if (this.tags) {
+    var sourceTag;
+
+    var tags = this.tags.split(/\s+/);
+    for (var i = 0; i < tags.length; i++) {
+      if (tags[i].startsWith("source::")) {
+        sourceTag = tags[i];
+      }
+    }
+
+    if (sourceTag) {
+      sourceTag = this.leafify(sourceTag);
+      sourceTag = sourceTag[0].toUpperCase() + sourceTag.substring(1);
+      citation.innerHTML = sourceTag + ", " + citation.innerHTML;
     }
   }
 
-  if (!source) return "No source tags.";
-  source = this.leafify(source);
-  source = source[0].toUpperCase() + source.substring(1);
-
-  citation.innerHTML = source + ", " + citation.innerHTML;
-  return "Citation source = " + source;
+  return "Citation source = " + citation.innerHTML;
 };
 
 Card.prototype.speakFn = function(text) {

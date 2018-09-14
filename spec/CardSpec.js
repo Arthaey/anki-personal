@@ -67,8 +67,10 @@ describe("Card", function() {
       expect(card.dom.querySelectorAll(".card-info").length).toBe(1);
       expect(card.dom.querySelectorAll("#debug").length).toBe(1);
     });
+  });
 
-    it("adds citation from source", function() {
+  describe("citations", function() {
+    it("adds source from tag", function() {
       var cardHtml = `
         <div class="card front">
           <cite>p42</cite>
@@ -83,7 +85,37 @@ describe("Card", function() {
       expect(citation).toHaveText("Bar, p42");
     });
 
-    it("does NOT add citation when there is no source", function() {
+    it("truncates long URL citations", function() {
+      var cardHtml = `
+        <div class="card front">
+          <cite>https://example.com/foo/bar/baz/long/url/testing#1234567890</cite>
+        </div>
+      `;
+
+      var element = dom.createElement("container");
+      element.innerHTML = cardHtml;
+      card = new Card(element, "deck", "note", "card");
+
+      var citation = card.dom.querySelector("cite");
+      expect(citation).toHaveText("example.com/.../testing");
+    });
+
+    it("does NOT truncate short URL citations", function() {
+      var cardHtml = `
+        <div class="card front">
+          <cite>https://example.com/foo</cite>
+        </div>
+      `;
+
+      var element = dom.createElement("container");
+      element.innerHTML = cardHtml;
+      card = new Card(element, "deck", "note", "card");
+
+      var citation = card.dom.querySelector("cite");
+      expect(citation).toHaveText("example.com/foo");
+    });
+
+    it("does NOT add citation when there is no tag source", function() {
       var cardHtml = `
         <div class="card front">
           <cite>p42</cite>
