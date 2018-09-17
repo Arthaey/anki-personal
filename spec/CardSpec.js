@@ -212,6 +212,8 @@ describe("Card", function() {
       expect(card.getClassList()).toContain("es");
     });
 
+    it("adds 'small-text' to long cards");
+
     it("adds each of deck/note/card/tag to classes too", function() {
       card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
       card.setupClasses();
