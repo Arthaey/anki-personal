@@ -229,7 +229,7 @@ Card.prototype.setupCitations = function() {
   if (match) {
     var LONG_URL_CUTOFF = 20;
     var urlWithoutProtocol = match[1];
-    var truncatedUrl = match[2] + "/..." + match[3];
+    var truncatedUrl = match[2];
     var shortUrl = (match[1].length <= LONG_URL_CUTOFF) ? urlWithoutProtocol : truncatedUrl;
     citation.innerHTML = shortUrl;
   }

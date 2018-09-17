@@ -97,7 +97,7 @@ describe("Card", function() {
       card = new Card(element, "deck", "note", "card");
 
       var citation = card.dom.querySelector("cite");
-      expect(citation).toHaveText("example.com/.../testing");
+      expect(citation).toHaveText("example.com");
     });
 
     it("does NOT truncate short URL citations", function() {
