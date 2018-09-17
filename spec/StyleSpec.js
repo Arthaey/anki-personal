@@ -28,8 +28,8 @@ describe("Style", function() {
     });
 
     it("makes 'small-text' smaller", function() {
-      var cardEl = createCard("MyCard", "", "<span class='small-text'>foo</span>");
-      expect(cardEl.querySelector(".small-text")).toHaveComputedStyle("font-size", "24px");
+      var cardEl = createCard("MyCard", "style::small-text", "<span id='foo'>foo</span>");
+      expect(cardEl.querySelector("#foo")).toHaveComputedStyle("font-size", "24px");
     });
   });
 
