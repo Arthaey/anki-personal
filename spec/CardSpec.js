@@ -241,6 +241,12 @@ describe("Card", function() {
       expect(card.getClassList()).toContain("a-b");
     });
 
+    it("replaces space-dash-space with a dash", function() {
+      card = createCard("a - b");
+      card.setupClasses();
+      expect(card.getClassList()).toContain("a-b");
+    });
+
     it("replaces subdeck-separators with dashes", function() {
       card = createCard("a::b");
       card.setupClasses();
