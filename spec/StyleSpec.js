@@ -31,6 +31,8 @@ describe("Style", function() {
       var cardEl = createCard("MyCard", "style::small-text", "<span id='foo'>foo</span>");
       expect(cardEl.querySelector("#foo")).toHaveComputedStyle("font-size", "24px");
     });
+
+    it("shows a sailboat emoji for sailing tags");
   });
 
   describe("cloze cards", function() {
