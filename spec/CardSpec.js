@@ -156,59 +156,48 @@ describe("Card", function() {
   describe("sets CSS classes", function() {
     it("removes existing custom classes", function() {
       document.documentElement.className = "foo bar";
-
       card = createCard();
-      card.setupClasses();
-
       expect(card.getClassList()).not.toContain("foo");
       expect(card.getClassList()).not.toContain("bar");
     });
 
     it("adds 'tts' for TTS cards", function() {
       card = createCard("deck-tts");
-      card.setupClasses();
       expect(card.getClassList()).toContain("tts");
     });
 
     it("adds 'asl' for ASL cards", function() {
       card = createCard("deck-asl");
-      card.setupClasses();
       expect(card.getClassList()).toContain("asl");
     });
 
     it("adds 'es-only' for monolingual Spanish clozes", function() {
       card = createCard("Foo::Español::Bar", "Cloze");
-      card.setupClasses();
       expect(card.getClassList()).toContain("es-only");
     });
 
     it("adds 'fr-only' for monolingual French clozes", function() {
       card = createCard("Foo::Français::Bar", "Cloze");
-      card.setupClasses();
       expect(card.getClassList()).toContain("fr-only");
     });
 
     it("adds 'de-only' for monolingual German clozes", function() {
       card = createCard("Foo::Deutsch::Bar", "Cloze");
-      card.setupClasses();
       expect(card.getClassList()).toContain("de-only");
     });
 
     it("does NOT add '*-only' for non-clozes", function() {
       card = createCard("Foo::Español::Bar", "not-Cloze");
-      card.setupClasses();
       expect(card.getClassList()).not.toContain("es-only");
     });
 
     it("adds non-English language for translation pair X → EN", function() {
       card = createCard("Foo", "not-Cloze", "ES → EN");
-      card.setupClasses();
       expect(card.getClassList()).toContain("es");
     });
 
     it("adds non-English language for translation pair EN → X", function() {
       card = createCard("Foo", "not-Cloze", "EN → ES");
-      card.setupClasses();
       expect(card.getClassList()).toContain("es");
     });
 
@@ -216,7 +205,6 @@ describe("Card", function() {
 
     it("adds each of deck/note/card/tag to classes too", function() {
       card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
-      card.setupClasses();
       expect(card.getClassList()).toContain("mydeckname");
       expect(card.getClassList()).toContain("mynotetype");
       expect(card.getClassList()).toContain("mycardtype");
@@ -225,39 +213,33 @@ describe("Card", function() {
 
     it("makes lowercase", function() {
       card = createCard("LOWERCASE");
-      card.setupClasses();
       expect(card.getClassList()).not.toContain("LOWERCASE");
       expect(card.getClassList()).toContain("lowercase");
     });
 
     it("replaces arrows with dashes", function() {
       card = createCard("a → b", "c ⇔ d");
-      card.setupClasses();
       expect(card.getClassList()).toContain("a-b");
       expect(card.getClassList()).toContain("c-d");
     });
 
     it("replaces spaces with dashes", function() {
       card = createCard("a b");
-      card.setupClasses();
       expect(card.getClassList()).toContain("a-b");
     });
 
     it("replaces space-dash-space with a dash", function() {
       card = createCard("a - b");
-      card.setupClasses();
       expect(card.getClassList()).toContain("a-b");
     });
 
     it("replaces subdeck-separators with dashes", function() {
       card = createCard("a::b");
-      card.setupClasses();
       expect(card.getClassList()).toContain("a-b");
     });
 
     it("replaces '-tts' with '-only'", function() {
       card = createCard("es-tts");
-      card.setupClasses();
       expect(card.getClassList()).toContain("es-only");
     });
 
@@ -434,16 +416,12 @@ describe("Card", function() {
 
     it("ignores French NON-verb cards", function() {
       card = createCard("MyDeckName", "Verbs: French", "not a verb card actually");
-      card.setupVerbs();
-
       expect(FrenchLanguage.conjugate).not.toHaveBeenCalled();
       expect(EnglishLanguage.conjugate).not.toHaveBeenCalled();
     });
 
     it("ignores non-French", function() {
       card = createCard("Verbs: Not-French", "1sgPres");
-      card.setupVerbs();
-
       expect(FrenchLanguage.conjugate).not.toHaveBeenCalled();
       expect(EnglishLanguage.conjugate).not.toHaveBeenCalled();
     });
