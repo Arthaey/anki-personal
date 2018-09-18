@@ -1,4 +1,4 @@
-/* global setup createCardFrontAndBack FILE_GENERATION_TIMESTAMP LATEST_GIT_SHA GIT_STATUS */
+/* global setup createCard createCardFrontAndBack FILE_GENERATION_TIMESTAMP LATEST_GIT_SHA GIT_STATUS */
 
 describe("Global", function() {
 
@@ -10,7 +10,7 @@ describe("Global", function() {
   });
 
   it("sets up short deck name", function() {
-    var dom = createCard({deck: "MyDeckName::SubDeck", return: "element"});
+    var dom = createCard({ deck: "MyDeckName::SubDeck", return: "element" });
     expect(dom.querySelector("#deck")).toHaveText("SubDeck");
   });
 
@@ -18,7 +18,7 @@ describe("Global", function() {
     /* eslint-disable-next-line no-global-assign */
     FILE_GENERATION_TIMESTAMP = "Thu Sep 6 22:25:02 PDT 2018";
 
-    var dom = createCard({return: "element"});
+    var dom = createCard({ return: "element" });
     var timestamp = dom.querySelector("#file-generation-info");
     expect(timestamp).toContainText(`Updated: ${FILE_GENERATION_TIMESTAMP}`);
   });
@@ -27,7 +27,7 @@ describe("Global", function() {
     /* eslint-disable-next-line no-global-assign */
     LATEST_GIT_SHA = "abc123";
 
-    var dom = createCard({return: "element"});
+    var dom = createCard({ return: "element" });
     var timestamp = dom.querySelector("#file-generation-info");
     expect(timestamp).toContainText(LATEST_GIT_SHA);
   });
@@ -36,7 +36,7 @@ describe("Global", function() {
     /* eslint-disable-next-line no-global-assign */
     GIT_STATUS = "SOME STATUS";
 
-    var dom = createCard({return: "element"});
+    var dom = createCard({ return: "element" });
     var timestamp = dom.querySelector("#file-generation-info");
     expect(timestamp).toContainText(GIT_STATUS);
   });
@@ -48,7 +48,7 @@ describe("Global", function() {
     GIT_STATUS = null;
     /* eslint-enable no-global-assign */
 
-    var dom = createCard({return: "element"});
+    var dom = createCard({ return: "element" });
     var timestamp = dom.querySelector("#file-generation-info");
     expect(timestamp).toContainText("Updated: unknown");
   });

@@ -1,4 +1,4 @@
-/* global dom setup cardFrontHTML cardBackHTML replaceAnkiVariable */
+/* global createCardAsElement */
 
 describe("Style", function() {
   it("file generation information is hidden", function() {
@@ -10,7 +10,7 @@ describe("Style", function() {
 
   it("handles long tags", function() {
     var longTags = "long-tags ".repeat(40);
-    var cardEl = createCardAsElement({card: "MyCard::MyCard::MyCard::MyCard", tags: longTags});
+    var cardEl = createCardAsElement({ card: "MyCard::MyCard::MyCard::MyCard", tags: longTags });
 
     var header = cardEl.querySelector(".card-info");
     var headerHeight = getComputedStyle(header).getPropertyValue("height");
@@ -28,7 +28,7 @@ describe("Style", function() {
     });
 
     it("makes 'small-text' smaller", function() {
-      var cardEl = createCardAsElement({tags: "style::small-text"});
+      var cardEl = createCardAsElement({ tags: "style::small-text" });
       expect(cardEl.querySelector(".card.front")).toHaveComputedStyle("font-size", "24px");
     });
 
@@ -37,7 +37,7 @@ describe("Style", function() {
 
   describe("cloze cards", function() {
     it("left-aligns text", function() {
-      var cardEl = createCardAsElement({card: "Cloze"});
+      var cardEl = createCardAsElement({ card: "Cloze" });
       expect(cardEl.querySelector(".card")).toHaveComputedStyle("text-align", "left");
     });
   });
@@ -71,7 +71,7 @@ describe("Style", function() {
 
     function headerHasGradient(cardType) {
       it(`header has a gradient (${cardType})`, function() {
-        var cardEl = createCardAsElement({card: cardType});
+        var cardEl = createCardAsElement({ card: cardType });
         var header = cardEl.querySelector(".card-info");
         expect(header).toHaveComputedStyle("background", /linear-gradient/);
       });
@@ -79,7 +79,7 @@ describe("Style", function() {
 
     function deckNameHasBackgroundColor(cardType, color) {
       it(`deck name has a background color (${cardType})`, function() {
-        var cardEl = createCardAsElement({card: cardType});
+        var cardEl = createCardAsElement({ card: cardType });
         var header = cardEl.querySelector(".deck");
         expect(header).toHaveComputedColor("background-color", color);
       });
@@ -87,7 +87,7 @@ describe("Style", function() {
 
     function showsFlag(cardType, langCode) {
       it(`shows the flag (${cardType})`, function() {
-        var cardEl = createCardAsElement({card: cardType});
+        var cardEl = createCardAsElement({ card: cardType });
         var flag = cardEl.querySelector(".card-type");
         var flagRegex = new RegExp(`_flag-${langCode}.png`);
         expect(flag).toHaveComputedStyle("content", flagRegex, ":after");
@@ -96,7 +96,7 @@ describe("Style", function() {
 
     function showsSpeakerIcon(cardType) {
       it(`shows speaker icon (${cardType})`, function() {
-        var cardEl = createCardAsElement({card: cardType});
+        var cardEl = createCardAsElement({ card: cardType });
         var tts = cardEl.querySelector(".tts-trigger");
         expect(tts).toHaveComputedStyle("background-image", /speaker-32x32.png/);
       });

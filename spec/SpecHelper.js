@@ -1,4 +1,4 @@
-/* global dom DOMCustomMatchers */
+/* global setup Card dom DOMCustomMatchers */
 
 window.dom = (function() {
   var elements = [];
@@ -120,7 +120,7 @@ function createCard(params) {
   }
 
   var card;
-  if (params.return !== 'card') {
+  if (params.return !== "card") {
     setup(el, params.deck, params.note, params.card, params.tags);
   } else {
     card = new Card(el, params.deck, params.note, params.card, params.tags);
@@ -136,15 +136,17 @@ function createCard(params) {
   }
 }
 
+/* eslint-disable-next-line no-unused-vars */
 function createCardAsHtml(params) {
   if (!params) params = {};
-  params.return = 'html';
+  params.return = "html";
   return createCard(params);
 }
 
+/* eslint-disable-next-line no-unused-vars */
 function createCardAsElement(params) {
   if (!params) params = {};
-  params.return = 'element';
+  params.return = "element";
   return createCard(params);
 }
 

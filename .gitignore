@@ -1,5 +1,4 @@
 .env
-.vscode/
 
 # Generated files
 css/*.css

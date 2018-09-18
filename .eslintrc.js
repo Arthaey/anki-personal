@@ -1,39 +1,45 @@
 module.exports = {
-	"env": { "browser": true },
-	"extends": "eslint:recommended",
-	"parserOptions": { "ecmaVersion": 5 },
+  "env": { "browser": true },
+  "extends": "eslint:recommended",
+  "parserOptions": { "ecmaVersion": 5 },
 
-	"rules": {
+  "rules": {
 
-    "array-bracket-spacing": [ "error", "always", {
-			"singleValue": false,
-			"objectsInArrays": false,
-		}],
+    "array-bracket-spacing": ["error", "always", {
+      "singleValue": false,
+      "objectsInArrays": false,
+    }],
 
-    "comma-dangle": [ "error", "never" ],
+    "comma-dangle": ["error", "never"],
 
-		"indent":          [ "error", 2 ],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
 
-		"linebreak-style": [ "error", "unix" ],
+    "linebreak-style": ["error", "unix"],
 
-    "no-alert":        [ "error" ],
+    "no-alert": ["error"],
 
-    "no-unused-vars":  [ "error", {
+    "no-unused-vars": ["error", {
       "vars": "all",
       "args": "all",
       "varsIgnorePattern": "^_",
       "argsIgnorePattern": "^_",
     }],
 
-		"object-curly-spacing": [ "error", "always" ],
+    "object-curly-spacing": ["error", "always"],
 
-		"quotes":          [ "error", "double", {
+    "quotes": ["error", "double", {
       "avoidEscape": true,
-		}],
+    }],
 
-		"semi":            [ "error", "always" ],
+    "semi": ["error", "always"],
 
-	},
+    "space-before-function-paren": ["error", {
+      "anonymous": "never",
+      "named": "never",
+      "asyncArrow": "always"
+    }],
+
+  },
 
   "overrides": [
     {
@@ -44,7 +50,7 @@ module.exports = {
       "parserOptions": { "ecmaVersion": 6 },
 
       "rules": {
-        "comma-dangle": [ "error", "always-multiline" ],
+        "comma-dangle": ["error", "always-multiline"],
       }
     },
   ],
