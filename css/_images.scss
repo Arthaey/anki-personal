@@ -6,12 +6,15 @@
   top: -0.1em;
 }
 
-@mixin icon($image) {
-  & .deck *:last-child:after {
+@mixin topic_icon($topic) {
+  .topics-#{$topic}      .deck *:last-child:after,
+  [class^="topics-#{$topic}-"]  .deck *:last-child:after,
+  [class*=" topics-#{$topic}-"] .deck *:last-child:after
+  {
     @extend %icon-base;
     background-color: map-get($colors, very-light-gray);
     border-radius: 0.25em;
-    content: url($image);
+    content: url("_topics-#{$topic}.png");
     height: 1.2em;
     padding: 0.1em 0.2em 0.3em 0.2em;
   }

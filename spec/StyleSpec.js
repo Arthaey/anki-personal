@@ -31,6 +31,15 @@ describe("Style", function() {
       var cardEl = createCardAsElement({ tags: "style::small-text" });
       expect(cardEl.querySelector(".card.front")).toHaveComputedStyle("font-size", "24px");
     });
+  });
+
+  describe("topic icons", function() {
+    it("shows a globe icon for geography tags", function() {
+      var cardEl = createCardAsElement({ tags: "topics::geography::state" });
+      var cardTypeEl = cardEl.querySelector(".card-type");
+      var regex = new RegExp("_topics-geography.png");
+      expect(cardTypeEl).toHaveComputedStyle("content", regex, ":after");
+    });
 
     it("shows a sailboat icon for sailing tags", function() {
       var cardEl = createCardAsElement({ tags: "topics::sailing" });

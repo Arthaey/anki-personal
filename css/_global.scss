@@ -535,6 +535,5 @@ hr.hidden {
   margin-bottom: 1em;
 }
 
-.topics-sailing {
-  @include icon("_topics-sailing.png");
-}
+@include topic_icon("sailing");
+@include topic_icon("geography");
