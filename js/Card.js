@@ -128,6 +128,15 @@ Card.prototype.setupClasses = function() {
   newClasses += " " + this.getLanguageCode() + " ";
   newClasses = newClasses.replace("-tts", "-only");
 
+  var LONG_TEXT_CUTOFF = 40;
+  var front = this.dom.querySelector(".card.front");
+  var back = this.dom.querySelector(".card.back");
+  if ((front && front.innerText.split("").length > LONG_TEXT_CUTOFF) ||
+      (back && back.innerText.split("").length > LONG_TEXT_CUTOFF))
+  {
+    newClasses += " style-small-text";
+  }
+
   this.setClasses(newClasses.toLowerCase());
 
   return "Classes = '" + newClasses.toLowerCase() + "'.";

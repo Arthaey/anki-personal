@@ -172,7 +172,15 @@ describe("Card", function() {
       expect(card.getClassList()).toContain("es");
     });
 
-    it("adds 'small-text' to cards with long front text");
+    it("adds 'small-text' to cards with long front text", function() {
+      card = createCard({front: "x".repeat(41)});
+      expect(card.getClassList()).toContain("style-small-text");
+    });
+
+    it("adds 'small-text' to cards with long back text", function() {
+      card = createCard({back: "x".repeat(41), includeBack: true});
+      expect(card.getClassList()).toContain("style-small-text");
+    });
 
     it("adds each of deck/note/card/tag to classes too", function() {
       card = createCard({
