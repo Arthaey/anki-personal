@@ -32,7 +32,12 @@ describe("Style", function() {
       expect(cardEl.querySelector(".card.front")).toHaveComputedStyle("font-size", "24px");
     });
 
-    it("shows a sailboat emoji for sailing tags");
+    it("shows a sailboat icon for sailing tags", function() {
+      var cardEl = createCardAsElement({ tags: "topics::sailing" });
+      var cardTypeEl = cardEl.querySelector(".card-type");
+      var regex = new RegExp("_topics-sailing.png");
+      expect(cardTypeEl).toHaveComputedStyle("content", regex, ":after");
+    });
   });
 
   describe("cloze cards", function() {
@@ -88,9 +93,9 @@ describe("Style", function() {
     function showsFlag(cardType, langCode) {
       it(`shows the flag (${cardType})`, function() {
         var cardEl = createCardAsElement({ card: cardType });
-        var flag = cardEl.querySelector(".card-type");
-        var flagRegex = new RegExp(`_flag-${langCode}.png`);
-        expect(flag).toHaveComputedStyle("content", flagRegex, ":after");
+        var cardTypeEl = cardEl.querySelector(".card-type");
+        var regex = new RegExp(`_flag-${langCode}.png`);
+        expect(cardTypeEl).toHaveComputedStyle("content", regex, ":after");
       });
     }
 

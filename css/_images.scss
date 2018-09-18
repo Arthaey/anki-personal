@@ -1,0 +1,25 @@
+%icon-base {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  right: -0.5em;
+  top: -0.1em;
+}
+
+@mixin icon($image) {
+  & .deck *:last-child:after {
+    @extend %icon-base;
+    background-color: map-get($colors, very-light-gray);
+    border-radius: 0.25em;
+    content: url($image);
+    height: 1.2em;
+    padding: 0.1em 0.2em 0.3em 0.2em;
+  }
+}
+
+@mixin flag($langCode) {
+  & *:last-child:after {
+    @extend %icon-base;
+    content: url("_flag-#{$langCode}.png");
+  }
+}

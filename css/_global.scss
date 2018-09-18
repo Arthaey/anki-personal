@@ -2,6 +2,7 @@
 
 @import 'text-stroke';
 @import 'colors';
+@import 'images';
 @import 'language';
 
 $font-size: 48px;
@@ -532,4 +533,8 @@ hr.hidden {
 
 .prompt {
   margin-bottom: 1em;
+}
+
+.topics-sailing {
+  @include icon("_topics-sailing.png");
 }

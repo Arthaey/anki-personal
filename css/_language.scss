@@ -32,10 +32,8 @@
   .#{$targetLang},
   .#{$targetLang}-only {
     @include cardStyle($color);
-
-    .deck *:last-child:after {
-      content: url("_flag-#{$targetLang}.png");
-      margin-left: 10px;
+    .deck {
+      @include flag($targetLang);
     }
   }
 }
@@ -73,13 +71,9 @@
     }
 
     .deck {
+      @include flag($targetLang);
       background-color: $targetDark;
       color: $targetVeryLight;
-    }
-
-    .deck *:last-child:after {
-      content: url("_flag-#{$targetLang}.png");
-      margin-left: 10px;
     }
 
     .slash {
@@ -103,13 +97,9 @@
     }
 
     .deck {
+      @include flag($targetLang);
       background-color: $sourceDark;
       color: $sourceVeryLight;
-    }
-
-    .deck *:last-child:after {
-      content: url("_flag-#{$targetLang}.png");
-      margin-left: 10px;
     }
 
     .slash {
