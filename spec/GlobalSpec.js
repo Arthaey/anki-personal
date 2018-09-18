@@ -2,13 +2,15 @@
 
 describe("Global", function() {
 
-  it("sets up short deck name", function() {
+  it("replaces any existing HTML", function() {
     var dom = createCardFrontAndBack();
     var startingHTML = dom.outerHTML;
-
-    setup(dom, "MyDeckName::SubDeck", "MyNoteType", "MyCardType", "MyTags");
-
+    setup(dom, "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
     expect(dom.outerHTML).not.toBe(startingHTML);
+  });
+
+  it("sets up short deck name", function() {
+    var dom = createCard({deck: "MyDeckName::SubDeck", return: "element"});
     expect(dom.querySelector("#deck")).toHaveText("SubDeck");
   });
 
@@ -16,9 +18,7 @@ describe("Global", function() {
     /* eslint-disable-next-line no-global-assign */
     FILE_GENERATION_TIMESTAMP = "Thu Sep 6 22:25:02 PDT 2018";
 
-    var dom = createCardFrontAndBack();
-    setup(dom, "MyDeckName::SubDeck", "MyNoteType", "MyCardType", "MyTags");
-
+    var dom = createCard({return: "element"});
     var timestamp = dom.querySelector("#file-generation-info");
     expect(timestamp).toContainText(`Updated: ${FILE_GENERATION_TIMESTAMP}`);
   });
@@ -27,9 +27,7 @@ describe("Global", function() {
     /* eslint-disable-next-line no-global-assign */
     LATEST_GIT_SHA = "abc123";
 
-    var dom = createCardFrontAndBack();
-    setup(dom, "MyDeckName::SubDeck", "MyNoteType", "MyCardType", "MyTags");
-
+    var dom = createCard({return: "element"});
     var timestamp = dom.querySelector("#file-generation-info");
     expect(timestamp).toContainText(LATEST_GIT_SHA);
   });
@@ -38,9 +36,7 @@ describe("Global", function() {
     /* eslint-disable-next-line no-global-assign */
     GIT_STATUS = "SOME STATUS";
 
-    var dom = createCardFrontAndBack();
-    setup(dom, "MyDeckName::SubDeck", "MyNoteType", "MyCardType", "MyTags");
-
+    var dom = createCard({return: "element"});
     var timestamp = dom.querySelector("#file-generation-info");
     expect(timestamp).toContainText(GIT_STATUS);
   });
@@ -52,9 +48,7 @@ describe("Global", function() {
     GIT_STATUS = null;
     /* eslint-enable no-global-assign */
 
-    var dom = createCardFrontAndBack();
-    setup(dom, "MyDeckName::SubDeck", "MyNoteType", "MyCardType", "MyTags");
-
+    var dom = createCard({return: "element"});
     var timestamp = dom.querySelector("#file-generation-info");
     expect(timestamp).toContainText("Updated: unknown");
   });

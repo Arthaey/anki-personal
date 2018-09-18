@@ -1,14 +1,7 @@
-/* global Card EnglishLanguage FrenchLanguage dom createCardFront createCardFrontAndBack */
+/* global Card EnglishLanguage FrenchLanguage dom createCardFront */
 
 describe("Card", function() {
   var card;
-
-  function createCard(deckName, noteType, cardType) {
-    if (!deckName) deckName = "MyDeckName";
-    if (!noteType) noteType = "MyNoteType";
-    if (!cardType) cardType = "MyCardType";
-    return new Card(createCardFront(), deckName, noteType, cardType);
-  }
 
   beforeEach(function() {
     card = createCard();
@@ -27,12 +20,11 @@ describe("Card", function() {
   });
 
   it("knows when it's on the question side", function() {
-    card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType");
     expect(card.isQuestionSide()).toBe(true);
   });
 
   it("knows when it's on the answer side", function() {
-    card = new Card(createCardFrontAndBack(), "MyDeckName", "MyNoteType", "MyCardType");
+    card = createCard({includeBack: true});
     expect(card.isQuestionSide()).toBe(false);
   });
 
@@ -43,7 +35,7 @@ describe("Card", function() {
 
     it("missing layout", function() {
       var element = dom.createElement("container");
-      var missingCard = new Card(element, "MyDeckName", "MyNoteType", "MyCardType");
+      var missingCard = createCard({domElement: element});
       expect(missingCard.hasExpectedLayout()).toBe(false);
     });
 
@@ -62,7 +54,7 @@ describe("Card", function() {
 
       var element = dom.createElement("container");
       element.innerHTML = fullHtml;
-      card = new Card(element, "MyDeckName", "MyNoteType", "MyCardType");
+      card = createCard({domElement: element});
 
       expect(card.dom.querySelectorAll(".card-info").length).toBe(1);
       expect(card.dom.querySelectorAll("#debug").length).toBe(1);
@@ -71,60 +63,38 @@ describe("Card", function() {
 
   describe("citations", function() {
     it("adds source from tag", function() {
-      var cardHtml = `
-        <div class="card front">
-          <cite>p42</cite>
-        </div>
-      `;
-
-      var element = dom.createElement("container");
-      element.innerHTML = cardHtml;
-      card = new Card(element, "deck", "note", "card", "abc source::foo::bar xyz");
+      card = createCard({
+        front: "<cite>p42</cite>",
+        tags: "abc source::foo::bar xyz"
+      });
 
       var citation = card.dom.querySelector("cite");
       expect(citation).toHaveText("Bar, p42");
     });
 
     it("truncates long URL citations", function() {
-      var cardHtml = `
-        <div class="card front">
-          <cite>https://example.com/foo/bar/baz/long/url/testing#1234567890</cite>
-        </div>
-      `;
-
-      var element = dom.createElement("container");
-      element.innerHTML = cardHtml;
-      card = new Card(element, "deck", "note", "card");
+      card = createCard({
+        front: "<cite>https://example.com/foo/bar/baz/long/url/testing#1234567890</cite>"
+      });
 
       var citation = card.dom.querySelector("cite");
       expect(citation).toHaveText("example.com");
     });
 
     it("does NOT truncate short URL citations", function() {
-      var cardHtml = `
-        <div class="card front">
-          <cite>https://example.com/foo</cite>
-        </div>
-      `;
-
-      var element = dom.createElement("container");
-      element.innerHTML = cardHtml;
-      card = new Card(element, "deck", "note", "card");
+      card = createCard({
+        front: "<cite>https://example.com/foo</cite>"
+      });
 
       var citation = card.dom.querySelector("cite");
       expect(citation).toHaveText("example.com/foo");
     });
 
     it("does NOT add citation when there is no tag source", function() {
-      var cardHtml = `
-        <div class="card front">
-          <cite>p42</cite>
-        </div>
-      `;
-
-      var element = dom.createElement("container");
-      element.innerHTML = cardHtml;
-      card = new Card(element, "deck", "note", "card", "NoSourceTags");
+      card = createCard({
+        front: "<cite>p42</cite>",
+        tags: "NoSourceTags"
+      });
 
       var citation = card.dom.querySelector("cite");
       expect(citation).toHaveText("p42");
@@ -133,11 +103,12 @@ describe("Card", function() {
 
   describe("sets deck name", function() {
     it("to given name", function() {
-      expect(card.dom.querySelector("#deck")).toHaveText("MyDeckName");
+      card = createCard({deck: "ExplicitlySetDeckName"});
+      expect(card.dom.querySelector("#deck")).toHaveText("ExplicitlySetDeckName");
     });
 
     it("using only last portion of nested deck name", function() {
-      card = createCard("Foo::Bar::MyDeckName");
+      card = createCard({deck: "Foo::Bar::MyDeckName"});
       var deck = card.dom.querySelector("#deck");
       expect(deck).toHaveText("MyDeckName");
       expect(deck).not.toHaveText("Foo");
@@ -146,7 +117,7 @@ describe("Card", function() {
   });
 
   it("displays only leaf tags", function() {
-    card = new Card(createCardFront(), "deck", "note", "card", "a::b c::d::e");
+    card = createCard({tags: "a::b c::d::e"});
     var tags = card.dom.querySelectorAll(".tag");
     expect(tags.length).toBe(2);
     expect(tags[0]).toHaveText("b");
@@ -162,49 +133,55 @@ describe("Card", function() {
     });
 
     it("adds 'tts' for TTS cards", function() {
-      card = createCard("deck-tts");
+      card = createCard({deck: "deck-tts"});
       expect(card.getClassList()).toContain("tts");
     });
 
     it("adds 'asl' for ASL cards", function() {
-      card = createCard("deck-asl");
+      card = createCard({deck: "deck-asl"});
       expect(card.getClassList()).toContain("asl");
     });
 
     it("adds 'es-only' for monolingual Spanish clozes", function() {
-      card = createCard("Foo::Español::Bar", "Cloze");
+      card = createCard({deck: "Foo::Español::Bar", note: "Cloze"});
       expect(card.getClassList()).toContain("es-only");
     });
 
     it("adds 'fr-only' for monolingual French clozes", function() {
-      card = createCard("Foo::Français::Bar", "Cloze");
+      card = createCard({deck: "Foo::Français::Bar", note: "Cloze"});
       expect(card.getClassList()).toContain("fr-only");
     });
 
     it("adds 'de-only' for monolingual German clozes", function() {
-      card = createCard("Foo::Deutsch::Bar", "Cloze");
+      card = createCard({deck: "Foo::Deutsch::Bar", note: "Cloze"});
       expect(card.getClassList()).toContain("de-only");
     });
 
     it("does NOT add '*-only' for non-clozes", function() {
-      card = createCard("Foo::Español::Bar", "not-Cloze");
+      card = createCard({deck: "Foo::Español::Bar", note: "not-Cloze"});
       expect(card.getClassList()).not.toContain("es-only");
     });
 
     it("adds non-English language for translation pair X → EN", function() {
-      card = createCard("Foo", "not-Cloze", "ES → EN");
+      card = createCard({note: "not-Cloze", card: "ES → EN"});
       expect(card.getClassList()).toContain("es");
     });
 
     it("adds non-English language for translation pair EN → X", function() {
-      card = createCard("Foo", "not-Cloze", "EN → ES");
+      card = createCard({note: "not-Cloze", card: "EN → ES"});
       expect(card.getClassList()).toContain("es");
     });
 
-    it("adds 'small-text' to long cards");
+    it("adds 'small-text' to cards with long front text");
 
     it("adds each of deck/note/card/tag to classes too", function() {
-      card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
+      card = createCard({
+        deck: "MyDeckName",
+        note: "MyNoteType",
+        card: "MyCardType",
+        tags: "MyTags",
+      });
+
       expect(card.getClassList()).toContain("mydeckname");
       expect(card.getClassList()).toContain("mynotetype");
       expect(card.getClassList()).toContain("mycardtype");
@@ -212,39 +189,39 @@ describe("Card", function() {
     });
 
     it("makes lowercase", function() {
-      card = createCard("LOWERCASE");
+      card = createCard({card: "LOWERCASE"});
       expect(card.getClassList()).not.toContain("LOWERCASE");
       expect(card.getClassList()).toContain("lowercase");
     });
 
     it("replaces arrows with dashes", function() {
-      card = createCard("a → b", "c ⇔ d");
+      card = createCard({card: "a → b", tags: "c ⇔ d"});
       expect(card.getClassList()).toContain("a-b");
       expect(card.getClassList()).toContain("c-d");
     });
 
     it("replaces spaces with dashes", function() {
-      card = createCard("a b");
+      card = createCard({card: "a b"});
       expect(card.getClassList()).toContain("a-b");
     });
 
     it("replaces space-dash-space with a dash", function() {
-      card = createCard("a - b");
+      card = createCard({card: "a - b"});
       expect(card.getClassList()).toContain("a-b");
     });
 
     it("replaces subdeck-separators with dashes", function() {
-      card = createCard("a::b");
+      card = createCard({deck: "a::b"});
       expect(card.getClassList()).toContain("a-b");
     });
 
     it("replaces '-tts' with '-only'", function() {
-      card = createCard("es-tts");
+      card = createCard({card: "es-tts"});
       expect(card.getClassList()).toContain("es-only");
     });
 
     it("ignores missing tags", function() {
-      card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType");
+      card = createCard({tags: undefined});
       expect(function() {
         card.setupClasses();
       }).not.toThrow();
@@ -288,28 +265,28 @@ describe("Card", function() {
       });
 
       it("identifies languages from deck name", function() {
-        expect(createCard("Language::Arabic").getLanguageCode()).toBe("AR");
-        expect(createCard("Language::English").getLanguageCode()).toBe("EN");
-        expect(createCard("Language::Español").getLanguageCode()).toBe("ES");
-        expect(createCard("Language::Français").getLanguageCode()).toBe("FR");
-        expect(createCard("Language::Japanese").getLanguageCode()).toBe("JA");
-        expect(createCard("Language::Korean").getLanguageCode()).toBe("KO");
-        expect(createCard("Language::Magyar").getLanguageCode()).toBe("HU");
-        expect(createCard("Language::Русский").getLanguageCode()).toBe("RU");
+        expect(createCard({deck: "Language::Arabic"}).getLanguageCode()).toBe("AR");
+        expect(createCard({deck: "Language::English"}).getLanguageCode()).toBe("EN");
+        expect(createCard({deck: "Language::Español"}).getLanguageCode()).toBe("ES");
+        expect(createCard({deck: "Language::Français"}).getLanguageCode()).toBe("FR");
+        expect(createCard({deck: "Language::Japanese"}).getLanguageCode()).toBe("JA");
+        expect(createCard({deck: "Language::Korean"}).getLanguageCode()).toBe("KO");
+        expect(createCard({deck: "Language::Magyar"}).getLanguageCode()).toBe("HU");
+        expect(createCard({deck: "Language::Русский"}).getLanguageCode()).toBe("RU");
       });
 
       it("identifies languages from deck name, ignoring extra subdecks", function() {
-        expect(createCard("Language::Español::XYZ").getLanguageCode()).toBe("ES");
+        expect(createCard({deck: "Language::Español::XYZ"}).getLanguageCode()).toBe("ES");
       });
 
       it("identifies language from TTS card type", function() {
-        expect(createCard("deck", "note", "XX TTS").getLanguageCode()).toBe("XX");
+        expect(createCard({card: "XX TTS"}).getLanguageCode()).toBe("XX");
       });
 
       it("identifies language from translation card type", function() {
-        expect(createCard("deck", "note", "XX → YY").getLanguageCode()).toBe("YY");
-        expect(createCard("deck", "note", "EN → YY").getLanguageCode()).toBe("YY");
-        expect(createCard("deck", "note", "XX → EN").getLanguageCode()).toBe("XX");
+        expect(createCard({card: "XX → YY"}).getLanguageCode()).toBe("YY");
+        expect(createCard({card: "EN → YY"}).getLanguageCode()).toBe("YY");
+        expect(createCard({card: "XX → EN"}).getLanguageCode()).toBe("XX");
       });
 
       describe("when the Speech API is unavailable", function() {
@@ -319,7 +296,7 @@ describe("Card", function() {
           originalSpeechSynthesisUtterance = SpeechSynthesisUtterance;
           /* eslint-disable-next-line no-global-assign */
           SpeechSynthesisUtterance = null;
-          card = new Card(dom, "MyDeckName", "MyNoteType", "MyCardType");
+          card = createCard();
           spyOn(card.speaker, "speak");
         });
 
@@ -341,14 +318,14 @@ describe("Card", function() {
 
     describe("when it is a monolingual TTS card", function() {
       it("hides word & auto-plays on the question side", function() {
-        createTTSCard("MyCardTypeTTS");
+        createTTSCard({card: "MyCardTypeTTS"});
         jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
         expect(card.speaker.speak).toHaveBeenCalledWith("front text", "EN");
         expect(card.dom.querySelector("#tts")).toBeHidden();
       });
 
       it("shows word & does NOT auto-play on the answer side", function() {
-        createTTSCardWithBack("MyCardTypeTTS");
+        createTTSCard({card: "MyCardTypeTTS", includeBack: true});
         jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
         expect(card.speaker.speak).not.toHaveBeenCalled();
         expect(card.dom.querySelector("#tts")).not.toBeHidden();
@@ -364,27 +341,19 @@ describe("Card", function() {
       });
 
       it("shows word & does NOT auto-play on the answer side", function() {
-        createTTSCardWithBack();
+        createTTSCard({includeBack: true});
         jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
         expect(card.speaker.speak).not.toHaveBeenCalled();
         expect(card.dom.querySelector("#tts")).not.toBeHidden();
       });
     });
 
-    function createTTSCard(cardType) {
-      createTTSCardWithBack(cardType, false);
-    }
+    function createTTSCard(params) {
+      if (!params) params = {};
+      params.cardId = "tts";
+      params.front = "front text";
 
-    function createTTSCardWithBack(cardType, withBack) {
-      if (!cardType) cardType = "MyCardType";
-      if (typeof withBack === "undefined") withBack = true;
-
-      dom = (withBack ? createCardFrontAndBack() : createCardFront());
-      var cardFront = dom.querySelector(".card.front");
-      cardFront.id = "tts";
-      cardFront.innerText = "front text";
-      card = new Card(dom, "MyDeckName", "MyNoteType", cardType);
-
+      card = createCard(params);
       spyOn(card.speaker, "speak");
     }
   });
@@ -398,30 +367,30 @@ describe("Card", function() {
     });
 
     it("for French verb cards", function() {
-      var dom = createCardFrontAndBack();
-      var frVerb = dom.querySelector(".card.front");
-      var enVerb = dom.querySelector(".card.back");
-      frVerb.id = "fr-infinitive";
-      enVerb.id = "en-infinitive";
-      frVerb.innerText = "parler";
-      enVerb.innerText = "to speak";
-
-      card = new Card(dom, "MyDeckName", "Verbs: French", "1sgPres");
+      card = createCard({
+        note: "Verbs: French",
+        card: "1sgPres",
+        front: "parler",
+        frontId: "fr-infinitive",
+        back: "to speak",
+        backId: "en-infinitive",
+        includeBack: true,
+      });
 
       expect(FrenchLanguage.conjugate).toHaveBeenCalledWith("parler", "1sg", "Pres");
       expect(EnglishLanguage.conjugate).toHaveBeenCalledWith("to speak", "1sg", "Pres");
-      expect(frVerb.innerText).toBe("parle");
-      expect(enVerb.innerText).toBe("speak");
+      expect(card.dom.querySelector(".card.front")).toHaveText("parle");
+      expect(card.dom.querySelector(".card.back")).toHaveText("speak");
     });
 
     it("ignores French NON-verb cards", function() {
-      card = createCard("MyDeckName", "Verbs: French", "not a verb card actually");
+      card = createCard({deck: "Verbs: French", card: "not a verb card actually"});
       expect(FrenchLanguage.conjugate).not.toHaveBeenCalled();
       expect(EnglishLanguage.conjugate).not.toHaveBeenCalled();
     });
 
     it("ignores non-French", function() {
-      card = createCard("Verbs: Not-French", "1sgPres");
+      card = createCard({deck: "Verbs: Not-French", card: "1sgPres"});
       expect(FrenchLanguage.conjugate).not.toHaveBeenCalled();
       expect(EnglishLanguage.conjugate).not.toHaveBeenCalled();
     });
