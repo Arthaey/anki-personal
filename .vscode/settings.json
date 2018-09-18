@@ -2,4 +2,11 @@
   "eslint.options": {
     "configFile": ".eslintrc.js",
   },
+  "files.exclude": {
+    "**/.env": true,
+    "css/*.css": true,
+    "css/*.jpg": true,
+    "css/*.png": true,
+    "js/_global.js": true
+  },
 }
