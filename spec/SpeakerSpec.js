@@ -72,6 +72,8 @@ describe("Speaker", function() {
     expect(utterance.text).toMatch(/^llamar$/);
   });
 
+  it("speaks Spanish faster than the default speed");
+
   describe("when Speech API is unavailable", function() {
     var originalSpeechSynthesisUtterance;
 
