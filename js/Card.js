@@ -130,11 +130,9 @@ Card.prototype.setupClasses = function() {
   newClasses = newClasses.replace("-tts", "-only");
 
   var LONG_TEXT_CUTOFF = 40;
-  var front = this.dom.querySelector(".card.front");
-  var back = this.dom.querySelector(".card.back");
-  if ((front && front.textContent.split("").length > LONG_TEXT_CUTOFF) ||
-      (back && back.textContent.split("").length > LONG_TEXT_CUTOFF))
-  {
+  var frontLength = this._getTextLength(".card.front");
+  var backLength = this._getTextLength(".card.back");
+  if (frontLength > LONG_TEXT_CUTOFF || backLength > LONG_TEXT_CUTOFF) {
     newClasses += " style-small-text";
   }
 
@@ -142,6 +140,15 @@ Card.prototype.setupClasses = function() {
 
   return "Classes = '" + newClasses.toLowerCase() + "'.";
 };
+
+Card.prototype._getTextLength = function(selector) {
+  var el = this.dom.querySelector(selector);
+  if (!el) return 0;
+
+  var cloneEl = el.cloneNode(true);
+  cloneEl.querySelectorAll(".extra").forEach(extra => extra.remove());
+  return cloneEl.textContent.length;
+}
 
 Card.prototype.setupSlashHeight = function() {
   var cardInfo = this.dom.querySelector(".card-info");

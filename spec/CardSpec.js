@@ -183,7 +183,11 @@ describe("Card", function() {
       expect(card.getClassList()).toContain("style-small-text");
     });
 
-    it("ignores 'extra' text when deciding if it's long text");
+    it("ignores 'extra' text when deciding if it's long text", function() {
+      var long = "x".repeat(41);
+      var card = createCard({ front: `short <span class='extra'>${long}</span>` });
+      expect(card.getClassList()).not.toContain("style-small-text");
+    });
 
     it("adds each of deck/note/card/tag to classes too", function() {
       var card = createCard({
