@@ -182,6 +182,8 @@ describe("Card", function() {
       expect(card.getClassList()).toContain("style-small-text");
     });
 
+    it("ignores 'extra' text when deciding if it's long text");
+
     it("adds each of deck/note/card/tag to classes too", function() {
       card = createCard({
         deck: "MyDeckName",
