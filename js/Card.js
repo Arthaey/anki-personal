@@ -146,9 +146,9 @@ Card.prototype._getTextLength = function(selector) {
   if (!el) return 0;
 
   var cloneEl = el.cloneNode(true);
-  cloneEl.querySelectorAll(".extra").forEach(extra => extra.remove());
+  cloneEl.querySelectorAll(".extra").forEach(function(extra) { extra.remove() });
   return cloneEl.textContent.length;
-}
+};
 
 Card.prototype.setupSlashHeight = function() {
   var cardInfo = this.dom.querySelector(".card-info");

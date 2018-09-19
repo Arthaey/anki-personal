@@ -31,7 +31,9 @@ module.exports = {
       "avoidEscape": true,
     }],
 
-    "semi": ["error", "always"],
+    "semi": ["error", "always", {
+      "omitLastInOneLineBlock": true
+    }],
 
     "space-before-function-paren": ["error", {
       "anonymous": "never",
