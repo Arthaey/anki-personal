@@ -9,6 +9,16 @@ $font-size: 48px;
 
 $answer-buttons-iphone-height: 100px;
 
+/** HIDE UNTIL READY **********************************************************/
+
+#qa, .tts-trigger {
+  visibility: hidden;
+
+  .show & {
+    visibility: visible;
+  }
+}
+
 /** TYPOGRAPHY ****************************************************************/
 
 #qa {

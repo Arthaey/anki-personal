@@ -21,7 +21,7 @@ describe("Style", function() {
     expect(headerHeight).toBe(slashHeight);
   });
 
-  describe("'default' cards", function() {
+  describe("'default' card", function() {
     it("center-aligns text", function() {
       var cardEl = createCardAsElement();
       expect(cardEl.querySelector(".card")).toHaveComputedStyle("text-align", "center");

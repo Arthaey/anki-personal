@@ -26,7 +26,8 @@ function Card(dom, deckName, noteType, cardType, tags) {
     this.setupSlashHeight,
     this.setupTTS,
     this.setupVerbs,
-    this.setupCitations
+    this.setupCitations,
+    this.showCard
   ];
 
   var setupResult = "";
@@ -131,8 +132,8 @@ Card.prototype.setupClasses = function() {
   var LONG_TEXT_CUTOFF = 40;
   var front = this.dom.querySelector(".card.front");
   var back = this.dom.querySelector(".card.back");
-  if ((front && front.innerText.split("").length > LONG_TEXT_CUTOFF) ||
-      (back && back.innerText.split("").length > LONG_TEXT_CUTOFF))
+  if ((front && front.textContent.split("").length > LONG_TEXT_CUTOFF) ||
+      (back && back.textContent.split("").length > LONG_TEXT_CUTOFF))
   {
     newClasses += " style-small-text";
   }
@@ -219,12 +220,12 @@ Card.prototype.setupVerbs = function() {
     var tense = verbInfo[2];
 
     var enVerb = this.dom.querySelector("#en-infinitive");
-    enVerb.innerText = EnglishLanguage.conjugate(enVerb.textContent, person, tense);
+    enVerb.textContent = EnglishLanguage.conjugate(enVerb.textContent, person, tense);
 
     var frVerb = this.dom.querySelector("#fr-infinitive");
-    frVerb.innerText = FrenchLanguage.conjugate(frVerb.textContent, person, tense);
+    frVerb.textContent = FrenchLanguage.conjugate(frVerb.textContent, person, tense);
 
-    return "Verbs set up: EN '" + enVerb.innerText + "', FR '" + frVerb.innerText + "'.";
+    return "Verbs set up: EN '" + enVerb.textContent + "', FR '" + frVerb.textContent + "'.";
   } else {
     return "Not a French verb.";
   }
@@ -235,7 +236,7 @@ Card.prototype.setupCitations = function() {
   if (!citation) return "Card does not have any citations.";
 
   var urlRegex = /^https?:\/\/(([^/]+)(\/[^/#]+)+.*$)/;
-  var match = citation.innerText.match(urlRegex);
+  var match = citation.textContent.match(urlRegex);
   if (match) {
     var LONG_URL_CUTOFF = 20;
     var urlWithoutProtocol = match[1];
@@ -264,6 +265,10 @@ Card.prototype.setupCitations = function() {
   return "Citation source = " + citation.innerHTML;
 };
 
+Card.prototype.showCard = function() {
+  this.addClass("show");
+};
+
 Card.prototype.speakFn = function(text) {
   appendDebug("speakFn called.");
   return function() {
@@ -289,6 +294,10 @@ Card.prototype.hasClasses = function() {
 
 Card.prototype.setClasses = function(newClasses) {
   this.root.className = this.originalAnkiClasses.join(" ") + " " + newClasses;
+};
+
+Card.prototype.addClass = function(newClass) {
+  this.root.className = this.root.className + " " + newClass;
 };
 
 Card.prototype.resetClasses = function() {

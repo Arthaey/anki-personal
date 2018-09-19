@@ -14,7 +14,7 @@ window.dom = (function() {
       }
 
       element.id = id;
-      element.innerText = text;
+      element.textContent = text;
 
       if (options.html) {
         element.innerHTML = options.html;
@@ -42,7 +42,7 @@ beforeAll(function() {
       return {
         compare: function(actualElement, expectedText) {
           return {
-            pass: actualElement.innerText === expectedText,
+            pass: actualElement.textContent === expectedText,
           };
         },
       };
