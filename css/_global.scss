@@ -105,7 +105,7 @@ blockquote:before {
   padding-left: 0.1em;
 
   .iphone & {
-    margin-left: -0.5em;
+    margin-left: -2em;
   }
 }
 
@@ -118,6 +118,7 @@ blockquote:after {
 
   .iphone & {
     bottom: -0.2em;
+    right: 0.2em;
   }
 }
 
