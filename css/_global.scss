@@ -69,6 +69,10 @@ cite {
   text-align: right;
   margin-bottom: -2em;
   color: map-get($colors, dark-gray);
+
+  .iphone {
+    margin-right: 2em;
+  }
 }
 
 cite:before {
@@ -83,6 +87,10 @@ cite:after {
 .cloze .card.back {
   text-align: left;
   position: relative;
+}
+
+.iphone blockquote {
+  margin: 1em 0;
 }
 
 blockquote:before, blockquote:after {
