@@ -39,7 +39,7 @@ function Card(dom, deckName, noteType, cardType, tags) {
     } catch (error) {
       throw "Failed to set up card; " +
         "completed " + i + " out of " + setupFunctions.length + " steps.\n\n" +
-        "Partial results:\n\n" + setupResult;
+        "Partial results:\n\n" + setupResult + "\n\nERROR: " + error;
     }
   }
 
