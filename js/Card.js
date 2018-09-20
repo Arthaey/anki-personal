@@ -146,7 +146,10 @@ Card.prototype._getTextLength = function(selector) {
   if (!el) return 0;
 
   var cloneEl = el.cloneNode(true);
-  cloneEl.querySelectorAll(".extra").forEach(function(extra) { extra.remove() });
+  cloneEl.querySelectorAll(".extra").forEach(function(extra) {
+    extra.parentNode.removeChild(extra);
+  });
+
   return cloneEl.textContent.length;
 };
 
