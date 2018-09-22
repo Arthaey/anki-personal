@@ -53,8 +53,8 @@ Speaker.prototype.getLanguageAndCountryCode = function(languageCode) {
 
 Speaker.prototype.getSpeechRate = function(languageCode) {
   var specialCaseSpeechRates = {
-    "EN": 2.0,
-    "ES": 1.2
+    "EN": 1.1,
+    "ES": 1.0
   };
 
   return specialCaseSpeechRates[languageCode] || this.defaultRate;
