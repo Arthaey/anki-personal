@@ -410,6 +410,10 @@ describe("Card", function() {
       expect(FrenchLanguage.conjugate).not.toHaveBeenCalled();
       expect(EnglishLanguage.conjugate).not.toHaveBeenCalled();
     });
+
+    it("handles just the question-side FR-EN");
+
+    it("handles just the question-side FR-EN");
   });
 
   describe("root element", function() {
