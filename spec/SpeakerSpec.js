@@ -15,13 +15,13 @@ describe("Speaker", function() {
   });
 
   it("has basic configuration values set", function() {
-    speaker.speak("my text", "EN");
+    speaker.speak("my text", "XX");
 
     expect(speechSynthesis.speak).toHaveBeenCalled();
     var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-    expect(utterance.volume).toBeCloseTo(speaker.volume);
-    expect(utterance.rate).toBeCloseTo(speaker.rate);
-    expect(utterance.pitch).toBeCloseTo(speaker.pitch);
+    expect(utterance.volume).toBeCloseTo(speaker.defaultVolume);
+    expect(utterance.rate).toBeCloseTo(speaker.defaultRate);
+    expect(utterance.pitch).toBeCloseTo(speaker.defaultPitch);
   });
 
   it("uses a given language code", function() {
@@ -72,7 +72,11 @@ describe("Speaker", function() {
     expect(utterance.text).toMatch(/^llamar$/);
   });
 
-  it("speaks Spanish faster than the default speed");
+  it("speaks Spanish faster than the default speed", function() {
+    speaker.speak("my text", "ES");
+    var utteranceES = speechSynthesis.speak.calls.mostRecent().args[0];
+    expect(utteranceES.rate).toBeGreaterThan(speaker.defaultRate);
+  });
 
   describe("when Speech API is unavailable", function() {
     var originalSpeechSynthesisUtterance;
@@ -101,7 +105,7 @@ describe("Speaker", function() {
 
   describe("language and country codes", function() {
     it("defaults to same language and country code", function() {
-      expect(speaker.getLanguageAndCountryCode("Xx")).toBe("xx-XX");
+      expect(speaker.getLanguageAndCountryCode("XX")).toBe("xx-XX");
     });
 
     it("substitutes country codes for special cases", function() {

@@ -1,9 +1,9 @@
 /* global appendDebug */
 
 function Speaker() {
-  this.volume = 1; // 0 to 1
-  this.rate = 0.9; // 0.1 to 9
-  this.pitch = 1; // 0 to 2, 1=normal
+  this.defaultVolume = 1; // 0 to 1
+  this.defaultRate = 0.9; // 0.1 to 9
+  this.defaultPitch = 1; // 0 to 2, 1=normal
 
   appendDebug("Speaker created; it can" + (this.canSpeak() ? "" : "not") + " speak.");
 }
@@ -17,9 +17,9 @@ Speaker.prototype.speak = function(text, languageCode) {
   var utterance = new SpeechSynthesisUtterance();
   utterance.text = this.normalizeText(text, languageCode);
   utterance.lang = this.getLanguageAndCountryCode(languageCode);
-  utterance.volume = this.volume;
-  utterance.rate = this.rate;
-  utterance.pitch = this.pitch;
+  utterance.volume = this.defaultVolume;
+  utterance.rate = this.getSpeechRate(languageCode);
+  utterance.pitch = this.defaultPitch;
   speechSynthesis.cancel();
   speechSynthesis.speak(utterance);
 };
@@ -38,16 +38,24 @@ Speaker.prototype.normalizeText = function(text, languageCode) {
 
 Speaker.prototype.getLanguageAndCountryCode = function(languageCode) {
   var specialCaseCountryCodes = {
-    "en": "US",
-    "es": "MX",
-    "ja": "JP",
-    "ko": "KR",
-    "zh": "CN"
+    "EN": "US",
+    "ES": "MX",
+    "JA": "JP",
+    "KO": "KR",
+    "ZH": "CN"
   };
 
-  languageCode = languageCode.toLowerCase();
   var countryCode = specialCaseCountryCodes[languageCode];
-  if (!countryCode) countryCode = languageCode.toUpperCase();
+  if (!countryCode) countryCode = languageCode;
 
-  return languageCode + "-" + countryCode;
+  return languageCode.toLowerCase() + "-" + countryCode;
+};
+
+Speaker.prototype.getSpeechRate = function(languageCode) {
+  var specialCaseSpeechRates = {
+    "EN": 2.0,
+    "ES": 1.2
+  };
+
+  return specialCaseSpeechRates[languageCode] || this.defaultRate;
 };
