@@ -98,6 +98,7 @@ blockquote:before, blockquote:after {
   color: map-get($colors, dark-gray);
   font-size: $font-size * 2;
   line-height: 1em;
+  font-family: serif;
 
   .iphone & {
     margin: auto -0.25em;
