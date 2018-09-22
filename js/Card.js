@@ -228,14 +228,21 @@ Card.prototype.setupVerbs = function() {
 
     var person = verbInfo[1];
     var tense = verbInfo[2];
+    var resultMsg = "Verbs set up: ";
 
     var enVerb = this.dom.querySelector("#en-infinitive");
-    enVerb.textContent = EnglishLanguage.conjugate(enVerb.textContent, person, tense);
+    if (enVerb) {
+      enVerb.textContent = EnglishLanguage.conjugate(enVerb.textContent, person, tense);
+      resultMsg += "EN '" + enVerb.textContent + "'. ";
+    }
 
     var frVerb = this.dom.querySelector("#fr-infinitive");
-    frVerb.textContent = FrenchLanguage.conjugate(frVerb.textContent, person, tense);
+    if (frVerb) {
+      frVerb.textContent = FrenchLanguage.conjugate(frVerb.textContent, person, tense);
+      resultMsg += "FR '" + frVerb.textContent + "'. ";
+    }
 
-    return "Verbs set up: EN '" + enVerb.textContent + "', FR '" + frVerb.textContent + "'.";
+    return resultMsg;
   } else {
     return "Not a French verb.";
   }

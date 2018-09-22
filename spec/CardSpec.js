@@ -399,6 +399,32 @@ describe("Card", function() {
       expect(card.dom.querySelector(".card.back")).toHaveText("speak");
     });
 
+    it("handles just the question-side FR-EN", function() {
+      var card = createCard({
+        note: "Verbs: French",
+        card: "1sgPres",
+        front: "parler",
+        frontId: "fr-infinitive",
+      });
+
+      expect(FrenchLanguage.conjugate).toHaveBeenCalledWith("parler", "1sg", "Pres");
+      expect(EnglishLanguage.conjugate).not.toHaveBeenCalled();
+      expect(card.dom.querySelector(".card.front")).toHaveText("parle");
+    });
+
+    it("handles just the question-side EN-FR", function() {
+      var card = createCard({
+        note: "Verbs: French",
+        card: "1sgPres",
+        front: "to speak",
+        frontId: "en-infinitive",
+      });
+
+      expect(FrenchLanguage.conjugate).not.toHaveBeenCalled();
+      expect(EnglishLanguage.conjugate).toHaveBeenCalledWith("to speak", "1sg", "Pres");
+      expect(card.dom.querySelector(".card.front")).toHaveText("speak");
+    });
+
     it("ignores French NON-verb cards", function() {
       createCard({ deck: "Verbs: French", card: "not a verb card actually" });
       expect(FrenchLanguage.conjugate).not.toHaveBeenCalled();
@@ -410,10 +436,6 @@ describe("Card", function() {
       expect(FrenchLanguage.conjugate).not.toHaveBeenCalled();
       expect(EnglishLanguage.conjugate).not.toHaveBeenCalled();
     });
-
-    it("handles just the question-side FR-EN");
-
-    it("handles just the question-side FR-EN");
   });
 
   describe("root element", function() {

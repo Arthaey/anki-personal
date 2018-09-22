@@ -112,11 +112,11 @@ function createCard(params) {
 
   if (params.frontId) {
     var frontEl = el.querySelector(".card.front");
-    frontEl.id = "fr-infinitive";
+    frontEl.id = params.frontId;
   }
   if (params.backId && params.includeBack) {
     var backEl = el.querySelector(".card.back");
-    backEl.id = "en-infinitive";
+    backEl.id = params.backId;
   }
 
   var card;
