@@ -47,35 +47,40 @@ describe("Speaker", function() {
     expect(utterance.text).not.toContain("wɹ̩d");
   });
 
-
   it("does not say anything inside parentheses", function() {
     speaker.speak("some (hidden) stuff", "EN");
     var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
     expect(utterance.text).toMatch(/^some +stuff$/);
   });
 
-  it("says Spanish words that end in '(se)'", function() {
-    speaker.speak("llamar(se)", "ES");
-    var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-    expect(utterance.text).toMatch(/^llamarse$/);
+  describe("Spanish", function() {
+    it("says Spanish words that end in '(se)'", function() {
+      speaker.speak("llamar(se)", "ES");
+      var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+      expect(utterance.text).toMatch(/^llamarse$/);
+    });
+
+    it("does not says Spanish cards that contain in '(se)'", function() {
+      speaker.speak("llamar(se) así", "ES");
+      var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+      expect(utterance.text).toMatch(/^llamar +así$/);
+    });
+
+    it("does not says non-Spanish words that end in '(se)'", function() {
+      speaker.speak("llamar(se)", "EN");
+      var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+      expect(utterance.text).toMatch(/^llamar$/);
+    });
+
+    it("speaks Spanish faster than the default speed", function() {
+      speaker.speak("my text", "ES");
+      var utteranceES = speechSynthesis.speak.calls.mostRecent().args[0];
+      expect(utteranceES.rate).toBeGreaterThan(speaker.defaultRate);
+    });
   });
 
-  it("does not says Spanish cards that contain in '(se)'", function() {
-    speaker.speak("llamar(se) así", "ES");
-    var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-    expect(utterance.text).toMatch(/^llamar +así$/);
-  });
-
-  it("does not says non-Spanish words that end in '(se)'", function() {
-    speaker.speak("llamar(se)", "EN");
-    var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-    expect(utterance.text).toMatch(/^llamar$/);
-  });
-
-  it("speaks Spanish faster than the default speed", function() {
-    speaker.speak("my text", "ES");
-    var utteranceES = speechSynthesis.speak.calls.mostRecent().args[0];
-    expect(utteranceES.rate).toBeGreaterThan(speaker.defaultRate);
+  describe("French", function() {
+    it("says conjugated verbs, not infinitives");
   });
 
   describe("when Speech API is unavailable", function() {
