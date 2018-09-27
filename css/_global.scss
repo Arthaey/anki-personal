@@ -4,10 +4,9 @@
 @import 'colors';
 @import 'images';
 @import 'language';
+@import 'mobile';
 
 $font-size: 48px;
-
-$answer-buttons-iphone-height: 100px;
 
 /** HIDE UNTIL READY **********************************************************/
 
@@ -69,10 +68,6 @@ cite {
   text-align: right;
   margin-bottom: -2em;
   color: map-get($colors, dark-gray);
-
-  .iphone {
-    margin-right: 2em;
-  }
 }
 
 cite:before {
@@ -89,21 +84,12 @@ cite:after {
   position: relative;
 }
 
-.iphone blockquote {
-  margin: 1em 0;
-}
-
 blockquote:before, blockquote:after {
   display: block;
   color: map-get($colors, dark-gray);
   font-size: $font-size * 2;
   line-height: 1em;
   font-family: serif;
-
-  .iphone & {
-    margin: auto -0.25em;
-    text-indent: 2em;
-  }
 }
 
 blockquote:before {
@@ -112,10 +98,6 @@ blockquote:before {
   top: 0;
   left: 0;
   padding-left: 0.1em;
-
-  .iphone & {
-    margin-left: -2em;
-  }
 }
 
 blockquote:after {
@@ -124,11 +106,6 @@ blockquote:after {
   bottom: -0.5em;
   right: 0;
   padding-right: 0.1em;
-
-  .iphone & {
-    bottom: -0.2em;
-    right: 0.2em;
-  }
 }
 
 th {
@@ -268,21 +245,6 @@ hr#answer {
   display: none;
 }
 
-.iphone {
-  body {
-    padding: 5px;
-  }
-
-  .deck {
-    line-height: 2.6em;
-  }
-
-  .card.front,
-  .card.back {
-    margin: 0;
-  }
-
-}
 
 /** COLORS & IMAGES - GENERAL *************************************************/
 
@@ -392,22 +354,6 @@ body {
   }
 }
 
-.iphone {
-  .subtitles:not(.translation) {
-    bottom: $answer-buttons-iphone-height !important;
-  }
-
-  .replaybutton {
-    background-color: gray;
-    border-radius: 50%;
-    opacity: 0.7;
-
-    display: block;
-    position: absolute;
-    top: 35%;
-    left: 47%;
-  }
-}
 
 /** COLORS & IMAGES - LANGUAGES ***********************************************/
 
