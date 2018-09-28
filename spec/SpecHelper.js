@@ -104,7 +104,7 @@ function createCard(params) {
   fullHtml = replaceAnkiVariable(fullHtml, "Deck", params.deck);
   fullHtml = replaceAnkiVariable(fullHtml, "Note", params.note);
   fullHtml = replaceAnkiVariable(fullHtml, "Card", params.card);
-  fullHtml = replaceAnkiVariable(fullHtml, "LeafTags", params.tags);
+  fullHtml = replaceAnkiVariable(fullHtml, "Tags", params.tags);
   fullHtml = replaceAnkiVariable(fullHtml, "Front", params.front);
   fullHtml = replaceAnkiVariable(fullHtml, "Back", params.back);
 

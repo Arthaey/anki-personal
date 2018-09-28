@@ -38,7 +38,7 @@ describe("Card", function() {
     it("does not add multiple card-info headers or debug elements", function() {
       var fullHtml = `
         <div class="card-info">
-          <div class="tags">{{LeafTags}}</div>
+          <div class="tags">{{Tags}}</div>
           <div class="slash"></div>
           <div class="deck">
             <span id="deck">{{Deck}}</span>: <span class="card-type">{{Card}}</span>
