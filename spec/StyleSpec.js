@@ -56,6 +56,8 @@ describe("Style", function() {
     });
   });
 
+  describe("monolingual cards");
+
   describe("bilingual cards", function() {
 
     var supportedLanguages = [
