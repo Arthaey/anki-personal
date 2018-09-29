@@ -111,13 +111,18 @@ describe("Card", function() {
       expect(deck).not.toHaveText("Bar");
     });
   });
+)};
 
-  it("displays only leaf tags", function() {
-    var card = createCard({ tags: "a::b c::d::e" });
-    var tags = card.dom.querySelectorAll(".tag");
-    expect(tags.length).toBe(2);
-    expect(tags[0]).toHaveText("b");
-    expect(tags[1]).toHaveText("e");
+  describe("sets tags", function() {
+    it("displays only leaf tags", function() {
+      var card = createCard({ tags: "a::b c::d::e" });
+      var tags = card.dom.querySelectorAll(".tag");
+      expect(tags.length).toBe(2);
+      expect(tags[0]).toHaveText("b");
+      expect(tags[1]).toHaveText("e");
+    });
+
+    it("removes shared deck ids");
   });
 
   describe("sets CSS classes", function() {
