@@ -111,7 +111,6 @@ describe("Card", function() {
       expect(deck).not.toHaveText("Bar");
     });
   });
-)};
 
   describe("sets tags", function() {
     it("displays only leaf tags", function() {
