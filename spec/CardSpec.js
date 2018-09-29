@@ -397,6 +397,10 @@ describe("Card", function() {
       expect(EnglishLanguage.conjugate).toHaveBeenCalledWith("to speak", "1sg", "Pres");
       expect(card.dom.querySelector(".card.front")).toHaveText("parle");
       expect(card.dom.querySelector(".card.back")).toHaveText("speak");
+
+      var cardTypeEl = card.dom.querySelector(".card-type");
+      var regex = new RegExp("_flag-fr.png");
+      expect(cardTypeEl).toHaveComputedStyle("content", regex, ":after");
     });
 
     it("handles just the question-side FR-EN", function() {

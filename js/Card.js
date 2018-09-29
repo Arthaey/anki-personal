@@ -242,6 +242,7 @@ Card.prototype.setupVerbs = function() {
       resultMsg += "FR '" + frVerb.textContent + "'. ";
     }
 
+    this.addClass("fr");
     return resultMsg;
   } else {
     return "Not a French verb.";
