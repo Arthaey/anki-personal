@@ -54,6 +54,8 @@ describe("Speaker", function() {
   });
 
   describe("Spanish", function() {
+    it("pronounced '/' as 'o'");
+
     it("says Spanish words that end in '(se)'", function() {
       speaker.speak("llamar(se)", "ES");
       var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
