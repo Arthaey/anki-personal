@@ -13,6 +13,21 @@ describe("Card", function() {
     expect(card.tags).toBe("MyTags");
   });
 
+  xit("constructor with named params", function() {
+    var card = new Card({
+      Front: createCardFront(),
+      deck: "MyDeckName",
+      note: "MyNoteType",
+      card: "MyCardType",
+      tags: "MyTags"
+    });
+
+    expect(card.deckName).toBe("MyDeckName");
+    expect(card.noteType).toBe("MyNoteType");
+    expect(card.cardType).toBe("MyCardType");
+    expect(card.tags).toBe("MyTags");
+  });
+
   it("knows when it's on the question side", function() {
     var card = createCard();
     expect(card.isQuestionSide()).toBe(true);
