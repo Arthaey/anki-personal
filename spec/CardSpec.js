@@ -5,7 +5,7 @@ describe("Card", function() {
     document.documentElement.className = "";
   });
 
-  it("constructor", function() {
+  xit("constructor", function() {
     var card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
     expect(card.deckName).toBe("MyDeckName");
     expect(card.noteType).toBe("MyNoteType");
