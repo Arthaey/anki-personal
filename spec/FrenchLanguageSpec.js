@@ -9,6 +9,13 @@ describe("FrenchLanguage", function() {
       infinitive = "parler";
     });
 
+    it("returns nothing if called with bad data", function() {
+      expect(FrenchLanguage.conjugate()).toBeNull();
+      expect(FrenchLanguage.conjugate("parler")).toBeNull();
+      expect(FrenchLanguage.conjugate("parler", "1sg")).toBeNull();
+      expect(FrenchLanguage.conjugate("(Infinitive)", "1sg", "Pres")).toBeNull();
+    });
+
     describe("in the present tense", function() {
       beforeEach(function() {
         tense = "Pres";
