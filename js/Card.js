@@ -24,8 +24,8 @@ function Card(dom, deckName, noteType, cardType, tags) {
     this.setupClasses,
     this.setupDeckNameWidth,
     this.setupSlashHeight,
-    this.setupTTS,
     this.setupVerbs,
+    this.setupTTS,
     this.setupCitations,
     this.showCard
   ];
@@ -340,7 +340,9 @@ Card.prototype.getLanguageCode = function() {
   var ttsLangCodeMatch = this.cardType.match(/(\S+) TTS/);
   var transLangCodeMatch = this.cardType.match(/(\S+) → (\S+)/);
 
-  if (deckLangNameMatch) {
+  if (this.noteType === "Verbs: French") {
+    langCode = langNamesToCodes["Français"];
+  } else if (deckLangNameMatch) {
     langCode = langNamesToCodes[deckLangNameMatch[1]];
   } else if (ttsLangCodeMatch) {
     langCode = ttsLangCodeMatch[1];

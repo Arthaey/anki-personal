@@ -278,6 +278,10 @@ describe("Card", function() {
         card = createTTSCard();
       });
 
+      it("has a Speaker", function() {
+        expect(card.speaker).not.toBeNull();
+      });
+
       it("plays when clicked", function() {
         expect(card.speaker.speak).not.toHaveBeenCalled();
         card.dom.querySelector(".tts-trigger").click();
@@ -291,10 +295,6 @@ describe("Card", function() {
 
         jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
         expect(card.speaker.speak).not.toHaveBeenCalled();
-      });
-
-      it("has a Speaker", function() {
-        expect(card.speaker).not.toBeNull();
       });
 
       it("identifies languages from deck name", function() {
@@ -421,6 +421,20 @@ describe("Card", function() {
       var regex = new RegExp("_flag-fr.png");
       expect(cardTypeEl).toHaveComputedStyle("content", regex, ":after");
     });
+
+    it("uses conjugated verbs", function() {
+      var card = createCard({
+        note: "Verbs: French",
+        card: "1plPres",
+        front: "<span id='fr-infinitive'>parler</span>",
+      });
+
+      spyOn(card.speaker, "speak");
+
+      card.dom.querySelector(".tts-trigger").click();
+      expect(card.speaker.speak).toHaveBeenCalledWith("parlons", "FR");
+    });
+
 
     it("handles just the question-side FR-EN", function() {
       var card = createCard({
