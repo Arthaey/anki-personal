@@ -34,6 +34,9 @@ window.dom = (function() {
 })();
 
 beforeAll(function() {
+  /* eslint-disable-next-line no-console */
+  window.alert = function(msg) { console.error(msg) };
+
   jasmine.addMatchers(DOMCustomMatchers); // jasmine-devrafalko
 
   jasmine.addMatchers({

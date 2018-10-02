@@ -1,14 +1,25 @@
-/* global DEBUG FILE_GENERATION_TIMESTAMP LATEST_GIT_SHA GIT_STATUS Card DECK NOTE CARD TAGS */
+/* global DEBUG FILE_GENERATION_TIMESTAMP LATEST_GIT_SHA GIT_STATUS Card ANKI_DATA DECK NOTE CARD TAGS */
 
 var DEBUG = (typeof DEBUG === "undefined") ? false : DEBUG;
 
-function setup(dom, deckName, noteType, cardType, tags) {
+function setupNew(dom, ANKI_DATA) {
   try {
-    var card = new Card(dom, deckName, noteType, cardType, tags);
+    var params = ANKI_DATA;
+    params.dom = dom;
+    var card = new Card(params);
     appendFileGenerationInfo(card);
   } catch (error) {
     alert(error); /* eslint-disable-line no-alert */
   }
+}
+
+function setup(dom, deckName, noteType, cardType, tags) {
+  setupNew(dom, {
+    deck: deckName,
+    note: noteType,
+    card: cardType,
+    tags: tags
+  });
 }
 
 function appendFileGenerationInfo(card) {
@@ -75,17 +86,21 @@ function htmlEscape(str) {
 }
 
 appendDebug("DEBUGGING:");
+appendDebug("ANKI_DATA: " + (typeof ANKI_DATA === "undefined" ? "undefined" : ANKI_DATA));
 appendDebug("DECK: " + (typeof DECK === "undefined" ? "undefined" : DECK));
 appendDebug("NOTE: " + (typeof NOTE === "undefined" ? "undefined" : NOTE));
 appendDebug("CARD: " + (typeof CARD === "undefined" ? "undefined" : CARD));
 appendDebug("TAGS: " + (typeof TAGS === "undefined" ? "undefined" : TAGS));
 
 //document.addEventListener('DOMContentLoaded', setup); // doesn't work on phone
-if (document && document.documentElement &&
-    typeof DECK !== "undefined" &&
-    typeof NOTE !== "undefined" &&
-    typeof CARD !== "undefined" &&
-    typeof TAGS !== "undefined")
-{
-  setup(document.documentElement, DECK, NOTE, CARD, TAGS);
+if (document && document.documentElement) {
+  if (typeof ANKI_DATA !== "undefined") {
+    setupNew(document.documentElement, ANKI_DATA);
+  } else if (typeof DECK !== "undefined" &&
+             typeof NOTE !== "undefined" &&
+             typeof CARD !== "undefined" &&
+             typeof TAGS !== "undefined")
+  {
+    setup(document.documentElement, DECK, NOTE, CARD, TAGS);
+  }
 }
