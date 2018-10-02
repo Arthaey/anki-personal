@@ -19,7 +19,7 @@ describe("Card", function() {
       deck: "MyDeckName",
       note: "MyNoteType",
       card: "MyCardType",
-      tags: "MyTags"
+      tags: "MyTags",
     });
 
     expect(card.deckName).toBe("MyDeckName");
