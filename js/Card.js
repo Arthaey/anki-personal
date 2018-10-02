@@ -296,6 +296,7 @@ Card.prototype.setupCitations = function() {
 
 Card.prototype.showCard = function() {
   this.addClass("show");
+  return "Display card.";
 };
 
 Card.prototype.speakFn = function(text) {
