@@ -81,10 +81,6 @@ describe("Speaker", function() {
     });
   });
 
-  describe("French", function() {
-    it("says conjugated verbs, not infinitives");
-  });
-
   describe("when Speech API is unavailable", function() {
     var originalSpeechSynthesisUtterance;
 
