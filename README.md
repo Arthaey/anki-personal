@@ -45,10 +45,12 @@ Tested on OS X; probably works fine on Linux too.
 <div class="card front">{{Front}}</div>
 
 <script type="text/javascript">
-  var DECK = "{{Deck}}";
-  var NOTE = "{{Type}}";
-  var CARD= "{{Card}}";
-  var TAGS = "{{Tags}}";
+  var ANKI_DATA = {
+    deck: "{{Deck}}",
+    note: "{{Type}}",
+    card: "{{Card}}",
+    tags: "{{Tags}}"
+  };
 
   var script = document.createElement("script");
   script.type = "text/javascript";
