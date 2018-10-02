@@ -122,10 +122,28 @@ Card.prototype.setupClasses = function() {
     if (/tts/i.test(type)) newClasses += " tts ";
     if (/asl/i.test(type)) newClasses += " asl ";
 
-    if (this.noteType === "Cloze") {
-      if (this.deckName.includes("Español"))  newClasses += " es-only ";
-      if (this.deckName.includes("Français")) newClasses += " fr-only ";
-      if (this.deckName.includes("Deutsch"))  newClasses += " de-only ";
+    if (this.deckName.includes("Deutsch")) {
+      if (this.noteType === "Cloze") {
+        newClasses += " de-only ";
+      }
+
+      var front = this.dom.querySelector(".card.front");
+      var firstWord = front.textContent.split(/\s+/)[0];
+      if (firstWord === "der") {
+        newClasses += " noun-masc";
+      } else if (firstWord === "die") {
+        newClasses += " noun-fem";
+      } else if (firstWord === "das") {
+        newClasses += " noun-neut";
+      }
+    }
+
+    if (this.deckName.includes("Español") && this.noteType === "Cloze") {
+      newClasses += " es-only ";
+    }
+
+    if (this.deckName.includes("Français") && this.noteType === "Cloze") {
+      newClasses += " fr-only ";
     }
 
     var typeClass = type;

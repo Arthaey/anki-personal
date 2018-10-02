@@ -1,5 +1,17 @@
 @import 'colors';
 
+.noun-masc .card {
+  color: $text-dark-blue;
+}
+
+.noun-fem .card {
+  color: $text-dark-red;
+}
+
+.noun-neut .card {
+  color: $text-dark-green;
+}
+
 @mixin cardStyle($color) {
   $targetVeryLight: map-get($colors, very-light-#{$color});
   $targetLight:     map-get($colors, light-#{$color});

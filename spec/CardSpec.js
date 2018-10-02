@@ -198,6 +198,21 @@ describe("Card", function() {
       expect(card.getClassList()).toContain("es");
     });
 
+    it("adds gender for masculine German words", function() {
+      var card = createCard({ front: "der Berg", deck: "Deutsch" });
+      expect(card.getClassList()).toContain("noun-masc");
+    });
+
+    it("adds gender for feminine German words", function() {
+      var card = createCard({ front: "die Hand", deck: "Deutsch" });
+      expect(card.getClassList()).toContain("noun-fem");
+    });
+
+    it("adds gender for neuter German words", function() {
+      var card = createCard({ front: "das Boot", deck: "Deutsch" });
+      expect(card.getClassList()).toContain("noun-neut");
+    });
+
     it("adds 'small-text' to cards with long front text", function() {
       var card = createCard({ front: "x".repeat(41) });
       expect(card.getClassList()).toContain("style-small-text");
