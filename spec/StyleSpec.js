@@ -34,6 +34,8 @@ describe("Style", function() {
   });
 
   describe("topic icons", function() {
+    it("shows icons for all topics");
+
     it("shows a globe icon for geography tags", function() {
       var cardEl = createCardAsElement({ tags: "topics::geography::state" });
       var cardTypeEl = cardEl.querySelector(".card-type");
