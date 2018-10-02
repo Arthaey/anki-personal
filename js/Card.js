@@ -62,6 +62,8 @@ Card.prototype.setupLayout = function() {
     var tagsHtml = "";
     var fullTags = (this.tags ? this.tags.split(/\s+/) : []);
     for (var i = 0; i < fullTags.length; i++) {
+      var fullTag = fullTags[i];
+      if (/^source::shared::/i.test(fullTag)) continue;
       tagsHtml += '<span class="tag">' + this.leafify(fullTags[i]) + "</span>";
     }
 

@@ -136,7 +136,11 @@ describe("Card", function() {
       expect(tags[1]).toHaveText("e");
     });
 
-    it("removes shared deck ids");
+    it("removes shared deck ids", function() {
+      var card = createCard({ tags: "source::shared::id-1234 source::shared::id-5678-quizlet" });
+      var tags = card.dom.querySelectorAll(".tag");
+      expect(tags.length).toBe(0);
+    });
   });
 
   describe("sets CSS classes", function() {
