@@ -25,7 +25,21 @@ Speaker.prototype.speak = function(text, languageCode) {
 };
 
 Speaker.prototype.normalizeText = function(text, languageCode) {
-  text = text.replace(/\/.*?\//g, "");
+  var specialReplacements = {
+    "DE": { "/": " oder " },
+    "EN": { "/": " or " },
+    "ES": { "/": " o " },
+    "FR": { "/": " ou " }
+  };
+
+  text = text.replace(/\/.*?\//g, ""); // strip anything between slashes
+
+  if (specialReplacements[languageCode]) {
+    var replacement = specialReplacements[languageCode]["/"];
+    if (replacement) {
+      text = text.replace(/\//, replacement);
+    }
+  }
 
   if (languageCode === "ES" && text.endsWith("(se)")) {
     text = text.replace("(se)", "se");

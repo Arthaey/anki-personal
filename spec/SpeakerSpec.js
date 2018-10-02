@@ -53,31 +53,61 @@ describe("Speaker", function() {
     expect(utterance.text).toMatch(/^some +stuff$/);
   });
 
-  describe("Spanish", function() {
-    it("pronounced '/' as 'o'");
-
-    it("says Spanish words that end in '(se)'", function() {
-      speaker.speak("llamar(se)", "ES");
-      var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-      expect(utterance.text).toMatch(/^llamarse$/);
+  describe("language-specific", function() {
+    describe("French", function() {
+      it("pronounces '/' as 'ou'", function() {
+        speaker.speak("foo/bar", "FR");
+        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+        expect(utterance.text).toMatch(/^foo ou bar$/);
+      });
     });
 
-    it("does not says Spanish cards that contain in '(se)'", function() {
-      speaker.speak("llamar(se) así", "ES");
-      var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-      expect(utterance.text).toMatch(/^llamar +así$/);
+    describe("English", function() {
+      it("pronounces '/' as 'or'", function() {
+        speaker.speak("foo/bar", "EN");
+        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+        expect(utterance.text).toMatch(/^foo or bar$/);
+      });
     });
 
-    it("does not says non-Spanish words that end in '(se)'", function() {
-      speaker.speak("llamar(se)", "EN");
-      var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-      expect(utterance.text).toMatch(/^llamar$/);
+    describe("German", function() {
+      it("pronounces '/' as 'oder'", function() {
+        speaker.speak("foo/bar", "DE");
+        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+        expect(utterance.text).toMatch(/^foo oder bar$/);
+      });
     });
 
-    it("speaks Spanish faster than the default speed", function() {
-      speaker.speak("my text", "ES");
-      var utteranceES = speechSynthesis.speak.calls.mostRecent().args[0];
-      expect(utteranceES.rate).toBeGreaterThan(speaker.defaultRate);
+    describe("Spanish", function() {
+      it("pronounces '/' as 'o'", function() {
+        speaker.speak("foo/bar", "ES");
+        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+        expect(utterance.text).toMatch(/^foo o bar$/);
+      });
+
+      it("says Spanish words that end in '(se)'", function() {
+        speaker.speak("llamar(se)", "ES");
+        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+        expect(utterance.text).toMatch(/^llamarse$/);
+      });
+
+      it("does not says Spanish cards that contain in '(se)'", function() {
+        speaker.speak("llamar(se) así", "ES");
+        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+        expect(utterance.text).toMatch(/^llamar +así$/);
+      });
+
+      it("does not says non-Spanish words that end in '(se)'", function() {
+        speaker.speak("llamar(se)", "EN");
+        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+        expect(utterance.text).toMatch(/^llamar$/);
+      });
+
+      it("speaks Spanish faster than the default speed", function() {
+        speaker.speak("my text", "ES");
+        var utteranceES = speechSynthesis.speak.calls.mostRecent().args[0];
+        expect(utteranceES.rate).toBeGreaterThan(speaker.defaultRate);
+      });
     });
   });
 
