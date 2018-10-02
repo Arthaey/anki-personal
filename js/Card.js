@@ -1,6 +1,15 @@
 /* global Speaker EnglishLanguage FrenchLanguage appendDebug */
 
 function Card(dom, deckName, noteType, cardType, tags) {
+  if (arguments.length === 1 && typeof dom === "object") {
+    var params = dom;
+    dom = params.dom;
+    deckName = params.deck;
+    noteType = params.note;
+    cardType = params.card;
+    tags = params.tags;
+  }
+
   this.dom = this.requiredParam(dom, "dom");
   this.deckName = this.requiredParam(deckName, "deckName");
   this.noteType = this.requiredParam(noteType, "noteType");

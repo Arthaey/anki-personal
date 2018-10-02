@@ -13,9 +13,9 @@ describe("Card", function() {
     expect(card.tags).toBe("MyTags");
   });
 
-  xit("constructor with named params", function() {
+  it("constructor with named params", function() {
     var card = new Card({
-      Front: createCardFront(),
+      dom: createCardFront(),
       deck: "MyDeckName",
       note: "MyNoteType",
       card: "MyCardType",
