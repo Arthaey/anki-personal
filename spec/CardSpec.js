@@ -112,6 +112,8 @@ describe("Card", function() {
     });
   });
 
+  it("hides the deck name");
+
   describe("sets deck name", function() {
     it("to given name", function() {
       var card = createCard({ deck: "ExplicitlySetDeckName" });
