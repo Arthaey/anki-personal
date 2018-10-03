@@ -76,6 +76,12 @@ describe("Speaker", function() {
         var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
         expect(utterance.text).toMatch(/^foo oder bar$/);
       });
+
+      it("pronounces 'etw.' as 'etwas'", function() {
+        speaker.speak("etw.", "DE");
+        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+        expect(utterance.text).toMatch(/^etwas$/);
+      });
     });
 
     describe("Spanish", function() {
