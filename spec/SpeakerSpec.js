@@ -53,6 +53,8 @@ describe("Speaker", function() {
     expect(utterance.text).toMatch(/^some +stuff$/);
   });
 
+  it("handles dialogs");
+
   describe("language-specific", function() {
     describe("French", function() {
       it("pronounces '/' as 'ou'", function() {
