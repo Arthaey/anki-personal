@@ -42,6 +42,13 @@ describe("Card", function() {
       expect(missingCard.hasExpectedLayout()).toBe(false);
     });
 
+    it("hides the deck name", function() {
+      var card = createCard({ deck: "Foo::Bar::MyDeckName" });
+      var deck = card.dom.querySelector("#deck");
+      expect(deck).toBeNull();
+      expect(card.dom).not.toHaveText("MyDeckName");
+    });
+
     it("does not add multiple card-info headers or debug elements", function() {
       var fullHtml = `
         <div class="card-info">
@@ -101,23 +108,6 @@ describe("Card", function() {
 
       var citation = card.dom.querySelector("cite");
       expect(citation).toHaveText("p42");
-    });
-  });
-
-  it("hides the deck name");
-
-  describe("sets deck name", function() {
-    it("to given name", function() {
-      var card = createCard({ deck: "ExplicitlySetDeckName" });
-      expect(card.dom.querySelector("#deck")).toHaveText("ExplicitlySetDeckName");
-    });
-
-    it("using only last portion of nested deck name", function() {
-      var card = createCard({ deck: "Foo::Bar::MyDeckName" });
-      var deck = card.dom.querySelector("#deck");
-      expect(deck).toHaveText("MyDeckName");
-      expect(deck).not.toHaveText("Foo");
-      expect(deck).not.toHaveText("Bar");
     });
   });
 

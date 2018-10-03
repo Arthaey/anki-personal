@@ -73,7 +73,7 @@ Card.prototype.setupLayout = function() {
        '<div class="tags">' + tagsHtml + "</div>" +
        '<div class="slash"></div>' +
        '<div class="deck">' +
-       '  <span id="deck">' + this.deckName + "</span>:" +
+       //'  <span id="deck">' + this.deckName + "</span>:" +
        '  <span class="card-type">' + this.cardType + "</span>" +
        "</div>"
     ;
@@ -387,7 +387,7 @@ Card.prototype.hasExpectedLayout = function() {
       this.dom.querySelector(".card-info") &&
       this.dom.querySelector(".tags") &&
       this.dom.querySelector(".deck") &&
-      this.dom.querySelector("#deck") &&
+      //this.dom.querySelector("#deck") &&
       this.dom.querySelector(".card-type") &&
       this.dom.querySelector(".slash") &&
       this.dom.querySelector(".card.front") &&

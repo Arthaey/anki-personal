@@ -14,11 +14,6 @@ describe("Global", function() {
     expect(dom.outerHTML).not.toBe(startingHTML);
   });
 
-  it("sets up short deck name", function() {
-    var dom = createCard({ deck: "MyDeckName::SubDeck", return: "element" });
-    expect(dom.querySelector("#deck")).toHaveText("SubDeck");
-  });
-
   it("shows given file generation timestamp", function() {
     /* eslint-disable-next-line no-global-assign */
     FILE_GENERATION_TIMESTAMP = "Thu Sep 6 22:25:02 PDT 2018";
