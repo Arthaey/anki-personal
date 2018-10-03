@@ -138,11 +138,9 @@ Card.prototype.setupClasses = function() {
     }
 
     var typeClass = type;
-    typeClass = typeClass.replace(" → ", "-");
-    typeClass = typeClass.replace(" ⇔ ", "-");
-    typeClass = typeClass.replace(" - ", "-");
-    typeClass = typeClass.replace(" ", "-");
-    typeClass = typeClass.replace(/::/g, "-");
+    typeClass = typeClass.replace(/ [→⇔-] /g, "-");
+    typeClass = typeClass.replace(/:+\s*/g,  "-");
+    typeClass = typeClass.replace(/\s+/g, "-");
     newClasses += " " + typeClass + " ";
   }
 
