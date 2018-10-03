@@ -122,11 +122,13 @@ function createCard(params) {
     backEl.id = params.backId;
   }
 
+  params.dom = el;
+
   var card;
   if (params.return !== "card") {
-    setup(el, params.deck, params.note, params.card, params.tags);
+    setup(el, params);
   } else {
-    card = new Card(el, params.deck, params.note, params.card, params.tags);
+    card = new Card(params);
   }
 
   switch (params.return.toLowerCase()) {

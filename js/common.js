@@ -2,7 +2,7 @@
 
 var DEBUG = (typeof DEBUG === "undefined") ? false : DEBUG;
 
-function setupNew(dom, ANKI_DATA) {
+function setup(dom, ANKI_DATA) {
   try {
     var params = ANKI_DATA;
     params.dom = dom;
@@ -11,15 +11,6 @@ function setupNew(dom, ANKI_DATA) {
   } catch (error) {
     alert(error); /* eslint-disable-line no-alert */
   }
-}
-
-function setup(dom, deckName, noteType, cardType, tags) {
-  setupNew(dom, {
-    deck: deckName,
-    note: noteType,
-    card: cardType,
-    tags: tags
-  });
 }
 
 function appendFileGenerationInfo(card) {
@@ -93,14 +84,6 @@ appendDebug("CARD: " + (typeof CARD === "undefined" ? "undefined" : CARD));
 appendDebug("TAGS: " + (typeof TAGS === "undefined" ? "undefined" : TAGS));
 
 //document.addEventListener('DOMContentLoaded', setup); // doesn't work on phone
-if (document && document.documentElement) {
-  if (typeof ANKI_DATA !== "undefined") {
-    setupNew(document.documentElement, ANKI_DATA);
-  } else if (typeof DECK !== "undefined" &&
-             typeof NOTE !== "undefined" &&
-             typeof CARD !== "undefined" &&
-             typeof TAGS !== "undefined")
-  {
-    setup(document.documentElement, DECK, NOTE, CARD, TAGS);
-  }
+if (document && document.documentElement && typeof ANKI_DATA !== "undefined") {
+  setup(document.documentElement, ANKI_DATA);
 }

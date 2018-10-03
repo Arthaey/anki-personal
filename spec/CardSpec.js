@@ -5,14 +5,6 @@ describe("Card", function() {
     document.documentElement.className = "";
   });
 
-  xit("constructor", function() {
-    var card = new Card(createCardFront(), "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
-    expect(card.deckName).toBe("MyDeckName");
-    expect(card.noteType).toBe("MyNoteType");
-    expect(card.cardType).toBe("MyCardType");
-    expect(card.tags).toBe("MyTags");
-  });
-
   it("constructor with named params", function() {
     var card = new Card({
       dom: createCardFront(),

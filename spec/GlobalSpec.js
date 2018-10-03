@@ -5,7 +5,12 @@ describe("Global", function() {
   it("replaces any existing HTML", function() {
     var dom = createCardFrontAndBack();
     var startingHTML = dom.outerHTML;
-    setup(dom, "MyDeckName", "MyNoteType", "MyCardType", "MyTags");
+    setup(dom, {
+      deck: "MyDeckName",
+      note: "MyNoteType",
+      card: "MyCardType",
+      tags: "MyTags",
+    });
     expect(dom.outerHTML).not.toBe(startingHTML);
   });
 

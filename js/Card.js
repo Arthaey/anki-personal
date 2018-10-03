@@ -1,24 +1,15 @@
 /* global Speaker EnglishLanguage FrenchLanguage appendDebug */
 
-function Card(dom, deckName, noteType, cardType, tags) {
-  if (arguments.length === 1 && typeof dom === "object") {
-    var params = dom;
-    dom = params.dom;
-    deckName = params.deck;
-    noteType = params.note;
-    cardType = params.card;
-    tags = params.tags;
-  }
-
-  this.dom = this.requiredParam(dom, "dom");
-  this.deckName = this.requiredParam(deckName, "deckName");
-  this.noteType = this.requiredParam(noteType, "noteType");
-  this.cardType = this.requiredParam(cardType, "cardType");
-  this.tags = tags;
+function Card(params) {
+  this.dom = this.requiredParam(params.dom, "dom");
+  this.deckName = this.requiredParam(params.deck, "deckName");
+  this.noteType = this.requiredParam(params.note, "noteType");
+  this.cardType = this.requiredParam(params.card, "cardType");
+  this.tags = params.tags;
 
   // document.body.className gets overwritten by Anki Javascript that runs
   // later, so set the <html> documentElement instead.
-  this.root = document && document.documentElement ? document.documentElement : dom;
+  this.root = document && document.documentElement ? document.documentElement : this.dom;
 
   var classes = [].slice.apply(this.getClassList());
   this.originalAnkiClasses = classes.filter(function(className) {
