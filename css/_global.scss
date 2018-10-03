@@ -501,5 +501,10 @@ hr.hidden {
   margin-bottom: 1em;
 }
 
-@include topic_icon("sailing");
+//@include icon("people");
+@include topic_icon("cooking");
 @include topic_icon("geography");
+@include topic_icon("math");
+@include topic_icon("sailing");
+@include topic_icon("science");
+@include topic_icon("tech");

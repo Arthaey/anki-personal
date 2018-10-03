@@ -6,18 +6,22 @@
   top: -0.1em;
 }
 
-@mixin topic_icon($topic) {
-  .topics-#{$topic}      .deck *:last-child:after,
-  [class^="topics-#{$topic}-"]  .deck *:last-child:after,
-  [class*=" topics-#{$topic}-"] .deck *:last-child:after
+@mixin icon($topic, $prefix:"icon-") {
+  .#{$prefix}#{$topic}      .deck *:last-child:after,
+  [class^="#{$prefix}#{$topic}-"]  .deck *:last-child:after,
+  [class*=" #{$prefix}#{$topic}-"] .deck *:last-child:after
   {
     @extend %icon-base;
     background-color: map-get($colors, very-light-gray);
     border-radius: 0.25em;
-    content: url("_topics-#{$topic}.png");
+    content: url("_#{$prefix}#{$topic}.png");
     height: 1.2em;
     padding: 0.1em 0.2em 0.3em 0.2em;
   }
+}
+
+@mixin topic_icon($topic) {
+  @include icon($topic, "topics-");
 }
 
 @mixin flag($langCode) {

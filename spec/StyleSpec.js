@@ -35,8 +35,12 @@ describe("Style", function() {
 
   describe("topic icons", function() {
     var topics = [
+      { tag: "topics::cooking", image: "cooking" },
       { tag: "topics::geography", image: "geography" },
+      { tag: "topics::math", image: "math" },
       { tag: "topics::sailing", image: "sailing" },
+      { tag: "topics::science", image: "science" },
+      { tag: "topics::tech", image: "tech" },
     ];
 
     it("shows an icon for other topics too");
