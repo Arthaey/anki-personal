@@ -34,20 +34,27 @@ describe("Style", function() {
   });
 
   describe("topic icons", function() {
-    it("shows icons for all topics");
+    var topics = [
+      { tag: "topics::geography", image: "geography" },
+      { tag: "topics::sailing", image: "sailing" },
+    ];
 
-    it("shows a globe icon for geography tags", function() {
-      var cardEl = createCardAsElement({ tags: "topics::geography::state" });
-      var cardTypeEl = cardEl.querySelector(".card-type");
-      var regex = new RegExp("_topics-geography.png");
-      expect(cardTypeEl).toHaveComputedStyle("content", regex, ":after");
-    });
+    it("shows an icon for other topics too");
 
-    it("shows a sailboat icon for sailing tags", function() {
-      var cardEl = createCardAsElement({ tags: "topics::sailing" });
-      var cardTypeEl = cardEl.querySelector(".card-type");
-      var regex = new RegExp("_topics-sailing.png");
-      expect(cardTypeEl).toHaveComputedStyle("content", regex, ":after");
+    topics.forEach(function(topic) {
+      it(`shows an icon for ${topic.tag}`, function() {
+        var cardEl = createCardAsElement({ tags: topic.tag });
+        var cardTypeEl = cardEl.querySelector(".card-type");
+        var regex = new RegExp(`_topics-${topic.image}.png`);
+        expect(cardTypeEl).toHaveComputedStyle("content", regex, ":after");
+      });
+
+      it(`shows an icon for ${topic.tag} child tags`, function() {
+        var cardEl = createCardAsElement({ tags: `${topic.tag}::foo` });
+        var cardTypeEl = cardEl.querySelector(".card-type");
+        var regex = new RegExp(`_topics-${topic.image}.png`);
+        expect(cardTypeEl).toHaveComputedStyle("content", regex, ":after");
+      });
     });
   });
 
