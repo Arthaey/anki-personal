@@ -105,6 +105,18 @@ Card.prototype.setupClasses = function() {
   this.resetClasses();
   var newClasses = "";
 
+  if (this.noteType === "Cloze") {
+    if (this.deckName.includes("Deutsch")) {
+      newClasses += " de-only ";
+    }
+    if (this.deckName.includes("Español")) {
+      newClasses += " es-only ";
+    }
+    if (this.deckName.includes("Français")) {
+      newClasses += " fr-only ";
+    }
+  }
+
   var types = [ this.deckName, this.noteType, this.cardType, this.tags ];
   for (var i = 0; i < types.length; i++ ) {
     var type = types[i];
@@ -112,30 +124,6 @@ Card.prototype.setupClasses = function() {
 
     if (/tts/i.test(type)) newClasses += " tts ";
     if (/asl/i.test(type)) newClasses += " asl ";
-
-    if (this.deckName.includes("Deutsch")) {
-      if (this.noteType === "Cloze") {
-        newClasses += " de-only ";
-      }
-
-      var front = this.dom.querySelector(".card.front");
-      var firstWord = front.textContent.split(/\s+/)[0];
-      if (firstWord === "der") {
-        newClasses += " noun-masc";
-      } else if (firstWord === "die") {
-        newClasses += " noun-fem";
-      } else if (firstWord === "das") {
-        newClasses += " noun-neut";
-      }
-    }
-
-    if (this.deckName.includes("Español") && this.noteType === "Cloze") {
-      newClasses += " es-only ";
-    }
-
-    if (this.deckName.includes("Français") && this.noteType === "Cloze") {
-      newClasses += " fr-only ";
-    }
 
     var typeClass = type;
     typeClass = typeClass.replace(/ [→⇔-] /g, "-");
@@ -146,6 +134,18 @@ Card.prototype.setupClasses = function() {
 
   newClasses += " " + this.getLanguageCode() + " ";
   newClasses = newClasses.replace("-tts", "-only");
+
+  if (newClasses.match(/\b(DE|Deutsch)\b/i)) {
+    var front = this.dom.querySelector(".card.front");
+    var firstWord = front.textContent.split(/\s+/)[0];
+    if (firstWord === "der") {
+      newClasses += " noun-masc";
+    } else if (firstWord === "die") {
+      newClasses += " noun-fem";
+    } else if (firstWord === "das") {
+      newClasses += " noun-neut";
+    }
+  }
 
   var LONG_TEXT_CUTOFF = 40;
   var frontLength = this._getTextLength(".card.front");
