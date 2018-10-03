@@ -181,18 +181,22 @@ describe("Card", function() {
     });
 
     it("adds gender for masculine German words", function() {
-      var card = createCard({ front: "der Berg", deck: "Deutsch" });
-      expect(card.getClassList()).toContain("noun-masc");
+      var card1 = createCard({ front: "der Berg", deck: "Deutsch" });
+      var card2 = createCard({ back: "der Berg", deck: "Deutsch" });
+      expect(card1.getClassList()).toContain("noun-masc");
+      expect(card2.getClassList()).toContain("noun-masc");
     });
 
     it("adds gender for feminine German words", function() {
-      var card = createCard({ front: "die Hand", deck: "Deutsch" });
-      expect(card.getClassList()).toContain("noun-fem");
+      var card1 = createCard({ front: "die Hand", deck: "Deutsch" });
+      var card2 = createCard({ back: "die Hand", deck: "Deutsch" });
+      expect(card1.getClassList()).toContain("noun-fem");      expect(card2.getClassList()).toContain("noun-fem");
     });
 
     it("adds gender for neuter German words", function() {
-      var card = createCard({ front: "das Boot", deck: "Deutsch" });
-      expect(card.getClassList()).toContain("noun-neut");
+      var card1 = createCard({ front: "das Boot", deck: "Deutsch" });
+      var card2 = createCard({ back: "das Boot", deck: "Deutsch" });
+      expect(card1.getClassList()).toContain("noun-neut");      expect(card2.getClassList()).toContain("noun-neut");
     });
 
     it("adds 'small-text' to cards with long front text", function() {
