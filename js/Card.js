@@ -137,12 +137,16 @@ Card.prototype.setupClasses = function() {
 
   if (newClasses.match(/\b(DE|Deutsch)\b/i)) {
     var front = this.dom.querySelector(".card.front");
-    var firstWord = front.textContent.split(/\s+/)[0];
-    if (firstWord === "der") {
+    var frontFirstWord = front ? front.textContent.split(/\s+/)[0] : "";
+
+    var back = this.dom.querySelector(".card.back");
+    var backFirstWord = back ? back.textContent.split(/\s+/)[0] : "";
+
+    if (frontFirstWord === "der" || backFirstWord === "der") {
       newClasses += " noun-masc";
-    } else if (firstWord === "die") {
+    } else if (frontFirstWord === "die" || backFirstWord === "die") {
       newClasses += " noun-fem";
-    } else if (firstWord === "das") {
+    } else if (frontFirstWord === "das" || backFirstWord === "das") {
       newClasses += " noun-neut";
     }
   }
