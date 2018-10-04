@@ -6,11 +6,6 @@
 @import 'language';
 @import 'mobile';
 
-@import 'image_occlusion';
-.front #io-overlay {
-  opacity: 0.5;
-}
-
 $font-size: 48px;
 
 /** HIDE UNTIL READY **********************************************************/
@@ -469,10 +464,13 @@ body {
   color: red;
 }
 
-.io-card .card img,
+%img-bordered {
+  border: 1px solid black;
+}
+
 .flag-country .card img,
 .map-country .card img {
-  border: 1px solid black;
+  @extend %img-bordered;
 }
 
 .correct {
@@ -481,6 +479,10 @@ body {
 
 .email {
   font-family: monospace;
+}
+
+.display-none {
+  display: none !important;
 }
 
 .hidden {
@@ -514,3 +516,6 @@ hr.hidden {
 @include topic_icon("sailing");
 @include topic_icon("science");
 @include topic_icon("tech");
+
+@import 'image_occlusion';
+@import 'image_occlusion_customization';

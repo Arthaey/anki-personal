@@ -1,0 +1,24 @@
+.io-card {
+  .card.back {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .card.front {
+    margin: -0.5em;
+    padding: 0;
+  }
+  // margin: -0.5em; padding: 0
+
+  .card img {
+    @extend %img-bordered;
+  }
+
+  .front .io-question-mask {
+    opacity: 0.5;
+  }
+
+  .back .io-question-mask {
+    opacity: 0.3;
+  }
+}
