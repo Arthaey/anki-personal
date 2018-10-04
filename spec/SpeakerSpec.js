@@ -18,7 +18,7 @@ describe("Speaker", function() {
     speaker.speak("my text", "XX");
 
     expect(speechSynthesis.speak).toHaveBeenCalled();
-    var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+    var utterance = lastUtterance();
     expect(utterance.volume).toBeCloseTo(speaker.defaultVolume);
     expect(utterance.rate).toBeCloseTo(speaker.defaultRate);
     expect(utterance.pitch).toBeCloseTo(speaker.defaultPitch);
@@ -28,7 +28,7 @@ describe("Speaker", function() {
     speaker.speak("my text", "EN");
 
     expect(speechSynthesis.speak).toHaveBeenCalled();
-    var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+    var utterance = lastUtterance();
     expect(utterance.text).toBe("my text");
     expect(utterance.lang).toBe("en-US");
   });
@@ -42,15 +42,14 @@ describe("Speaker", function() {
 
   it("does not say anything inside slashes", function() {
     speaker.speak("word /wɹ̩d/", "EN");
-    var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
+    var utterance = lastUtterance();
     expect(utterance.text).toContain("word");
     expect(utterance.text).not.toContain("wɹ̩d");
   });
 
   it("does not say anything inside parentheses", function() {
     speaker.speak("some (hidden) stuff", "EN");
-    var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-    expect(utterance.text).toMatch(/^some +stuff$/);
+    expect(lastUtterance().text).toMatch(/^some +stuff$/);
   });
 
   it("handles dialogs");
@@ -59,62 +58,53 @@ describe("Speaker", function() {
     describe("French", function() {
       it("pronounces '/' as 'ou'", function() {
         speaker.speak("foo/bar", "FR");
-        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-        expect(utterance.text).toMatch(/^foo ou bar$/);
+        expect(lastUtterance().text).toMatch(/^foo ou bar$/);
       });
     });
 
     describe("English", function() {
       it("pronounces '/' as 'or'", function() {
         speaker.speak("foo/bar", "EN");
-        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-        expect(utterance.text).toMatch(/^foo or bar$/);
+        expect(lastUtterance().text).toMatch(/^foo or bar$/);
       });
     });
 
     describe("German", function() {
       it("pronounces '/' as 'oder'", function() {
         speaker.speak("foo/bar", "DE");
-        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-        expect(utterance.text).toMatch(/^foo oder bar$/);
+        expect(lastUtterance().text).toMatch(/^foo oder bar$/);
       });
 
       it("pronounces 'etw.' as 'etwas'", function() {
         speaker.speak("etw.", "DE");
-        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-        expect(utterance.text).toMatch(/^etwas$/);
+        expect(lastUtterance().text).toMatch(/^etwas$/);
       });
     });
 
     describe("Spanish", function() {
       it("pronounces '/' as 'o'", function() {
         speaker.speak("foo/bar", "ES");
-        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-        expect(utterance.text).toMatch(/^foo o bar$/);
+        expect(lastUtterance().text).toMatch(/^foo o bar$/);
       });
 
       it("says Spanish words that end in '(se)'", function() {
         speaker.speak("llamar(se)", "ES");
-        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-        expect(utterance.text).toMatch(/^llamarse$/);
+        expect(lastUtterance().text).toMatch(/^llamarse$/);
       });
 
       it("does not says Spanish cards that contain in '(se)'", function() {
         speaker.speak("llamar(se) así", "ES");
-        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-        expect(utterance.text).toMatch(/^llamar +así$/);
+        expect(lastUtterance().text).toMatch(/^llamar +así$/);
       });
 
       it("does not says non-Spanish words that end in '(se)'", function() {
         speaker.speak("llamar(se)", "EN");
-        var utterance = speechSynthesis.speak.calls.mostRecent().args[0];
-        expect(utterance.text).toMatch(/^llamar$/);
+        expect(lastUtterance().text).toMatch(/^llamar$/);
       });
 
       it("speaks Spanish faster than the default speed", function() {
         speaker.speak("my text", "ES");
-        var utteranceES = speechSynthesis.speak.calls.mostRecent().args[0];
-        expect(utteranceES.rate).toBeGreaterThan(speaker.defaultRate);
+        expect(lastUtterance().rate).toBeGreaterThan(speaker.defaultRate);
       });
     });
   });
@@ -157,4 +147,8 @@ describe("Speaker", function() {
       expect(speaker.getLanguageAndCountryCode("ZH")).toBe("zh-CN");
     });
   });
+
+  function lastUtterance() {
+    return speechSynthesis.speak.calls.mostRecent().args[0];
+  }
 });
