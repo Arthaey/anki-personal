@@ -6,6 +6,11 @@
 @import 'language';
 @import 'mobile';
 
+@import 'image_occlusion';
+.front #io-overlay {
+  opacity: 0.5;
+}
+
 $font-size: 48px;
 
 /** HIDE UNTIL READY **********************************************************/
@@ -464,6 +469,7 @@ body {
   color: red;
 }
 
+.io-card .card img,
 .flag-country .card img,
 .map-country .card img {
   border: 1px solid black;
