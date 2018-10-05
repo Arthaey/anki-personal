@@ -52,7 +52,19 @@ describe("Speaker", function() {
     expect(lastUtterance().text).toMatch(/^some +stuff$/);
   });
 
-  it("handles dialogs");
+  it("handles dialogs", function() {
+    var dialog = `
+      —Hello.
+      —Goodbye.
+    `;
+    speaker.speak(dialog, "EN");
+
+    var calls = speechSynthesis.speak.calls.all();
+    var hello   = calls[0].args[0];
+    var goodbye = calls[1].args[0];
+    expect(hello.text).toMatch("Hello.");
+    expect(goodbye.text).toMatch("Goodbye.");
+  });
 
   describe("language-specific", function() {
     describe("French", function() {

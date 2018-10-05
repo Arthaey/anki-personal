@@ -14,14 +14,33 @@ Speaker.prototype.canSpeak = function() {
 
 Speaker.prototype.speak = function(text, languageCode) {
   if (!this.canSpeak()) return;
-  var utterance = new SpeechSynthesisUtterance();
-  utterance.text = this.normalizeText(text, languageCode);
-  utterance.lang = this.getLanguageAndCountryCode(languageCode);
-  utterance.volume = this.defaultVolume;
-  utterance.rate = this.getSpeechRate(languageCode);
-  utterance.pitch = this.defaultPitch;
+  var normalizedText = this.normalizeText(text, languageCode);
+  var texts = normalizedText.split("—").map(function(t) {return t.trim()}).filter(function(t) {return !t.match(/^[\s\n↵]*$/)});
+
+  var voices = this.getVoices(languageCode);
+  if (voices) {
+    appendDebug("Found " + voices.length + " voices for " + languageCode);
+    appendDebug(voices.map(function(v) { return v.name + " (" + v.lang + ")"}).join(", ") + ".");
+  }
+
   speechSynthesis.cancel();
-  speechSynthesis.speak(utterance);
+
+  for (var i = 0; i < texts.length; i++) {
+    var utterance = new SpeechSynthesisUtterance();
+    utterance.text = texts[i];
+    utterance.lang = this.getLanguageAndCountryCode(languageCode);
+    utterance.volume = this.defaultVolume;
+    utterance.rate = this.getSpeechRate(languageCode);
+    utterance.pitch = this.defaultPitch;
+    /*
+    if (voices.length > 0) {
+      utterance.voice = voices[i % 2]; // alternate voices
+    }
+    */
+
+    while (speechSynthesis.speaking) { /* wait until it's done speaking */ }
+    speechSynthesis.speak(utterance);
+  }
 };
 
 Speaker.prototype.normalizeText = function(text, languageCode) {
@@ -76,4 +95,10 @@ Speaker.prototype.getSpeechRate = function(languageCode) {
   };
 
   return specialCaseSpeechRates[languageCode] || this.defaultRate;
+};
+
+Speaker.prototype.getVoices = function(languageCode) {
+  return speechSynthesis.getVoices().filter(function(voice) {
+    return voice.lang.startsWith(languageCode.toLowerCase() + "-");
+  });
 };

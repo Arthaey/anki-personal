@@ -115,6 +115,10 @@ Card.prototype.setupClasses = function() {
     if (this.deckName.includes("Français")) {
       newClasses += " fr-only ";
     }
+
+    if (this.tags.includes("dialog")) {
+      newClasses += " tts ";
+    }
   }
 
   var types = [ this.deckName, this.noteType, this.cardType, this.tags ];
@@ -322,7 +326,7 @@ Card.prototype.isQuestionSide = function() {
 };
 
 Card.prototype.isTTSCardType = function() {
-  return /tts/i.test(this.cardType);
+  return this.getClassList().contains("tts");
 };
 
 Card.prototype.getClassList = function() {

@@ -366,6 +366,27 @@ describe("Card", function() {
       });
     });
 
+    describe("when it is a dialog card", function() {
+      it("hides word & auto-plays on the question side", function() {
+        var dialog = `
+          —Gracias.
+          —Al contrario.
+        `;
+        var card = createTTSCard({ note: "Cloze", deck: "Language::Español", tags: "dialog", front: dialog });
+        jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
+
+        expect(card.speaker.speak).toHaveBeenCalledWith(dialog, "ES");
+        expect(card.dom.querySelector("#tts")).toBeHidden();
+      });
+
+      it("shows word & does NOT auto-play on the answer side", function() {
+        var card = createTTSCard({ card: "MyCardTypeTTS", includeBack: true });
+        jasmine.clock().tick(Card.ttsAutoPlayDelay + 1);
+        expect(card.speaker.speak).not.toHaveBeenCalled();
+        expect(card.dom.querySelector("#tts")).not.toBeHidden();
+      });
+    });
+
     describe("when it is a monolingual TTS card", function() {
       it("hides word & auto-plays on the question side", function() {
         var card = createTTSCard({ card: "MyCardTypeTTS" });
@@ -401,7 +422,7 @@ describe("Card", function() {
     function createTTSCard(params) {
       if (!params) params = {};
       params.cardId = "tts";
-      params.front = "front text";
+      params.front = params.front || "front text";
 
       var card = createCard(params);
       spyOn(card.speaker, "speak");
