@@ -30,6 +30,16 @@ describe("Card", function() {
     expect(card.isQuestionSide()).toBe(false);
   });
 
+  it("adds a count to the question based on the number of words in the answer when it's a vocab card", function() {
+    var card = createCard({ front: "small", back: "klein, wenig", note: "Language: Indo-European" });
+    expect(card.front).toHaveText("small x2");
+});
+
+it("does NOT add a count to the question when it's NOT a vocab card", function() {
+    var card = createCard({ front: "small", back: "klein, wenig" });
+    expect(card.front).not.toHaveText("small x2");
+});
+
   describe("check for expected HTML", function() {
     it("creates layout", function() {
       var card = createCard();
