@@ -80,13 +80,16 @@ function createCard(params) {
   if (!params.note) params.note = "MyNote";
   if (!params.card) params.card = "MyCard";
   if (!params.tags) params.tags = "MyTags";
+
+  // HTML has placeholders; param values are search-and-replaced later.
+  var frontHtml = cardFrontHTML();
+  var backHtml = (params.includeBack || params.back) ? cardBackHTML() : "";
+
   if (!params.front) params.front = "question";
   if (!params.back) params.back = "answer";
   if (!params.cardId) params.cardId = "";
   if (typeof params.return === "undefined") params.return = "card";
 
-  var frontHtml = cardFrontHTML();
-  var backHtml = params.includeBack ? cardBackHTML() : "";
 
   var fullHtml;
   if (params.domElement) {

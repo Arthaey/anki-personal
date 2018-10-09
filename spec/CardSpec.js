@@ -20,6 +20,16 @@ describe("Card", function() {
     expect(card.tags).toBe("MyTags");
   });
 
+  it("has front-side content", function() {
+    var card = createCard({ front: "foo" });
+    expect(card.front).toHaveText("foo");
+  });
+
+  it("has back-side content", function() {
+    var card = createCard({ back: "foo" });
+    expect(card.back).toHaveText("foo");
+  });
+
   it("knows when it's on the question side", function() {
     var card = createCard();
     expect(card.isQuestionSide()).toBe(true);
@@ -30,15 +40,15 @@ describe("Card", function() {
     expect(card.isQuestionSide()).toBe(false);
   });
 
-  it("adds a count to the question based on the number of words in the answer when it's a vocab card", function() {
+  xit("adds a count to the question based on the number of words in the answer when it's a vocab card", function() {
     var card = createCard({ front: "small", back: "klein, wenig", note: "Language: Indo-European" });
     expect(card.front).toHaveText("small x2");
-});
+  });
 
-it("does NOT add a count to the question when it's NOT a vocab card", function() {
+  it("does NOT add a count to the question when it's NOT a vocab card", function() {
     var card = createCard({ front: "small", back: "klein, wenig" });
     expect(card.front).not.toHaveText("small x2");
-});
+  });
 
   describe("check for expected HTML", function() {
     it("creates layout", function() {
@@ -462,8 +472,8 @@ it("does NOT add a count to the question when it's NOT a vocab card", function()
 
       expect(FrenchLanguage.conjugate).toHaveBeenCalledWith("parler", "1sg", "Pres");
       expect(EnglishLanguage.conjugate).toHaveBeenCalledWith("to speak", "1sg", "Pres");
-      expect(card.dom.querySelector(".card.front")).toHaveText("parle");
-      expect(card.dom.querySelector(".card.back")).toHaveText("speak");
+      expect(card.front).toHaveText("parle");
+      expect(card.back).toHaveText("speak");
 
       var cardTypeEl = card.dom.querySelector(".card-type");
       var regex = new RegExp("_flag-fr.png");
@@ -494,7 +504,7 @@ it("does NOT add a count to the question when it's NOT a vocab card", function()
 
       expect(FrenchLanguage.conjugate).toHaveBeenCalledWith("parler", "1sg", "Pres");
       expect(EnglishLanguage.conjugate).not.toHaveBeenCalled();
-      expect(card.dom.querySelector(".card.front")).toHaveText("parle");
+      expect(card.front).toHaveText("parle");
     });
 
     it("handles just the question-side EN-FR", function() {
@@ -507,7 +517,7 @@ it("does NOT add a count to the question when it's NOT a vocab card", function()
 
       expect(FrenchLanguage.conjugate).not.toHaveBeenCalled();
       expect(EnglishLanguage.conjugate).toHaveBeenCalledWith("to speak", "1sg", "Pres");
-      expect(card.dom.querySelector(".card.front")).toHaveText("speak");
+      expect(card.front).toHaveText("speak");
     });
 
     it("ignores French NON-verb cards", function() {

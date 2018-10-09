@@ -7,6 +7,9 @@ function Card(params) {
   this.cardType = this.requiredParam(params.card, "cardType");
   this.tags = params.tags;
 
+  this.front = this.dom.querySelector(".card.front");
+  this.back = this.dom.querySelector(".card.back");
+
   // document.body.className gets overwritten by Anki Javascript that runs
   // later, so set the <html> documentElement instead.
   this.root = document && document.documentElement ? document.documentElement : this.dom;
@@ -54,8 +57,7 @@ Card.prototype.requiredParam = function(value, name) {
 };
 
 Card.prototype.setupLayout = function() {
-  var front = this.dom.querySelector(".card.front");
-  if (!front) return "Card does not have a front side.";
+  if (!this.front) return "Card does not have a front side.";
 
   var cardInfo = this.dom.querySelector(".card-info");
   if (!cardInfo) {
@@ -67,7 +69,7 @@ Card.prototype.setupLayout = function() {
       tagsHtml += '<span class="tag">' + this.leafify(fullTags[i]) + "</span>";
     }
 
-    cardInfo = front.ownerDocument.createElement("div");
+    cardInfo = this.front.ownerDocument.createElement("div");
     cardInfo.className = "card-info";
     cardInfo.innerHTML =
        '<div class="tags">' + tagsHtml + "</div>" +
@@ -77,15 +79,15 @@ Card.prototype.setupLayout = function() {
        '  <span class="card-type">' + this.cardType + "</span>" +
        "</div>"
     ;
-    front.parentNode.insertBefore(cardInfo, front);
+    this.front.parentNode.insertBefore(cardInfo, this.front);
   }
 
   var debug = this.dom.querySelector("#debug");
   if (!debug) {
-    debug = front.ownerDocument.createElement("div");
+    debug = this.front.ownerDocument.createElement("div");
     debug.id = "debug";
     debug.className = "extra";
-    front.parentNode.appendChild(debug);
+    this.front.parentNode.appendChild(debug);
   }
 
   if (!this.hasExpectedLayout()) return "Card layout does not seem correct.";
@@ -140,11 +142,8 @@ Card.prototype.setupClasses = function() {
   newClasses = newClasses.replace("-tts", "-only");
 
   if (newClasses.match(/\b(DE|Deutsch)\b/i)) {
-    var front = this.dom.querySelector(".card.front");
-    var frontFirstWord = front ? front.textContent.split(/\s+/)[0] : "";
-
-    var back = this.dom.querySelector(".card.back");
-    var backFirstWord = back ? back.textContent.split(/\s+/)[0] : "";
+    var frontFirstWord = this.front.textContent.split(/\s+/)[0];
+    var backFirstWord = this.back ? this.back.textContent.split(/\s+/)[0] : "";
 
     if (frontFirstWord === "der" || backFirstWord === "der") {
       newClasses += " noun-masc";
@@ -156,8 +155,8 @@ Card.prototype.setupClasses = function() {
   }
 
   var LONG_TEXT_CUTOFF = 40;
-  var frontLength = this._getTextLength(".card.front");
-  var backLength = this._getTextLength(".card.back");
+  var frontLength = this._getTextLength(this.front);
+  var backLength = this._getTextLength(this.back);
   if (frontLength > LONG_TEXT_CUTOFF || backLength > LONG_TEXT_CUTOFF) {
     newClasses += " style-small-text";
   }
@@ -167,8 +166,7 @@ Card.prototype.setupClasses = function() {
   return "Classes = '" + newClasses.toLowerCase() + "'.";
 };
 
-Card.prototype._getTextLength = function(selector) {
-  var el = this.dom.querySelector(selector);
+Card.prototype._getTextLength = function(el) {
   if (!el) return 0;
 
   var cloneEl = el.cloneNode(true);
