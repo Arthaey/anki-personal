@@ -4,7 +4,6 @@
 @import 'colors';
 @import 'images';
 @import 'language';
-@import 'mobile';
 
 $font-size: 48px;
 
@@ -519,3 +518,5 @@ hr.hidden {
 
 @import 'image_occlusion';
 @import 'image_occlusion_customization';
+
+@import 'mobile';
