@@ -4,6 +4,7 @@
 @import 'colors';
 @import 'images';
 @import 'language';
+@import 'mobile';
 
 $font-size: 48px;
 
@@ -45,7 +46,7 @@ $font-size: 48px;
 .memory-jog,
 .memory-jog-with-details {
   .card {
-    font-size: $font-size / 2;
+    font-size: 0.75em;
   }
 
   .card.back {
@@ -54,7 +55,7 @@ $font-size: 48px;
 }
 
 .style-small-text .card {
-  font-size: $font-size / 2;
+  font-size: 0.75em;
 }
 
 .extra {
@@ -86,7 +87,7 @@ cite:after {
 blockquote:before, blockquote:after {
   display: block;
   color: map-get($colors, dark-gray);
-  font-size: $font-size * 2;
+  font-size: 2em;
   line-height: 1em;
   font-family: serif;
 }
@@ -153,7 +154,7 @@ span#tts {
 
 #file-generation-info {
   color: transparent;
-  font-size: $font-size / 2;
+  font-size: 1em;
 }
 
 /** STRUCTURE *****************************************************************/
@@ -319,7 +320,7 @@ body {
 
   .subtitles {
     display: block;
-    padding: $font-size / 4;
+    padding: 0.5em;
     position: absolute;
     width: 100%;
 
@@ -330,20 +331,20 @@ body {
 
       .context {
         color: gray;
-        font-size: $font-size / 3;
+        font-size: 0.75em;
       }
     }
 
     &.translation {
       @include text-stroke(1, navy);
       color: gray;
-      font-size: $font-size / 3;
+      font-size: 0.57em;
       font-weight: bold;
       top: 0;
 
       .context {
         font-weight: normal;
-        font-size: $font-size / 4;
+        font-size: 0.5em;
       }
     }
 
@@ -518,5 +519,3 @@ hr.hidden {
 
 @import 'image_occlusion';
 @import 'image_occlusion_customization';
-
-@import 'mobile';

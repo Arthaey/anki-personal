@@ -1,6 +1,11 @@
 $answer-buttons-iphone-height: 100px;
 
 .iphone {
+  $font-size: 24px;
+
+  #qa {
+    font-size: $font-size;
+  }
 
   body {
     padding: 5px;
