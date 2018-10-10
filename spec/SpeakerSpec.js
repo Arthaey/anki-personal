@@ -87,9 +87,16 @@ describe("Speaker", function() {
         expect(lastUtterance().text).toMatch(/^foo oder bar$/);
       });
 
+      // TODO: Should these 2 tests go into GermanLanguageSpec instead?
+
       it("pronounces 'etw.' as 'etwas'", function() {
         speaker.speak("etw.", "DE");
         expect(lastUtterance().text).toMatch(/^etwas$/);
+      });
+
+      it("pronounces a noun and its plural suffix as two complete words", function() {
+        speaker.speak("der Mann, –¨er", "DE");
+        expect(lastUtterance().text).toMatch(/^der Mann, die Männer$/);
       });
     });
 
