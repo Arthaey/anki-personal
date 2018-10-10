@@ -5,7 +5,7 @@ describe("Style", function() {
     var cardEl = createCardAsElement();
     var info = cardEl.querySelector("#file-generation-info");
     expect(info).toHaveComputedColor("color", "rgba(0, 0, 0, 0)");
-    expect(info).toHaveComputedStyle("font-size", "24px");
+    expect(info).toHaveComputedStyle("font-size", "16px");
   });
 
   it("handles long tags", function() {
@@ -64,7 +64,7 @@ describe("Style", function() {
 
   describe("cloze cards", function() {
     it("left-aligns text", function() {
-      var cardEl = createCardAsElement({ card: "Cloze" });
+      var cardEl = createCardAsElement({ note: "Cloze" });
       expect(cardEl.querySelector(".card")).toHaveComputedStyle("text-align", "left");
     });
   });

@@ -107,7 +107,7 @@ Card.prototype.setupClasses = function() {
   this.resetClasses();
   var newClasses = "";
 
-  if (this.noteType === "Cloze") {
+  if (this.noteType.startsWith("Cloze")) {
     if (this.deckName.includes("Deutsch")) {
       newClasses += " de-only ";
     }
