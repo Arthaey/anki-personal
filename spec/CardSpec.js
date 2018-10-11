@@ -334,6 +334,8 @@ describe("Card", function() {
         expect(card.speaker.speak).not.toHaveBeenCalled();
       });
 
+      it("strips HTML before sending text to the Speaker"); // "E T W" vs "etwas"?
+
       it("identifies languages from deck name", function() {
         expect(createCard({ deck: "Language::Arabic" }).getLanguageCode()).toBe("AR");
         expect(createCard({ deck: "Language::English" }).getLanguageCode()).toBe("EN");
