@@ -1,4 +1,4 @@
-/* global appendDebug */
+/* global GermanLanguage appendDebug */
 
 function Speaker() {
   this.defaultVolume = 1; // 0 to 1
@@ -68,6 +68,10 @@ Speaker.prototype.normalizeText = function(text, languageCode) {
     text = text.replace("(se)", "se");
   } else {
     text = text.replace(/\(.*?\)/g, "");
+  }
+
+  if (languageCode === "DE") {
+    text = GermanLanguage.pluralize(text);
   }
 
   return text;

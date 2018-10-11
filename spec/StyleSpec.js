@@ -43,8 +43,6 @@ describe("Style", function() {
       { tag: "topics::tech", image: "tech" },
     ];
 
-    it("shows an icon for other topics too");
-
     topics.forEach(function(topic) {
       it(`shows an icon for ${topic.tag}`, function() {
         var cardEl = createCardAsElement({ tags: topic.tag });

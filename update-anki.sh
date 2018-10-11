@@ -66,6 +66,7 @@ cat \
   js/polyfills.js \
   js/EnglishLanguage.js \
   js/FrenchLanguage.js \
+  js/GermanLanguage.js \
   js/Speaker.js \
   js/Card.js \
   js/common.js >> $GLOBAL_JS_FILE
