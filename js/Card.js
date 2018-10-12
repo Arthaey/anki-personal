@@ -320,7 +320,10 @@ Card.prototype.addExtraUi = function() {
       "<div> <button>*</button> <button>0</button> <button>#</button> </div>"
     ;
     this.front.parentNode.appendChild(numpad);
+    return "Added numpad.";
   }
+
+  return "Did NOT add numpad.";
 };
 
 Card.prototype.showCard = function() {
