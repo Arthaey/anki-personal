@@ -21,6 +21,10 @@ describe("GermanLanguage", function() {
     expect(GermanLanguage.pluralize("der Wurm, –¨er")).toBe("der Wurm, die Würmer");
   });
 
+  it("creates a plural with no change", function() {
+    expect(GermanLanguage.pluralize("der Liter, –")).toBe("der Liter, die Liter");
+  });
+
   it("does nothing if no plural suffix is provided", function() {
     expect(GermanLanguage.pluralize("der Hund")).toBe("der Hund");
   });
