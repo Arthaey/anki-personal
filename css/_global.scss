@@ -532,12 +532,14 @@ hr.hidden {
   text-align: center;
 
   button {
+    $size: max($font-size, $touch-target-size);
     @extend %button;
     margin: 0.1em 0;
     display: inline-block;
-    font-size: 1em;
-    width: max($font-size, $touch-target-size);
-    line-height: $touch-target-size;
+    font-size: $size;
+    width: $size;
+    height: $size;
+    line-height: $size;
   }
 }
 
