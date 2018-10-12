@@ -146,4 +146,13 @@ describe("Style", function() {
     });
   }
 
+  it("adds phone numpad to front side personal::phone cards", function() {
+    var cardEl = createCardAsElement({ tags: "personal::phone" });
+    expect(cardEl.querySelector(".numpad")).not.toBeNull();
+  });
+
+  it("does NOT add phone numpad to back side personal::phone cards", function() {
+    var cardEl = createCardAsElement({ tags: "personal::phone", includeBack: true });
+    expect(cardEl.querySelector(".numpad")).toBeNull();
+  });
 });

@@ -30,6 +30,7 @@ function Card(params) {
     this.setupVerbs,
     this.setupTTS,
     this.setupCitations,
+    this.addExtraUi,
     this.showCard
   ];
 
@@ -306,6 +307,20 @@ Card.prototype.setupCitations = function() {
   }
 
   return "Citation source = " + citation.innerHTML;
+};
+
+Card.prototype.addExtraUi = function() {
+  if (this.getClassList().contains("personal-phone") && this.isQuestionSide()) {
+    var numpad = this.front.ownerDocument.createElement("div");
+    numpad.className = "numpad";
+    numpad.innerHTML =
+      "<div> <button>1</button> <button>2</button> <button>3</button> </div>" +
+      "<div> <button>4</button> <button>5</button> <button>6</button> </div>" +
+      "<div> <button>7</button> <button>8</button> <button>9</button> </div>" +
+      "<div> <button>*</button> <button>0</button> <button>#</button> </div>"
+    ;
+    this.front.parentNode.appendChild(numpad);
+  }
 };
 
 Card.prototype.showCard = function() {

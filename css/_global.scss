@@ -9,6 +9,7 @@
 $font-size: 48px;
 $line-height: 2em;
 $radius: $line-height / 4;
+$touch-target-size: 44px;
 
 /** HIDE UNTIL READY **********************************************************/
 
@@ -138,17 +139,21 @@ input {
   text-align: center;
 }
 
-.tts-trigger {
+%button {
   background-color: map-get($colors, very-light-gray);
-  background-image: url("_speaker-32x32.png") !important;
-  background-position: center;
-  background-repeat: no-repeat;
   border-radius: 5px;
   border: 1px outset;
   display: block;
   padding: 5px 10px;
-  margin: 0.5em auto;
   cursor: pointer;
+}
+
+.tts-trigger {
+  @extend %button;
+  background-image: url("_speaker-32x32.png") !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0.5em auto;
   position: fixed;
   bottom: 0;
   left: 50%;
@@ -518,6 +523,21 @@ hr.hidden {
 
   .metadata {
     font-style: italic
+  }
+}
+
+.numpad {
+  margin: auto;
+  width: auto;
+  text-align: center;
+
+  button {
+    @extend %button;
+    margin: 0.1em 0;
+    display: inline-block;
+    font-size: 1em;
+    width: max($font-size, $touch-target-size);
+    line-height: $touch-target-size;
   }
 }
 
