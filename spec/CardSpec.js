@@ -270,7 +270,7 @@ describe("Card", function() {
     });
 
     it("replaces arrows with dashes", function() {
-      var card = createCard({ card: "a → b", tags: "c ⇔ d" });
+      var card = createCard({ note: "a → b", card: "c ⇔ d" });
       expect(card.getClassList()).toContain("a-b");
       expect(card.getClassList()).toContain("c-d");
     });

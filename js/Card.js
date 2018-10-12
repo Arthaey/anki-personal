@@ -123,7 +123,8 @@ Card.prototype.setupClasses = function() {
     }
   }
 
-  var types = [ this.deckName, this.noteType, this.cardType, this.tags ];
+  var tags = this.tags.split(/\s+/);
+  var types = [ this.deckName, this.noteType, this.cardType ].concat(tags);
   for (var i = 0; i < types.length; i++ ) {
     var type = types[i];
     if (!type) continue;
