@@ -14,6 +14,8 @@ describe("Global", function() {
     expect(dom.outerHTML).not.toBe(startingHTML);
   });
 
+  it("doesn't load itself twice?");
+
   it("shows given file generation timestamp", function() {
     /* eslint-disable-next-line no-global-assign */
     FILE_GENERATION_TIMESTAMP = "Thu Sep 6 22:25:02 PDT 2018";
