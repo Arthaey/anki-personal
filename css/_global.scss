@@ -249,7 +249,7 @@ hr#answer {
 /** COLORS & IMAGES - GENERAL *************************************************/
 
 /*
-   Mac app:    webkit safari mac js 
+   Mac app:    webkit safari mac js
    Mac Chrome: webkit chrome mac js
    iOS app:    webkit safari mobile iphone js
 */
@@ -408,7 +408,7 @@ body {
 
   &.mac .gloss {
     font-family: "Si5sEnergy";
-  } 
+  }
 
   // Vertically center multiple images.
   .card:before {
@@ -507,6 +507,18 @@ hr.hidden {
 
 .prompt {
   margin-bottom: 1em;
+}
+
+.dictionary-definition {
+  text-align: left;
+
+  .entry {
+    font-weight: bold;
+  }
+
+  .metadata {
+    font-style: italic
+  }
 }
 
 //@include icon("people");
