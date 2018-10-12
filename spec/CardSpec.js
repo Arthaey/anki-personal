@@ -254,6 +254,15 @@ describe("Card", function() {
       expect(card.getClassList()).toContain("mytags");
     });
 
+    it("adds single-word tags correctly", function() {
+      var card = createCard({
+        tags: "instructions topics::auto",
+      });
+
+      expect(card.getClassList()).toContain("instructions");
+      expect(card.getClassList()).toContain("topics-auto");
+    });
+
     it("makes lowercase", function() {
       var card = createCard({ card: "LOWERCASE" });
       expect(card.getClassList()).not.toContain("LOWERCASE");
