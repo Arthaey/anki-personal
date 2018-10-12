@@ -3,7 +3,7 @@ var GermanLanguage = {};
 GermanLanguage.pluralize = function(singularNounPlusSuffix) {
   if (!singularNounPlusSuffix) return "";
 
-  var regex = /^(der|die|das) (\w+), –(.+)$/;
+  var regex = /^(der|die|das) (\w+), –(.*)$/;
   var match = singularNounPlusSuffix.match(regex);
   if (!match) return singularNounPlusSuffix;
 
