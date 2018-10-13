@@ -62,6 +62,14 @@ Card.prototype.requiredParam = function(value, name) {
 Card.prototype.setupLayout = function() {
   if (!this.front) return "Card does not have a front side.";
 
+  var debug = this.dom.querySelector("#debug");
+  if (!debug) {
+    debug = this.front.ownerDocument.createElement("div");
+    debug.id = "debug";
+    debug.className = "extra";
+    this.front.parentNode.appendChild(debug);
+  }
+
   var cardInfo = this.dom.querySelector(".card-info");
   if (!cardInfo) {
     var tagsHtml = "";
@@ -88,14 +96,6 @@ Card.prototype.setupLayout = function() {
        "</div>"
     ;
     this.front.parentNode.insertBefore(cardInfo, this.front);
-  }
-
-  var debug = this.dom.querySelector("#debug");
-  if (!debug) {
-    debug = this.front.ownerDocument.createElement("div");
-    debug.id = "debug";
-    debug.className = "extra";
-    this.front.parentNode.appendChild(debug);
   }
 
   if (!this.hasExpectedLayout()) return "Card layout does not seem correct.";
