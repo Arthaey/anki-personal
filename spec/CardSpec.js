@@ -52,7 +52,7 @@ describe("Card", function() {
 
   it("changes its reported card type for the 'recognition' copy of recognition cloze cards", function() {
     var card = createCard({ note: "Cloze (and recognition card)", card: "Cloze", recognitionClozeProductionId: "123", recognitionClozeRecognitionId: "" });
-    expect(card.dom.querySelector(".card-type")).toHaveText("Recognition Cloze");
+    expect(card.dom.querySelector(".card-type")).toHaveText("Cloze Recognition");
   });
 
   it("keeps its reported card type for the 'production' copy of recognition cloze cards", function() {

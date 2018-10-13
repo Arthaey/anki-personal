@@ -74,7 +74,7 @@ Card.prototype.setupLayout = function() {
 
     var displayCardType = this.cardType;
     if (this.noteType === "Cloze (and recognition card)" && this.recognitionClozeProductionId && this.recognitionClozeRecognitionId === "" ) {
-      displayCardType = "Recognition Cloze";
+      displayCardType = "Cloze Recognition";
     }
 
     cardInfo = this.front.ownerDocument.createElement("div");
