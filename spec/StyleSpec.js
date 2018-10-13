@@ -27,8 +27,8 @@ describe("Style", function() {
       expect(cardEl.querySelector(".card")).toHaveComputedStyle("text-align", "center");
     });
 
-    it("makes 'small-text' smaller", function() {
-      var cardEl = createCardAsElement({ tags: "style::small-text" });
+    it("makes 'small-text' smaller on mobile", function() {
+      var cardEl = createCardAsElement({ tags: "style::small-text iphone" });
       expect(cardEl.querySelector(".card.front")).toHaveComputedStyle("font-size", "24px");
     });
   });
