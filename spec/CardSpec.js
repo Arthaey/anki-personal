@@ -50,13 +50,13 @@ describe("Card", function() {
     expect(card.front).not.toHaveText("small x2");
   });
 
-  it("changes its reported card type for the 'reverse' copy reverse cloze cards", function() {
-    var card = createCard({ note: "Cloze (and reversed card)", card: "Cloze", reverseClozeOriginalId: "123", reverseClozeReversedId: "" });
-    expect(card.dom.querySelector(".card-type")).toHaveText("Reverse Cloze");
+  it("changes its reported card type for the 'recognition' copy of recognition cloze cards", function() {
+    var card = createCard({ note: "Cloze (and recognition card)", card: "Cloze", recognitionClozeProductionId: "123", recognitionClozeRecognitionId: "" });
+    expect(card.dom.querySelector(".card-type")).toHaveText("Recognition Cloze");
   });
 
-  it("keeps its reported card type for the 'original' copy of reverse cloze cards", function() {
-    var card = createCard({ note: "Cloze (and reversed card)", card: "Cloze", reverseClozeOriginalId: "", reverseClozeReversedId: "123" });
+  it("keeps its reported card type for the 'production' copy of recognition cloze cards", function() {
+    var card = createCard({ note: "Cloze (and recognition card)", card: "Cloze", RecognitionClozeProductionId: "", recognitionClozeRecognitionId: "123" });
     expect(card.dom.querySelector(".card-type")).toHaveText("Cloze");
   });
 
