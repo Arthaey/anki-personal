@@ -134,6 +134,7 @@ Card.prototype.setupClasses = function() {
     if (/asl/i.test(type)) newClasses += " asl ";
 
     var typeClass = type;
+    typeClass = typeClass.replace(/[[\]()]/g, "");
     typeClass = typeClass.replace(/ [→⇔-] /g, "-");
     typeClass = typeClass.replace(/:+\s*/g,  "-");
     typeClass = typeClass.replace(/\s+/g, "-");

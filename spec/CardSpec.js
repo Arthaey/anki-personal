@@ -290,6 +290,16 @@ describe("Card", function() {
       expect(card.getClassList()).toContain("a-b");
     });
 
+    it("removes parentheses", function() {
+      var card = createCard({ note: "a (b)" });
+      expect(card.getClassList()).toContain("a-b");
+    });
+
+    it("removes brackets", function() {
+      var card = createCard({ note: "a [b]" });
+      expect(card.getClassList()).toContain("a-b");
+    });
+
     it("replaces subdeck-separators with dashes", function() {
       var card = createCard({ deck: "a::b" });
       expect(card.getClassList()).toContain("a-b");
