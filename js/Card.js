@@ -32,6 +32,7 @@ function Card(params) {
     this.setupVerbs,
     this.setupTTS,
     this.setupCitations,
+    this.modifyContent,
     this.addExtraUi,
     this.showCard
   ];
@@ -80,10 +81,7 @@ Card.prototype.setupLayout = function() {
       tagsHtml += '<span class="tag">' + this.leafify(fullTags[i]) + "</span>";
     }
 
-    var displayCardType = this.cardType;
-    if (this.noteType === "Cloze (and recognition card)" && this.recognitionClozeProductionId && this.recognitionClozeRecognitionId === "" ) {
-      displayCardType = "Cloze Recognition";
-    }
+    var displayCardType = this.isRecognitionClozeCard() ? "Cloze Recognition" : this.cardType;
 
     cardInfo = this.front.ownerDocument.createElement("div");
     cardInfo.className = "card-info";
@@ -165,8 +163,8 @@ Card.prototype.setupClasses = function() {
   }
 
   var LONG_TEXT_CUTOFF = 40;
-  var frontLength = this._getTextLength(this.front);
-  var backLength = this._getTextLength(this.back);
+  var frontLength = this.getTextLength(this.front);
+  var backLength = this.getTextLength(this.back);
   if (frontLength > LONG_TEXT_CUTOFF || backLength > LONG_TEXT_CUTOFF) {
     newClasses += " style-small-text";
   }
@@ -174,17 +172,6 @@ Card.prototype.setupClasses = function() {
   this.setClasses(newClasses.toLowerCase());
 
   return "Classes = '" + newClasses.toLowerCase() + "'.";
-};
-
-Card.prototype._getTextLength = function(el) {
-  if (!el) return 0;
-
-  var cloneEl = el.cloneNode(true);
-  cloneEl.querySelectorAll(".extra").forEach(function(extra) {
-    extra.parentNode.removeChild(extra);
-  });
-
-  return cloneEl.textContent.length;
 };
 
 Card.prototype.setupSlashHeight = function() {
@@ -317,6 +304,14 @@ Card.prototype.setupCitations = function() {
   return "Citation source = " + citation.innerHTML;
 };
 
+Card.prototype.modifyContent = function() {
+  if (this.isRecognitionClozeCard()) {
+    this.front.querySelectorAll(".cloze").forEach(function(cloze) {
+      cloze.innerHTML = cloze.innerHTML.replace(/^\[(.+)\]$/, "$1");
+    });
+  }
+};
+
 Card.prototype.addExtraUi = function() {
   if (this.getClassList().contains("personal-phone") && this.isQuestionSide()) {
     var numpad = this.front.ownerDocument.createElement("div");
@@ -352,6 +347,12 @@ Card.prototype.isQuestionSide = function() {
 
 Card.prototype.isTTSCardType = function() {
   return this.getClassList().contains("tts");
+};
+
+Card.prototype.isRecognitionClozeCard = function() {
+  return this.noteType === "Cloze (and recognition card)" &&
+    this.recognitionClozeProductionId &&
+    this.recognitionClozeRecognitionId === "";
 };
 
 Card.prototype.getClassList = function() {
@@ -406,6 +407,17 @@ Card.prototype.getLanguageCode = function() {
   }
 
   return langCode;
+};
+
+Card.prototype.getTextLength = function(el) {
+  if (!el) return 0;
+
+  var cloneEl = el.cloneNode(true);
+  cloneEl.querySelectorAll(".extra").forEach(function(extra) {
+    extra.parentNode.removeChild(extra);
+  });
+
+  return cloneEl.textContent.length;
 };
 
 Card.prototype.leafify = function(fullyQualifiedName) {

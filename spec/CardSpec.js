@@ -50,16 +50,6 @@ describe("Card", function() {
     expect(card.front).not.toHaveText("small x2");
   });
 
-  it("changes its reported card type for the 'recognition' copy of recognition cloze cards", function() {
-    var card = createCard({ note: "Cloze (and recognition card)", card: "Cloze", recognitionClozeProductionId: "123", recognitionClozeRecognitionId: "" });
-    expect(card.dom.querySelector(".card-type")).toHaveText("Cloze Recognition");
-  });
-
-  it("keeps its reported card type for the 'production' copy of recognition cloze cards", function() {
-    var card = createCard({ note: "Cloze (and recognition card)", card: "Cloze", RecognitionClozeProductionId: "", recognitionClozeRecognitionId: "123" });
-    expect(card.dom.querySelector(".card-type")).toHaveText("Cloze");
-  });
-
   describe("check for expected HTML", function() {
     it("creates layout", function() {
       var card = createCard();
@@ -586,6 +576,52 @@ describe("Card", function() {
 
       card.resetClasses();
       expect(card.getClassList()).not.toContain("foo");
+    });
+  });
+
+  describe("cloze recognition notes", function() {
+    describe("the 'recognition' cards", function() {
+      var card;
+
+      beforeEach(function() {
+        card = createCard({
+          note: "Cloze (and recognition card)",
+          card: "Cloze",
+          recognitionClozeProductionId: "123",
+          recognitionClozeRecognitionId: "",
+          front: "foo <span class='cloze'>[bar]</span> qux",
+        });
+      });
+
+      it("changes its reported card type", function() {
+        expect(card.dom.querySelector(".card-type")).toHaveText("Cloze Recognition");
+      });
+
+      it("strips square brackets around cloze placeholders", function() {
+        expect(card.front).toHaveText("foo bar qux");
+      });
+    });
+
+    describe("the 'production' cards", function() {
+      var card;
+
+      beforeEach(function() {
+        card = createCard({
+          note: "Cloze (and recognition card)",
+          card: "Cloze",
+          recognitionClozeProductionId: "",
+          recognitionClozeRecognitionId: "123",
+          front: "foo <span class='cloze'>[__]</span> qux",
+        });
+      });
+
+      it("keeps its reported card type", function() {
+        expect(card.dom.querySelector(".card-type")).toHaveText("Cloze");
+      });
+
+      it("keeps square brackets around cloze placeholders", function() {
+        expect(card.front).toHaveText("foo [__] qux");
+      });
     });
   });
 });
