@@ -6,6 +6,8 @@ function Card(params) {
   this.noteType = this.requiredParam(params.note, "noteType");
   this.cardType = this.requiredParam(params.card, "cardType");
   this.tags = params.tags;
+  this.reverseClozeOriginalId = params.reverseClozeOriginalId;
+  this.reverseClozeReversedId = params.reverseClozeReversedId;
 
   this.front = this.dom.querySelector(".card.front");
   this.back = this.dom.querySelector(".card.back");
@@ -70,7 +72,10 @@ Card.prototype.setupLayout = function() {
       tagsHtml += '<span class="tag">' + this.leafify(fullTags[i]) + "</span>";
     }
 
-    var displayCardType = (this.noteType === "Cloze (and reversed card)") ? "Reverse Cloze" : this.cardType;
+    var displayCardType = this.cardType;
+    if (this.noteType === "Cloze (and reversed card)" && this.reverseClozeOriginalId && this.reverseClozeReversedId === "" ) {
+      displayCardType = "Reverse Cloze";
+    }
 
     cardInfo = this.front.ownerDocument.createElement("div");
     cardInfo.className = "card-info";
