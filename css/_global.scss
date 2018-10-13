@@ -11,6 +11,11 @@ $line-height: 2em;
 $radius: $line-height / 4;
 $touch-target-size: 44px;
 
+.default-colors {
+  background-color: white;
+  color: black;
+}
+
 /** HIDE UNTIL READY **********************************************************/
 
 #qa, .tts-trigger {
@@ -71,11 +76,13 @@ $touch-target-size: 44px;
 
   .card.back {
     font-weight: normal;
-  }
-}
 
-.cloze-and-recognition-card .card.back .extra {
-  font-size: unset;
+    &.cloze-recognition .extra {
+      @extend .default-colors;
+      font-size: inherit;
+      text-align: center;
+    }
+  }
 }
 
 .extra {
@@ -258,11 +265,6 @@ hr#answer {
    Mac Chrome: webkit chrome mac js
    iOS app:    webkit safari mobile iphone js
 */
-
-.default-colors {
-  background-color: white;
-  color: black;
-}
 
 body {
   @extend .default-colors;
