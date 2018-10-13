@@ -79,7 +79,8 @@ $touch-target-size: 44px;
 
     &.cloze-recognition .extra {
       @extend .default-colors;
-      font-size: inherit;
+      font-size: medium;
+      font-weight: bold;
       text-align: center;
     }
   }
