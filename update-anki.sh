@@ -15,6 +15,7 @@ TEMP_DIR="tmp"
 GLOBAL_JS_FILE="js/_global.js"
 GLOBAL_CSS_FILE="css/_global.css"
 GLOBAL_CSS_HEADER_FILE="$TEMP_DIR/_global_header.css"
+GLOBAL_CSS_TEMP_FILE="$TEMP_DIR/_global.css"
 FORCE_MEDIA_SYNC_SUBSTRING="_force_sync_"
 FORCE_MEDIA_SYNC_FILE="$TEMP_DIR/${FORCE_MEDIA_SYNC_SUBSTRING}${NOW}"
 
@@ -74,8 +75,8 @@ cat \
 ################################################################################
 echoStatus "Creating combined CSS file"
 sass --style=expanded --no-cache css/_global.scss $GLOBAL_CSS_FILE
-cat $GLOBAL_CSS_HEADER_FILE $GLOBAL_CSS_FILE > $TEMP_DIR/full_global.css
-mv $TEMP_DIR/full_global.css $GLOBAL_CSS_FILE
+cat $GLOBAL_CSS_HEADER_FILE $GLOBAL_CSS_FILE > $GLOBAL_CSS_TEMP_FILE
+cp $GLOBAL_CSS_TEMP_FILE $GLOBAL_CSS_FILE
 
 ################################################################################
 echoStatus "Linting Javascript"
