@@ -74,6 +74,10 @@ $touch-target-size: 44px;
   }
 }
 
+.cloze-and-recognition-card .card.back .extra {
+  font-size: unset;
+}
+
 .style-small-text .card {
   font-size: 0.5em;
 }
