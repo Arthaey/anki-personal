@@ -70,6 +70,8 @@ Card.prototype.setupLayout = function() {
       tagsHtml += '<span class="tag">' + this.leafify(fullTags[i]) + "</span>";
     }
 
+    var displayCardType = (this.noteType === "Cloze (and reversed card)") ? "Reverse Cloze" : this.cardType;
+
     cardInfo = this.front.ownerDocument.createElement("div");
     cardInfo.className = "card-info";
     cardInfo.innerHTML =
@@ -77,7 +79,7 @@ Card.prototype.setupLayout = function() {
        '<div class="slash"></div>' +
        '<div class="deck">' +
        //'  <span id="deck">' + this.deckName + "</span>:" +
-       '  <span class="card-type">' + this.cardType + "</span>" +
+       '  <span class="card-type">' + displayCardType + "</span>" +
        "</div>"
     ;
     this.front.parentNode.insertBefore(cardInfo, this.front);

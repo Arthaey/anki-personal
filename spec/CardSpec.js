@@ -50,6 +50,11 @@ describe("Card", function() {
     expect(card.front).not.toHaveText("small x2");
   });
 
+  it("changes its reported card type for reverse cloze cards", function() {
+    var card = createCard({ note: "Cloze (and reversed card)", card: "Cloze" });
+    expect(card.dom.querySelector(".card-type")).toHaveText("Reverse Cloze");
+  });
+
   describe("check for expected HTML", function() {
     it("creates layout", function() {
       var card = createCard();
