@@ -66,6 +66,7 @@ $touch-target-size: 44px;
 
 .cloze,
 .instructions,
+.poem,
 .memory-jog,
 .memory-jog-with-details {
   .card.front, .card.back {
@@ -483,6 +484,10 @@ body {
 
 .correct {
   color: darkgreen;
+}
+
+.cursive {
+  font-family: "Snell Roundhand";
 }
 
 .email {
